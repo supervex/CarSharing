@@ -59,10 +59,10 @@
         <% if (errorMessage != null) { %>
             <p class="error"><%= errorMessage %></p>
         <% } %>
-        <form action="UtenteController" method="get">
+        <form action="UtenteController" method="post">
             <input type="text" id="username" name ="username" placeholder="Username" required>
             <input type="password" id="password" name="password" placeholder="Password" required>
-            
+            <input type="hidden" name="tipoOperazione" value="login">
             <button type="submit">Accedi</button>
         </form>
     </div>

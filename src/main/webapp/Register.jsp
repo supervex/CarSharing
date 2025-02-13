@@ -77,7 +77,7 @@ ciaooo
        value="<%= request.getAttribute("telefono") != null ? request.getAttribute("telefono") : "" %>">
 <input type="email" id="email" name="email" placeholder="Email" required 
        value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>">
-
+<input type="hidden" name="tipoOperazione" value="register">
             
             <button type="submit">Registrati</button>
         </form>
