@@ -79,25 +79,32 @@ public class UtenteQuery {
 			System.err.println("Errore SQL: " + e.getMessage());
 		}
 	}
-	 public boolean getUtenteByUsername(String username) {
-	      
-	        String query = "SELECT * FROM utente WHERE username = ?";
+	public Utente getUtenteByUsername(String username) {
+	    String query = "SELECT * FROM utente WHERE username = ?";
+	    try (Connection connection = DataBaseConnection.getConnection();
+	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-	        try (Connection connection = DataBaseConnection.getConnection();
-	             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-	            preparedStatement.setString(1, username);
-	            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-	                if (resultSet.next()) {
-	                   return false;
-	                } else {
-	                   return true;
-	                }
+	        preparedStatement.setString(1, username);
+	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+	            if (resultSet.next()) {
+	                return new Utente(
+	                    resultSet.getInt("ID_utente"),
+	                    resultSet.getString("username"),
+	                    resultSet.getString("nome"),
+	                    resultSet.getString("cognome"),
+	                    resultSet.getDate("dataNascita"),
+	                    resultSet.getString("passwordUtente"),
+	                    resultSet.getString("città"),
+	                    resultSet.getString("telefono"),
+	                    resultSet.getString("email")
+	                );
 	            }
-	        } catch (SQLException e) {
-	            System.err.println("Errore SQL: " + e.getMessage());
-	            throw new RuntimeException("Errore");
 	        }
-	      
+	    } catch (SQLException e) {
+	        System.err.println("Errore SQL: " + e.getMessage());
+	        throw new RuntimeException("Errore nella ricerca dell'utente");
 	    }
+	    return null; // Se non trova l'utente, restituisce null
+	}
+
 }

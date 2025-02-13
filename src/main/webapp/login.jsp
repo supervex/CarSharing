@@ -54,6 +54,11 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
+        <!-- Messaggio di errore -->
+        <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+        <% if (errorMessage != null) { %>
+            <p class="error"><%= errorMessage %></p>
+        <% } %>
         <form action="UtenteController" method="get">
             <input type="text" id="username" name ="username" placeholder="Username" required>
             <input type="password" id="password" name="password" placeholder="Password" required>

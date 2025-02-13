@@ -34,6 +34,16 @@ public class UtenteController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		Utente utente = utenteQuery.getUtenteByUsername(username);
+		if(!utente.getPasswordUtente().equals(password) || utente == null) {
+			request.setAttribute("errorMessage", "Username o password errate");
+		
+			//lo rimandiamo alla home con il login effettuato
+		}else{
+			System.out.println("benvenuto");
+		}
 	}
 
 	
@@ -69,7 +79,7 @@ public class UtenteController extends HttpServlet {
 	
 	
 	//cercare se esiste lo stesso username
-	if(utenteQuery.getUtenteByUsername(username)) {
+	if(utenteQuery.getUtenteByUsername(username) == null) {
 		Utente utente = new Utente(0, username, nome, cognome, dataNascitaSQL, password, città, telefono, email);
 	    utenteQuery.aggiungiUtente(utente);
 	    response.sendRedirect("successo.jsp");
