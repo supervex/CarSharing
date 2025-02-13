@@ -43,7 +43,7 @@ public class UtenteController extends HttpServlet {
 		String username = request.getParameter("username");
 	String nome = request.getParameter("nome");
 	String cognome = request.getParameter("cognome");
-	System.out.println("ciao");
+	System.out.println("Ciao sono Roberta");
 	
 	String dataNascitaStr = request.getParameter("dataNascita");
 	
