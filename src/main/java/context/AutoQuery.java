@@ -2,14 +2,19 @@ package context;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import models.Auto;
+
 
 public class AutoQuery {
 
 	public void aggiungiAuto(Auto auto) {
-		String query = "insert into auto(targa, modello, carburante, livello, numeroPosti, cambio, posizione, prezzo) values(?, ?, ?, ?, ?, ?, ?, ?)";
+		String query = "insert into auto(targa, modello, carburante, livello, numero_posti, cambio, posizione, prezzo) values(?, ?, ?, ?, ?, ?, ?, ?)";
 		try (Connection connection = DataBaseConnection.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -75,5 +80,38 @@ public class AutoQuery {
 			System.err.println("Errore SQL: " + e.getMessage());
 		}
 	}
+	
+	public List<Auto> stampaAuto() {
+        List<Auto> autos = new ArrayList<>();
+        String query = "SELECT * FROM Auto";
 
+        try (Connection connection = DataBaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID_auto");
+                String targa = resultSet.getString("targa");
+                String modello = resultSet.getString("modello");
+                String carburante = resultSet.getString("carburante");
+                double livello = resultSet.getDouble("livello");
+                int numeroPosti = resultSet.getInt("numero_posti");
+                String cambio = resultSet.getString("cambio");
+                String posizione = resultSet.getString("posizione");
+                double prezzo = resultSet.getDouble("prezzo");
+                Auto auto = new Auto(id, targa, modello, carburante, livello, numeroPosti, cambio, posizione, prezzo);
+                autos.add(auto);
+            }
+
+            if (autos.isEmpty()) {
+                System.out.println("Nessuna auto trovata.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore SQL: " + e.getMessage());
+            throw new RuntimeException("Errore nel recupero delle auto.");
+        }
+
+        return autos;
+    }
 }

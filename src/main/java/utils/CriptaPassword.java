@@ -1,52 +1,35 @@
 package utils;
 
 public class CriptaPassword {
-	private static final char[] lettere = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-			'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+    private static final String ALFABETO = "abcdefghijklmnopqrstuvwxyz";
+    private static final String NUMERI = "0123456789";
+    
+    public static String cripta(int shift, String frase) {
+        StringBuilder parolaCifrata = new StringBuilder();
+        
+        for (char lettera : frase.toCharArray()) {
+            if (Character.isLowerCase(lettera)) {
+                parolaCifrata.append(shiftChar(lettera, shift, ALFABETO));
+            } else if (Character.isUpperCase(lettera)) {
+                parolaCifrata.append(Character.toUpperCase(shiftChar(Character.toLowerCase(lettera), shift, ALFABETO)));
+            } else if (Character.isDigit(lettera)) {
+                parolaCifrata.append(shiftChar(lettera, shift, NUMERI));
+            } else {
+                parolaCifrata.append(lettera);
+            }
+        }
+        return parolaCifrata.toString();
+    }
 
-	public static String stampaCriptato(int numero, String frase) {
-
-		String parolaCifrata = "";
-
-		for (int i = 0; i < frase.length(); i++) {
-
-			char lettera = frase.charAt(i);
-			if (lettera == ' ') {
-				parolaCifrata = parolaCifrata + " ";
-			}
-			for (int j = 0; j < lettere.length; j++) {
-
-				if (lettere[j] == lettera) {
-
-					parolaCifrata = parolaCifrata + lettere[(j + numero) % lettere.length];					
-				}
-			}
-
-		}
-		return parolaCifrata;
-	}
-	public static String decifraCriptato(int numero, String frase) {
-		
-		String parolaDecifrata = "";
-
-		for (int i = 0; i < frase.length(); i++) {
-
-			char lettera = frase.charAt(i);
-			if (lettera == ' ') {
-				parolaDecifrata = parolaDecifrata + " ";
-			}
-			for (int j = 0; j < lettere.length; j++) {
-
-				if (lettere[j] == lettera) {
-
-					parolaDecifrata = parolaDecifrata + lettere[(j - numero + lettere.length) % lettere.length];
-				
-				}
-			}
-
-		}
-		return parolaDecifrata;		
-	}
-		
-	
+    public static String decripta(int shift, String frase) {
+        return cripta(-shift, frase);
+    }
+    
+    private static char shiftChar(char lettera, int shift, String alfabeto) {
+        int index = alfabeto.indexOf(lettera);
+        if (index != -1) {
+            return alfabeto.charAt((index + shift + alfabeto.length()) % alfabeto.length());
+        }
+        return lettera;
+    }
 }

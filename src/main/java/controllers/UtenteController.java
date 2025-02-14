@@ -53,7 +53,7 @@ public class UtenteController extends HttpServlet {
             return;
         }
 
-        String passwordCriptata = CriptaPassword.stampaCriptato(14, password);
+        String passwordCriptata = CriptaPassword.cripta(14, password);
         Utente utente = utenteQuery.getUtenteByUsername(username);
 
         if (utente == null || !utente.getPasswordUtente().equals(passwordCriptata)) {
@@ -90,7 +90,7 @@ public class UtenteController extends HttpServlet {
             return;
         }
 
-        String passwordCriptata = CriptaPassword.stampaCriptato(14, password);
+        String passwordCriptata = CriptaPassword.cripta(14, password);
         Utente nuovoUtente = new Utente(0, username, nome, cognome, dataNascitaSQL, passwordCriptata, citta, telefono, email);
         utenteQuery.aggiungiUtente(nuovoUtente);
         response.sendRedirect("successo.jsp");
