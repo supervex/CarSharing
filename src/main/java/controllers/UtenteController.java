@@ -42,7 +42,7 @@ public class UtenteController extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Operazione non valida");
         }
     }
-
+    
     private void gestisciLogin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
