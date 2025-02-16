@@ -1,43 +1,50 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="models.Utente" %>
 <%@ page import="java.util.List" %>
 <%@ page import="models.Auto" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Drive Easy</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script defer src="script.js"></script>
-<script src="https://kit.fontawesome.com/a076d05399.js"
-    crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Drive Easy</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <i class="fas fa-car"></i> Drive Easy
-        </div>
-        <ul class="nav-links">
-            <li><a href="home.jsp">Home</a></li>
+   <nav class="navbar">
+    <div class="logo">
+        <i class="fas fa-car"></i> Drive Easy
+    </div>
+    <ul class="nav-links">
+        <li><a href="home.jsp">Home</a></li>
+        <% Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
+           if (utenteLoggatoHome != null) { %>
             <li><a href="areaUtente.jsp">Area Utente</a></li>
+            <li>
+                <form action="UtenteController" method="post" style="display:inline;">
+                    <input type="hidden" name="tipoOperazione" value="logout">
+                    <button class="register-btn">Logout</button>
+                </form>
+            </li>
+        <% } else { %>
             <li><a href="login.jsp">Accedi</a></li>
-            <li><a href="Register.jsp">
-                    <button class="register-btn">Registrati</button>
-            </a></li>
-        </ul>
-    </nav>
+            <li><a href="Register.jsp"><button class="register-btn">Registrati</button></a></li>
+        <% } %>
+    </ul>
+</nav>
 
-    <!-- Hero Section -->
+<!-- Hero Section -->
     <div class="hero">
-        <h1>Esperienza di Noleggio Auto Premium</h1>
-        <p>Drive Easy offre un'esperienza di noleggio auto senza intoppi.
+        <% if (utenteLoggatoHome != null) { %>
+            <h2 class="text-center">Benvenuto, <%= utenteLoggatoHome.getNome() %>!</h2>
+        <% } else { %>
+            <h1>Esperienza di Noleggio Auto Premium</h1>
+            <p>Drive Easy offre un'esperienza di noleggio auto senza intoppi.
             Scegli tra la nostra ampia selezione di auto e parti per la strada
             con stile.</p>
+        <% } %>
     </div>
+
 
     <!-- Available Cars -->
     <section class="cars">

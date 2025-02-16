@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="models.Utente" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -15,11 +16,19 @@
 		</div>
 		<ul class="nav-links">
 			<li><a href="home.jsp">Home</a></li>
-			<li><a href="inserisciVeicolo.jsp">Area Utente</a></li>
-			<li><a href="login.jsp">Accedi</a></li>
-			<li><a href="Register.jsp">
-					<button class="register-btn">Registrati</button>
-			</a></li>
+			<% Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
+           if (utenteLoggatoHome != null) { %>
+            <li><a href="areaUtente.jsp">Area Utente</a></li>
+            <li>
+                <form action="UtenteController" method="post" style="display:inline;">
+                    <input type="hidden" name="tipoOperazione" value="logout">
+                    <button class="register-btn">Logout</button>
+                </form>
+            </li>
+        <% } else { %>
+            <li><a href="login.jsp">Accedi</a></li>
+            <li><a href="Register.jsp"><button class="register-btn">Registrati</button></a></li>
+        <% } %>
 		</ul>
 	</nav>
 
