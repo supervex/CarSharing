@@ -50,7 +50,7 @@
             <p><strong>Nome:</strong> <%= utenteLoggato.getNome() %> <%= utenteLoggato.getCognome() %></p>
             <p><strong>Email:</strong> <%= utenteLoggato.getEmail() %></p>
             <p><strong>Telefono:</strong> <%= utenteLoggato.getTelefono() %></p>
-            <a href="Register.jsp" class="btn">Modifica Profilo</a>
+            <a href="modificaUtente.jsp" class="btn">Modifica Profilo</a>
         </section>
 
         <!-- Sezione Prenotazioni -->

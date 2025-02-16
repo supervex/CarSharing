@@ -38,6 +38,9 @@ public class UtenteController extends HttpServlet {
             case "logout":
                 gestisciLogout(request, response);
                 break;
+            case "modificaUtente":
+                gestisciModificaUtente(request, response);
+                break;
             default:
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Operazione non valida");
         }
@@ -102,6 +105,65 @@ public class UtenteController extends HttpServlet {
             session.invalidate();
         }
         response.sendRedirect("login.jsp");
+    }
+    
+    private void gestisciModificaUtente(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Utente utente = (Utente) session.getAttribute("user");
+
+        if (utente == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        String nome = request.getParameter("nome");
+        String cognome = request.getParameter("cognome");
+        String dataNascitaStr = request.getParameter("dataNascita");
+        String email = request.getParameter("email");
+        String telefono = request.getParameter("telefono");
+        String citta = request.getParameter("citta");
+        String nuovaPassword = request.getParameter("passwordUtente");
+
+        
+        if (nome.isEmpty() || cognome.isEmpty() || email.isEmpty() || telefono.isEmpty() || citta.isEmpty()) {
+            inviaErrore(request, response, "Tutti i campi sono obbligatori, eccetto la password.", "/modificaUtente.jsp");
+            return;
+        }
+
+        // Gestione della data di nascita
+        java.sql.Date dataNascitaSQL;
+        try {
+            LocalDate dataNascita = LocalDate.parse(dataNascitaStr);
+            dataNascitaSQL = java.sql.Date.valueOf(dataNascita);
+        } catch (DateTimeParseException e) {
+            inviaErrore(request, response, "Formato della data non valido. Usa 'yyyy-MM-dd'.", "/modificaUtente.jsp");
+            return;
+        }
+
+        // Aggiornamento utente
+        utente.setNome(nome);
+        utente.setCognome(cognome);
+        utente.setDataNascita(dataNascitaSQL);
+        utente.setEmail(email);
+        utente.setTelefono(telefono);
+        utente.setCitta(citta);
+
+        // Se l'utente ha inserito una nuova password, la criptiamo
+        if (nuovaPassword != null && !nuovaPassword.isEmpty()) {
+            String passwordCriptata = CriptaPassword.cripta(14, nuovaPassword);
+            utente.setPasswordUtente(passwordCriptata);
+        }
+
+        // Salvataggio nel database
+        boolean success = utenteQuery.modificaUtente(utente);
+
+        if (success) {
+            session.setAttribute("user", utente); // Aggiorniamo la sessione con i nuovi dati
+            response.sendRedirect("areaUtente.jsp?success=1");
+        } else {
+            inviaErrore(request, response, "Errore durante l'aggiornamento dei dati.", "/modificaUtente.jsp");
+        }
     }
 
     private void inviaErrore(HttpServletRequest request, HttpServletResponse response, String messaggio, String pagina)

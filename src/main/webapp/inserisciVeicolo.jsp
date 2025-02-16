@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ page import="models.Utente" %>
 <!DOCTYPE html>
 <html lang="it">
@@ -17,7 +17,7 @@
 		<ul class="nav-links">
 			<li><a href="home.jsp">Home</a></li>
 			<% Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
-           if (utenteLoggatoHome != null) { %>
+               if (utenteLoggatoHome != null) { %>
             <li><a href="areaUtente.jsp">Area Utente</a></li>
             <li>
                 <form action="UtenteController" method="post" style="display:inline;">
@@ -32,7 +32,7 @@
 		</ul>
 	</nav>
 
-	 <!-- Verifica se c'è un errore e lo mostra all'utente -->
+    <!-- Verifica se c'è un errore e lo mostra all'utente -->
     <%
         String errorMessage = (String) request.getAttribute("errorMessage");
         if (errorMessage != null) {
@@ -44,15 +44,25 @@
         }
     %>
 
-    <nav class="navbar">
-        <!-- Contenuto del navbar -->
-    </nav>
-
     <div class="container">
         <h1>Area Utente</h1>
         <section>
             <h2>Inserisci il tuo veicolo</h2>
             <form id="carForm" action="AutoController" method="post">
+                <!-- Controllo se l'utente è loggato -->
+                <%
+                    if (utenteLoggatoHome != null) {
+                %>
+                    <!-- Se l'utente è loggato, passo l'idUtente -->
+                    <input type="hidden" name="utente" value="<%= utenteLoggatoHome.getId() %>">
+                <%
+                    } else {
+                %>
+                    <!-- Se non è loggato, non passo idUtente -->
+                    <input type="hidden" name="utente" value="">
+                <%
+                    }
+                %>
                 <input type="text" name="targa" placeholder="Targa" required>
                 <input type="text" name="modello" placeholder="Modello" required>
                 <input type="text" name="carburante" placeholder="Carburante" required>
@@ -71,21 +81,21 @@
         </section>
     </div>		
 
-		<section>
-			<h2>Prenota un'auto</h2>
-			<button class="register-btn">Prenota Ora</button>
-		</section>
+	<section>
+		<h2>Prenota un'auto</h2>
+		<button class="register-btn">Prenota Ora</button>
+	</section>
 
-		<section>
-			<h2>Storico Noleggi</h2>
-			<p>Visualizza i tuoi noleggi effettuati e ricevuti.</p>
-		</section>
+	<section>
+		<h2>Storico Noleggi</h2>
+		<p>Visualizza i tuoi noleggi effettuati e ricevuti.</p>
+	</section>
 
-		<section>
-			<h2>Recensioni</h2>
-			<textarea placeholder="Lascia una recensione"></textarea>
-			<button class="register-btn">Invia Recensione</button>
-		</section>
-	
+	<section>
+		<h2>Recensioni</h2>
+		<textarea placeholder="Lascia una recensione"></textarea>
+		<button class="register-btn">Invia Recensione</button>
+	</section>
+
 </body>
 </html>
