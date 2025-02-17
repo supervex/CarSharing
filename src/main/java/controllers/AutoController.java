@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import models.Auto;
+import models.Utente;
 import context.AutoQuery;
 
 import java.io.IOException;
@@ -24,13 +25,29 @@ public class AutoController extends HttpServlet {
     // Metodo doGet per visualizzare le auto
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Auto> autos = (ArrayList<Auto>) autoQuery.stampaAuto();  
-        request.setAttribute("listaAuto", autos);
+        String tipoOperazione = request.getParameter("tipoOperazione");
 
-        
-        RequestDispatcher dispatcher = request.getRequestDispatcher("mostraAuto.jsp");
-        dispatcher.forward(request, response);
+        switch (tipoOperazione != null ? tipoOperazione : "") {
+            case "tutteLeAuto":
+                mostraTutteLeAuto(request, response);
+                break;
+            case "autoUtente":
+                mostraAutoUtente(request, response);
+                break;
+            case "aggiorna":
+            	String idAutoStr = request.getParameter("id");
+            	int idAuto = Integer.parseInt(idAutoStr);               
+                Auto autoDaAggiornare = autoQuery.trovaAutoPerId(idAuto);
+                request.setAttribute("auto", autoDaAggiornare);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("modificaAuto.jsp");
+                dispatcher.forward(request, response);
+                break;
+            default:
+                mostraTutteLeAuto(request, response); // Comportamento predefinito
+                break;
+        }
     }
+
 
     // Metodo doPost per gestire le operazioni sull'auto (inserimento, aggiornamento, eliminazione, ecc.)
     @Override
@@ -47,6 +64,9 @@ public class AutoController extends HttpServlet {
                 break;
             case "elimina":
                 gestisciEliminazioneAuto(request, response);
+                break;
+            case "autoUtente":
+                mostraAutoUtente(request, response);
                 break;
             default:
                 // Gestione di operazioni non riconosciute
@@ -101,15 +121,76 @@ public class AutoController extends HttpServlet {
             dispatcher.forward(request, response);
         }
     }
-
+  
     // Metodo per gestire l'aggiornamento di un'auto (da implementare)
     private void gestisciAggiornamentoAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Logica di aggiornamento
-        // Eseguiamo l'aggiornamento dell'auto in base ai dati ricevuti
-        request.setAttribute("message", "FunzionalitÃ  di aggiornamento non implementata ancora.");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("aggiornaAuto.jsp");
-        dispatcher.forward(request, response);
+        // Recupera l'ID dell'auto che si vuole aggiornare
+        String idAutoStr = request.getParameter("id");
+
+        if (idAutoStr != null && !idAutoStr.isEmpty()) {
+            try {
+                int idAuto = Integer.parseInt(idAutoStr);
+                // Recupera i dettagli dell'auto da aggiornare
+                Auto autoDaAggiornare = autoQuery.trovaAutoPerId(idAuto);
+
+                if (autoDaAggiornare != null) {
+                    // Recupera i nuovi valori da aggiornare
+                    String targa = request.getParameter("targa");
+                    String modello = request.getParameter("modello");
+                    String carburante = request.getParameter("carburante");
+                    String livelloStr = request.getParameter("livello");
+                    String numeroPostiStr = request.getParameter("numeroPosti");
+                    String prezzoStr = request.getParameter("prezzo");
+
+                    // Controlla che i campi obbligatori non siano vuoti
+                    if (targa.isEmpty() || modello.isEmpty() || carburante.isEmpty()) {
+                        request.setAttribute("errorMessage", "Campi obbligatori mancanti!");
+                        RequestDispatcher dispatcher = request.getRequestDispatcher("modificaAuto.jsp");
+                        dispatcher.forward(request, response);
+                        return;
+                    }
+
+                    try {
+                        double livello = Double.parseDouble(livelloStr);
+                        int numeroPosti = Integer.parseInt(numeroPostiStr);
+                        double prezzo = Double.parseDouble(prezzoStr);
+
+                        // Aggiorna l'auto con i nuovi valori
+                        autoDaAggiornare.setTarga(targa);
+                        autoDaAggiornare.setModello(modello);
+                        autoDaAggiornare.setCarburante(carburante);
+                        autoDaAggiornare.setLivello(livello);
+                        autoDaAggiornare.setNumeroPosti(numeroPosti);
+                        autoDaAggiornare.setPrezzo(prezzo);
+
+                        // Salva l'auto aggiornata nel database (o nel sistema di gestione dati)
+                        autoQuery.modificaAuto(autoDaAggiornare);
+
+                        // Successo, redirect alla pagina delle auto
+                        response.sendRedirect("AutoController?tipoOperazione=autoUtente");
+
+                    } catch (NumberFormatException e) {
+                        request.setAttribute("errorMessage", "Valori numerici invalidi!");
+                        RequestDispatcher dispatcher = request.getRequestDispatcher("aggiornaAuto.jsp");
+                        dispatcher.forward(request, response);
+                    }
+                } else {
+                    request.setAttribute("errorMessage", "Auto non trovata!");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("errore.jsp");
+                    dispatcher.forward(request, response);
+                }
+            } catch (NumberFormatException e) {
+                request.setAttribute("errorMessage", "ID auto non valido!");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("errore.jsp");
+                dispatcher.forward(request, response);
+            }
+        } else {
+            request.setAttribute("errorMessage", "ID auto mancante!");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("errore.jsp");
+            dispatcher.forward(request, response);
+        }
     }
+
 
     // Metodo per gestire l'eliminazione di un'auto (da implementare)
     private void gestisciEliminazioneAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -132,5 +213,22 @@ public class AutoController extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("errore.jsp");
             dispatcher.forward(request, response);
         }
+    }
+    private void mostraAutoUtente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	Utente utenteLoggato = (Utente) request.getSession().getAttribute("user");
+    String username =utenteLoggato.getUsername();
+    	ArrayList<Auto> listaAutoUtente = (ArrayList<Auto>) autoQuery.cercaAutoByUsername(username);
+    	request.setAttribute("listaAutoUtente", listaAutoUtente);
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("AutoUtente.jsp");
+        dispatcher.forward(request, response);
+    }
+    
+    private void mostraTutteLeAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	 ArrayList<Auto> autos = (ArrayList<Auto>) autoQuery.stampaAuto();  
+         request.setAttribute("listaAuto", autos);
+         
+         RequestDispatcher dispatcher = request.getRequestDispatcher("mostraAuto.jsp");
+         dispatcher.forward(request, response);
     }
 }

@@ -1,83 +1,64 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page import="models.Utente" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="models.Auto" %>
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Area Utente - Drive Easy</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Modifica Auto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-	<nav class="navbar">
-		<div class="logo">
-			<i class="fas fa-car"></i> Drive Easy
-		</div>
-		<ul class="nav-links">
-			<li><a href="home.jsp">Home</a></li>
-			<% Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
-               if (utenteLoggatoHome != null) { %>
-            <li><a href="areaUtente.jsp">Area Utente</a></li>
-            <li>
-                <form action="UtenteController" method="post" style="display:inline;">
-                    <input type="hidden" name="tipoOperazione" value="logout">
-                    <button class="register-btn">Logout</button>
-                </form>
-            </li>
-        <% } else { %>
-            <li><a href="login.jsp">Accedi</a></li>
-            <li><a href="Register.jsp"><button class="register-btn">Registrati</button></a></li>
-        <% } %>
-		</ul>
-	</nav>
+    <div class="container mt-4">
+        <h2 class="text-center">Modifica Auto</h2>
 
-    <!-- Verifica se c'è un errore e lo mostra all'utente -->
-    <%
-        String errorMessage = (String) request.getAttribute("errorMessage");
-        if (errorMessage != null) {
-    %>
-        <div class="error-message">
-            <%= errorMessage %>
-        </div>
-    <%
-        }
-    %>
+        <% Auto auto = (Auto) request.getAttribute("auto"); %>
+        <form action="AutoController" method="post">
+        <input type="hidden" name="tipoOperazione" value="aggiorna">
+            <input type="hidden" name="id" value="<%= auto.getId() %>">
 
-    <div class="container">
-        <h1>Area Utente</h1>
-        <section>
-            <h2>Inserisci il tuo veicolo</h2>
-            <form id="carForm" action="AutoController" method="post">
-                <!-- Controllo se l'utente è loggato -->
-                <%
-                    if (utenteLoggatoHome != null) {
-                %>
-                    <!-- Se l'utente è loggato, passo l'idUtente -->
-                    <input type="hidden" name="utente" value="<%= utenteLoggatoHome.getId() %>">
-                <%
-                    } else {
-                %>
-                    <!-- Se non è loggato, non passo idUtente -->
-                    <input type="hidden" name="utente" value="">
-                <%
-                    }
-                %>
-                <input type="text" name="targa" placeholder="Targa" required>
-                <input type="text" name="modello" placeholder="Modello" required>
-                <input type="text" name="carburante" placeholder="Carburante" required>
-                <input type="number" name="livello" placeholder="Livello" step="0.1" required>
-                <input type="number" name="numeroPosti" placeholder="Numero posti" required>
-                <select id="cambio" name="cambio" required>
-                    <option value="" disabled selected>Cambio</option>
-                    <option value="manuale">Manuale</option>
-                    <option value="automatico">Automatico</option>
-                </select>
-                <input type="text" name="posizione" placeholder="Indirizzo" required>
-                <input type="number" name="prezzo" step="0.01" placeholder="Prezzo" required>
-                <input type="hidden" name="tipoOperazione" value="elimina">
-                <button type="submit">Invia</button>
-            </form>
-        </section>
-    </div>		
+            <div class="mb-3">
+                <label class="form-label">Modello:</label>
+                <input type="text" class="form-control" name="modello" value="<%= auto.getModello() %>" required>
+            </div>
 
+            <div class="mb-3">
+                <label class="form-label">Targa:</label>
+                <input type="text" class="form-control" name="targa" value="<%= auto.getTarga() %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Carburante:</label>
+                <input type="text" class="form-control" name="carburante" value="<%= auto.getCarburante() %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Livello Carburante (%):</label>
+                <input type="number" class="form-control" name="livello" value="<%= auto.getLivello() %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Numero posti:</label>
+                <input type="number" class="form-control" name="numeroPosti" value="<%= auto.getNumeroPosti() %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Cambio:</label>
+                <input type="text" class="form-control" name="cambio" value="<%= auto.getCambio() %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Posizione:</label>
+                <input type="text" class="form-control" name="posizione" value="<%= auto.getPosizione() %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Prezzo al giorno (€):</label>
+                <input type="number" step="0.01" class="form-control" name="prezzo" value="<%= auto.getPrezzo() %>" required>
+            </div>
+
+            <button type="submit" class="btn btn-success">Salva Modifiche</button>
+            <a href="AutoUtente.jsp" class="btn btn-secondary">Annulla</a>
+        </form>
+    </div>
+</body>
+</html>

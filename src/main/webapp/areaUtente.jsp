@@ -53,6 +53,7 @@
 		<section id="profilo" class="card">
 			<h2>Profilo Utente</h2>
 			<p>
+			
 				<strong>Nome:</strong>
 				<%=utenteLoggato.getNome()%>
 				<%=utenteLoggato.getCognome()%></p>
@@ -71,7 +72,7 @@
 				<li>Tesla Model 3 - Dal 10/02/2025 al 15/02/2025</li>
 				<li>BMW 3 Series - Dal 20/03/2025 al 25/03/2025</li>
 			</ul>
-			<button class="btn">Visualizza Tutte</button>
+			<a href="AutoController?tipoOperazione=autoUtente" class="btn">Le tue auto</a>
 		</section>
 		
 		<!-- Sezione Prenotazioni -->

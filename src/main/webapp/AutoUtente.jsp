@@ -5,15 +5,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Lista Auto per Utente</title>
+    <title>ciao</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-4">
-        <h2 class="text-center">Auto Disponibili per utente</h2>
+        <h2 class="text-center">Auto per utente</h2>
         <div class="row">
             <% //cambiare lista con lista auto dell'utente
-                List<Auto> listaAuto = (List<Auto>) request.getAttribute("listaAuto");
+                List<Auto> listaAuto = (List<Auto>) request.getAttribute("listaAutoUtente");
                 if (listaAuto != null && !listaAuto.isEmpty()) {
                     for (Auto auto : listaAuto) {
             %>
@@ -29,7 +29,10 @@
                         <p class="card-text"><strong>Cambio:</strong> <%= auto.getCambio() %></p>
                         <p class="card-text"><strong>Posizione:</strong> <%= auto.getPosizione() %></p>
                         <p class="card-text"><strong>Prezzo:</strong> €<%= auto.getPrezzo() %> al giorno</p>
-                        <a href="prenotaAuto?id=<%= auto.getId() %>" class="btn btn-primary">Prenota</a>
+                        <a href="AutoController?tipoOperazione=aggiorna&id=<%= auto.getId() %>" class="btn btn-primary">Modifica</a>
+
+
+
                     </div>
                 </div>
             </div>
