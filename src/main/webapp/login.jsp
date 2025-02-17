@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="models.Utente" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -25,7 +25,7 @@
         .login-container h2 {
             text-align: center;
         }
-        .login-container input {
+        .login-container input, .login-container button {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -33,12 +33,8 @@
             border-radius: 5px;
         }
         .login-container button {
-            width: 100%;
-            padding: 10px;
             background-color: #28a745;
             color: white;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
         }
         .login-container button:hover {
@@ -54,18 +50,25 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <!-- Messaggio di errore -->
-        <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-        <% if (errorMessage != null) { %>
-            <p class="error"><%= errorMessage %></p>
+        <% Utente utenteLoggato = (Utente) session.getAttribute("user");
+           if (utenteLoggato != null) { %>
+            <p class="text-center">Benvenuto, <%= utenteLoggato.getNome() %>!</p>
+            <form action="UtenteController" method="post">
+                <input type="hidden" name="tipoOperazione" value="logout">
+                <button type="submit">Logout</button>
+            </form>
+        <% } else { %>
+            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+            <% if (errorMessage != null) { %>
+                <p class="error"><%= errorMessage %></p>
+            <% } %>
+            <form action="UtenteController" method="post">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="hidden" name="tipoOperazione" value="login">
+                <button type="submit">Accedi</button>
+            </form>
         <% } %>
-        <form action="UtenteController" method="post">
-            <input type="text" id="username" name ="username" placeholder="Username" required>
-            <input type="password" id="password" name="password" placeholder="Password" required>
-            <input type="hidden" name="tipoOperazione" value="login">
-            <button type="submit">Accedi</button>
-        </form>
     </div>
-  
 </body>
 </html>

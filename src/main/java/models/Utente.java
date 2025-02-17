@@ -5,62 +5,60 @@ import java.util.Objects;
 
 public class Utente {
 
-	private int id;
-	private String username;
-	private String nome;
+    private int id;
+    private String username;
+    private String nome;
     private String cognome;
-    private Date dataNascita; // Formato: "yyyy-MM-dd"
+    private Date dataNascita;
     private String passwordUtente;
     private String citta;
     private String telefono;
     private String email;
-	
-    
+    private boolean amministratore; // Aggiunto il campo amministratore
 
-	public Utente() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    // Costruttore vuoto
+    public Utente() {}
 
-	public Utente(int id, String username, String nome, String cognome, Date dataNascita, String passwordUtente,
-			String citta, String telefono, String email) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.nome = nome;
-		this.cognome = cognome;
-		this.dataNascita = dataNascita;
-		this.passwordUtente = passwordUtente;
-		this.citta = citta;
-		this.telefono = telefono;
-		this.email = email;
-	}
+    // Costruttore completo
+    public Utente(int id, String username, String nome, String cognome, Date dataNascita, 
+                  String passwordUtente, String citta, String telefono, String email, boolean amministratore) {
+        this.id = id;
+        this.username = username;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.dataNascita = dataNascita;
+        this.passwordUtente = passwordUtente;
+        this.citta = citta;
+        this.telefono = telefono;
+        this.email = email;
+        this.amministratore = amministratore;
+    }
 
-	public int getId() {
-		return id;
-	}
+    // Getter e Setter
+    public int getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public Date getDataNascita() {
-		return dataNascita;
-	}
+    public Date getDataNascita() {
+        return dataNascita;
+    }
 
-	public void setDataNascita(Date dataNascita) {
-		this.dataNascita = dataNascita;
-	}
+    public void setDataNascita(Date dataNascita) {
+        this.dataNascita = dataNascita;
+    }
 
-	// Getter e Setter
     public String getNome() {
         return nome;
     }
@@ -109,30 +107,31 @@ public class Utente {
         this.email = email;
     }
 
-	
+    public boolean isAmministratore() {
+        return amministratore;
+    }
 
-	@Override
-	public String toString() {
-		return "Utente [id=" + id + ", username=" + username + ", nome=" + nome + ", cognome=" + cognome
-				+ ", dataNascita=" + dataNascita + ", passwordUtente=" + passwordUtente + ", citta=" + citta
-				+ ", telefono=" + telefono + ", email=" + email + "]";
-	}
+    public void setAmministratore(boolean amministratore) {
+        this.amministratore = amministratore;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
+    @Override
+    public String toString() {
+        return "Utente [id=" + id + ", username=" + username + ", nome=" + nome + ", cognome=" + cognome
+                + ", dataNascita=" + dataNascita + ", citta=" + citta
+                + ", telefono=" + telefono + ", email=" + email + ", amministratore=" + amministratore + "]";
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Utente other = (Utente) obj;
-		return id == other.id;
-	}
-	
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Utente other = (Utente) obj;
+        return id == other.id && Objects.equals(email, other.email);
+    }
 }

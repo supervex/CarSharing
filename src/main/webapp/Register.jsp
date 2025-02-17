@@ -12,9 +12,9 @@
     <nav class="navbar">
         <div class="logo">🚗 Drive Easy</div>
         <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="area_utente.html">Area Utente</a></li>
-            <li><a href="register.html">Registrati</a></li>
+            <li><a href="HomeController?method=get">Home</a></li>
+            <li><a href="area_utente.jsp">Area Utente</a></li>
+            <li><a href="register.jsp">Registrati</a></li>
         </ul>
     </nav>
 
@@ -23,7 +23,6 @@
     </div>
 
     <div class="form-container">
-        <h2>Registrazione</h2>
         
         <!-- Messaggio di errore -->
         <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
@@ -49,7 +48,10 @@
        value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>">
 <input type="hidden" name="tipoOperazione" value="register">
             
-            <button type="submit">Registrati</button>
+           
+    <button type="submit">Registrati</button>
+
+
         </form>
     </div>
 </body>

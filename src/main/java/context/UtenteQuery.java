@@ -1,110 +1,132 @@
 package context;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import models.Utente;
-
-
 
 public class UtenteQuery {
 
-	
-	public void aggiungiUtente(Utente utente) {
-		String query = "insert into utente(username, nome, cognome, dataNascita, passwordUtente, città, telefono, email) values(?, ?, ?, ?, ?, ?, ?, ?)";
-		try (Connection connection = DataBaseConnection.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    public boolean aggiungiUtente(Utente utente) {
+        String query = "INSERT INTO utente(username, nome, cognome, dataNascita, passwordUtente, citta, telefono, email, amministratore) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-			preparedStatement.setString(1, utente.getUsername());
-			preparedStatement.setString(2, utente.getNome());
-			preparedStatement.setString(3, utente.getCognome());
-			preparedStatement.setDate(4, utente.getDataNascita());
-			preparedStatement.setString(5, utente.getPasswordUtente());
-			preparedStatement.setString(6, utente.getCitta());
-			preparedStatement.setString(7, utente.getTelefono());
-			preparedStatement.setString(8, utente.getEmail());
+            preparedStatement.setString(1, utente.getUsername());
+            preparedStatement.setString(2, utente.getNome());
+            preparedStatement.setString(3, utente.getCognome());
+            preparedStatement.setDate(4, utente.getDataNascita());
+            preparedStatement.setString(5, utente.getPasswordUtente());  // Inserisci la password in chiaro
+            preparedStatement.setString(6, utente.getCitta());
+            preparedStatement.setString(7, utente.getTelefono());
+            preparedStatement.setString(8, utente.getEmail());
+            preparedStatement.setBoolean(9, utente.isAmministratore()); 
 
-			int righeModificate = preparedStatement.executeUpdate();
-			if (righeModificate == 0) {
-				System.out.println("Operazione non riuscita, nessuna riga inserita");
-			}
-		} catch (SQLException e) {
-			System.err.println("Errore SQL: " + e.getMessage());
-		}
-	}
-	
-	public void modificaUtente(Utente utente) {
-		String query = "update utente set username = ?, nome = ?, cognome = ?, dataNascita = ?, passwordUtente = ?, città = ?, telefono = ?, email = ? where ID_utente = ?";
-		try (Connection connection = DataBaseConnection.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Errore SQL (aggiunta utente): " + e.getMessage());
+            return false;
+        }
+    }
 
-			preparedStatement.setString(1, utente.getUsername());
-			preparedStatement.setString(2, utente.getNome());
-			preparedStatement.setString(3, utente.getCognome());
-			preparedStatement.setDate(4, utente.getDataNascita());
-			preparedStatement.setString(5, utente.getPasswordUtente());
-			preparedStatement.setString(6, utente.getCitta());
-			preparedStatement.setString(7, utente.getTelefono());
-			preparedStatement.setString(8, utente.getEmail());
-			preparedStatement.setInt(9, utente.getId());
+    public boolean aggiornaUtente(Utente utente) {
+        String query = "UPDATE utente SET username = ?, nome = ?, cognome = ?, dataNascita = ?, citta = ?, telefono = ?, email = ?, amministratore = ?, passwordUtente = ? WHERE ID_utente = ?";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-			int righeModificate = preparedStatement.executeUpdate();
-			if (righeModificate == 0) {
-				System.out.println("Operazione non riuscita, nessuna riga modificata");
-			}
+            preparedStatement.setString(1, utente.getUsername());
+            preparedStatement.setString(2, utente.getNome());
+            preparedStatement.setString(3, utente.getCognome());
+            preparedStatement.setDate(4, utente.getDataNascita());
+            preparedStatement.setString(5, utente.getCitta());
+            preparedStatement.setString(6, utente.getTelefono());
+            preparedStatement.setString(7, utente.getEmail());
+            preparedStatement.setBoolean(8, utente.isAmministratore());
+            preparedStatement.setString(9, utente.getPasswordUtente());  // Aggiungi la password in chiaro
+            preparedStatement.setInt(10, utente.getId());
 
-		} catch (SQLException e) {
-			System.err.println("Errore SQL: " + e.getMessage());
-		}
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Errore SQL (aggiornamento utente): " + e.getMessage());
+            return false;
+        }
+    }
 
-	}
-	
-	public void eliminaUtente(int id) {
-		String query = "delete from utente where ID_utente = ?";
-		try (Connection connection = DataBaseConnection.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    public boolean eliminaUtente(int id) {
+        String query = "DELETE FROM utente WHERE ID_utente = ?";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-			preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, id);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Errore SQL (eliminazione utente): " + e.getMessage());
+            return false;
+        }
+    }
 
-			int righeModificate = preparedStatement.executeUpdate();
+    public Utente getUtenteByUsername(String username) {
+        String query = "SELECT ID_utente, username, nome, cognome, dataNascita, citta, telefono, email, passwordUtente, amministratore FROM utente WHERE username = ?";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-			if (righeModificate == 0) {
-				System.out.println("Operazione non riuscita, nessuna riga modificata");
-			}
+            preparedStatement.setString(1, username);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return creaUtenteDaResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore SQL (getUtenteByUsername): " + e.getMessage());
+        }
+        return null;
+    }
 
-		} catch (SQLException e) {
+    public Utente getUtenteById(int id) {
+        String query = "SELECT ID_utente, username, nome, cognome, dataNascita, citta, telefono, email, passwordUtente, amministratore FROM utente WHERE ID_utente = ?";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-			System.err.println("Errore SQL: " + e.getMessage());
-		}
-	}
-	public Utente getUtenteByUsername(String username) {
-	    String query = "SELECT * FROM utente WHERE username = ?";
-	    try (Connection connection = DataBaseConnection.getConnection();
-	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return creaUtenteDaResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore SQL (getUtenteById): " + e.getMessage());
+        }
+        return null;
+    }
 
-	        preparedStatement.setString(1, username);
-	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-	            if (resultSet.next()) {
-	                return new Utente(
-	                    resultSet.getInt("ID_utente"),
-	                    resultSet.getString("username"),
-	                    resultSet.getString("nome"),
-	                    resultSet.getString("cognome"),
-	                    resultSet.getDate("dataNascita"),
-	                    resultSet.getString("passwordUtente"),
-	                    resultSet.getString("città"),
-	                    resultSet.getString("telefono"),
-	                    resultSet.getString("email")
-	                );
-	            }
-	        }
-	    } catch (SQLException e) {
-	        System.err.println("Errore SQL: " + e.getMessage());
-	        throw new RuntimeException("Errore nella ricerca dell'utente");
-	    }
-	    return null; // Se non trova l'utente, restituisce null
-	}
+    public List<Utente> getAllUtenti() {
+        String query = "SELECT ID_utente, username, nome, cognome, dataNascita, citta, telefono, email, passwordUtente, amministratore FROM utente";
+        List<Utente> utenti = new ArrayList<>();
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
+            while (resultSet.next()) {
+                utenti.add(creaUtenteDaResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore SQL (getAllUtenti): " + e.getMessage());
+        }
+        return utenti;
+    }
+
+    private Utente creaUtenteDaResultSet(ResultSet resultSet) throws SQLException {
+        return new Utente(
+            resultSet.getInt("ID_utente"),
+            resultSet.getString("username"),
+            resultSet.getString("nome"),
+            resultSet.getString("cognome"),
+            resultSet.getDate("dataNascita"),
+            resultSet.getString("passwordUtente"),  
+            resultSet.getString("citta"),
+            resultSet.getString("telefono"),
+            resultSet.getString("email"),
+            resultSet.getBoolean("amministratore")
+        );
+    }
 }

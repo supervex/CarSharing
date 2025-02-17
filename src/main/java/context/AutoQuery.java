@@ -1,121 +1,177 @@
 package context;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import models.Auto;
-import models.Utente;
 
 public class AutoQuery {
 
-	public void aggiungiAuto(Auto auto) {
-		String query = "insert into auto(targa, modello, carburante, livello, numero_posti, cambio, posizione, prezzo) values(?, ?, ?, ?, ?, ?, ?, ?)";
-		try (Connection connection = DataBaseConnection.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    // Aggiungere un'auto
+    public boolean aggiungiAuto(Auto auto) {
+        String query = "INSERT INTO auto (ID_utente, targa, modello, carburante, livello, numero_posti, cambio, posizione, prezzo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-			preparedStatement.setString(1, auto.getTarga());
-			preparedStatement.setString(2, auto.getModello());
-			preparedStatement.setString(3, auto.getCarburante());
-			preparedStatement.setDouble(4, auto.getLivello());
-			preparedStatement.setInt(5, auto.getNumeroPosti());
-			preparedStatement.setString(6, auto.getCambio());
-			preparedStatement.setString(7, auto.getPosizione());
-			preparedStatement.setDouble(8, auto.getPrezzo());
+            preparedStatement.setInt(1, auto.getIdUtente());
+            preparedStatement.setString(2, auto.getTarga());
+            preparedStatement.setString(3, auto.getModello());
+            preparedStatement.setString(4, auto.getCarburante());
+            preparedStatement.setDouble(5, auto.getLivello());
+            preparedStatement.setInt(6, auto.getNumeroPosti());
+            preparedStatement.setString(7, auto.getCambio());
+            preparedStatement.setString(8, auto.getPosizione());
+            preparedStatement.setDouble(9, auto.getPrezzo());
 
-			int righeModificate = preparedStatement.executeUpdate();
-			if (righeModificate == 0) {
-				System.out.println("Operazione non riuscita, nessuna riga inserita");
-			}
-		} catch (SQLException e) {
-			System.err.println("Errore SQL: " + e.getMessage());
-		}
-	}
+            int righeModificate = preparedStatement.executeUpdate();
+            return righeModificate > 0;
 
-	public void modificaAuto(Auto auto) {
-		String query = "update auto set targa = ?, modello = ?, carburante = ?, livello = ?, numeroPosti = ?, cambio = ?, posizione = ?, prezzo= ? where ID_auto = ?";
-		try (Connection connection = DataBaseConnection.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        } catch (SQLException e) {
+            System.err.println("Errore SQL: " + e.getMessage());
+            return false;
+        }
+    }
 
-			preparedStatement.setString(1, auto.getTarga());
-			preparedStatement.setString(2, auto.getModello());
-			preparedStatement.setString(3, auto.getCarburante());
-			preparedStatement.setDouble(4, auto.getLivello());
-			preparedStatement.setInt(5, auto.getNumeroPosti());
-			preparedStatement.setString(6, auto.getCambio());
-			preparedStatement.setString(7, auto.getPosizione());
-			preparedStatement.setDouble(8, auto.getPrezzo());
-			preparedStatement.setDouble(9, auto.getId());
+    // Modificare un'auto
+    public boolean modificaAuto(Auto auto) {
+        String query = "UPDATE auto SET targa = ?, modello = ?, carburante = ?, livello = ?, numero_posti = ?, cambio = ?, posizione = ?, prezzo = ? WHERE ID_auto = ?";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-			int righeModificate = preparedStatement.executeUpdate();
-			if (righeModificate == 0) {
-				System.out.println("Operazione non riuscita, nessuna riga modificata");
-			}
+            preparedStatement.setString(1, auto.getTarga());
+            preparedStatement.setString(2, auto.getModello());
+            preparedStatement.setString(3, auto.getCarburante());
+            preparedStatement.setDouble(4, auto.getLivello());
+            preparedStatement.setInt(5, auto.getNumeroPosti());
+            preparedStatement.setString(6, auto.getCambio());
+            preparedStatement.setString(7, auto.getPosizione());
+            preparedStatement.setDouble(8, auto.getPrezzo());
+            preparedStatement.setInt(9, auto.getId());
 
-		} catch (SQLException e) {
-			System.err.println("Errore SQL: " + e.getMessage());
-		}
+            int righeModificate = preparedStatement.executeUpdate();
+            return righeModificate > 0;
 
-	}
+        } catch (SQLException e) {
+            System.err.println("Errore SQL: " + e.getMessage());
+            return false;
+        }
+    }
 
-	public void eliminaAuto(int id) {
-		String query = "delete from auto where ID_auto = ?";
-		try (Connection connection = DataBaseConnection.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    // Eliminare un'auto
+    public boolean eliminaAuto(int id) {
+        String query = "DELETE FROM auto WHERE ID_auto = ?";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-			preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, id);
 
-			int righeModificate = preparedStatement.executeUpdate();
+            int righeModificate = preparedStatement.executeUpdate();
+            return righeModificate > 0;
 
-			if (righeModificate == 0) {
-				System.out.println("Operazione non riuscita, nessuna riga eliminata");
-			}
+        } catch (SQLException e) {
+            System.err.println("Errore SQL: " + e.getMessage());
+            return false;
+        }
+    }
 
-		} catch (SQLException e) {
+    // Recuperare tutte le auto
+    public List<Auto> stampaAuto() {
+        List<Auto> autos = new ArrayList<>();
+        String query = "SELECT * FROM auto";
 
-			System.err.println("Errore SQL: " + e.getMessage());
-		}
-	}
+        try (Connection connection = DataBaseConnection.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
 
-	public List<Auto> stampaAuto() {
-		List<Auto> autos = new ArrayList<>();
-		String query = "SELECT * FROM Auto";
+            while (resultSet.next()) {
+                int id = resultSet.getInt("ID_auto");
+                int idUtente = resultSet.getInt("ID_utente");
+                String targa = resultSet.getString("targa");
+                String modello = resultSet.getString("modello");
+                String carburante = resultSet.getString("carburante");
+                double livello = resultSet.getDouble("livello");
+                int numeroPosti = resultSet.getInt("numero_posti");
+                String cambio = resultSet.getString("cambio");
+                String posizione = resultSet.getString("posizione");
+                double prezzo = resultSet.getDouble("prezzo");
 
-		try (Connection connection = DataBaseConnection.getConnection();
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(query)) {
+                Auto auto = new Auto(id, idUtente, targa, modello, carburante, livello, numeroPosti, cambio, posizione, prezzo);
+                autos.add(auto);
+            }
 
-			while (resultSet.next()) {
-				int id = resultSet.getInt("ID_auto");
-				String targa = resultSet.getString("targa");
-				String modello = resultSet.getString("modello");
-				String carburante = resultSet.getString("carburante");
-				double livello = resultSet.getDouble("livello");
-				int numeroPosti = resultSet.getInt("numero_posti");
-				String cambio = resultSet.getString("cambio");
-				String posizione = resultSet.getString("posizione");
-				double prezzo = resultSet.getDouble("prezzo");
-				Auto auto = new Auto(id, targa, modello, carburante, livello, numeroPosti, cambio, posizione, prezzo);
-				autos.add(auto);
-			}
+        } catch (SQLException e) {
+            System.err.println("Errore SQL: " + e.getMessage());
+        }
 
-			if (autos.isEmpty()) {
-				System.out.println("Nessuna auto trovata.");
-			}
+        return autos;
+    }
 
-		} catch (SQLException e) {
-			System.err.println("Errore SQL: " + e.getMessage());
-			throw new RuntimeException("Errore nel recupero delle auto.");
-		}
+    // Recuperare un'auto per ID
+    public Auto trovaAutoPerId(int id) {
+        String query = "SELECT * FROM auto WHERE ID_auto = ?";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-		return autos;
-	}
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int idAuto = resultSet.getInt("ID_auto");
+                    int idUtente = resultSet.getInt("ID_utente");
+                    String targa = resultSet.getString("targa");
+                    String modello = resultSet.getString("modello");
+                    String carburante = resultSet.getString("carburante");
+                    double livello = resultSet.getDouble("livello");
+                    int numeroPosti = resultSet.getInt("numero_posti");
+                    String cambio = resultSet.getString("cambio");
+                    String posizione = resultSet.getString("posizione");
+                    double prezzo = resultSet.getDouble("prezzo");
 
-	public List<Auto> cercaAutoByUsername(String username) {
+                    return new Auto(idAuto, idUtente, targa, modello, carburante, livello, numeroPosti, cambio, posizione, prezzo);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore SQL: " + e.getMessage());
+        }
+
+        return null;  // Auto non trovata
+    }
+
+    // Recuperare tutte le auto di un utente
+    public List<Auto> trovaAutoPerUtente(int idUtente) {
+        List<Auto> autos = new ArrayList<>();
+        String query = "SELECT * FROM auto WHERE ID_utente = ?";
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, idUtente);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("ID_auto");
+                    String targa = resultSet.getString("targa");
+                    String modello = resultSet.getString("modello");
+                    String carburante = resultSet.getString("carburante");
+                    double livello = resultSet.getDouble("livello");
+                    int numeroPosti = resultSet.getInt("numero_posti");
+                    String cambio = resultSet.getString("cambio");
+                    String posizione = resultSet.getString("posizione");
+                    double prezzo = resultSet.getDouble("prezzo");
+
+                    Auto auto = new Auto(id, idUtente, targa, modello, carburante, livello, numeroPosti, cambio, posizione, prezzo);
+                    autos.add(auto);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore SQL: " + e.getMessage());
+        }
+
+        return autos;
+    }
+    
+    public List<Auto> cercaAutoByUsername(String username) {
 		String query = "SELECT a.* FROM auto a JOIN utente u ON a.ID_utente = u.ID_utente WHERE u.username = ?";
 		List<Auto> autos = new ArrayList<>();
 

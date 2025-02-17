@@ -75,27 +75,9 @@
                 </select>
                 <input type="text" name="posizione" placeholder="Indirizzo" required>
                 <input type="number" name="prezzo" step="0.01" placeholder="Prezzo" required>
-                <input type="hidden" name="tipoOperazione" value="inserisci">
+                <input type="hidden" name="tipoOperazione" value="elimina">
                 <button type="submit">Invia</button>
             </form>
         </section>
     </div>		
 
-	<section>
-		<h2>Prenota un'auto</h2>
-		<button class="register-btn">Prenota Ora</button>
-	</section>
-
-	<section>
-		<h2>Storico Noleggi</h2>
-		<p>Visualizza i tuoi noleggi effettuati e ricevuti.</p>
-	</section>
-
-	<section>
-		<h2>Recensioni</h2>
-		<textarea placeholder="Lascia una recensione"></textarea>
-		<button class="register-btn">Invia Recensione</button>
-	</section>
-
-</body>
-</html>

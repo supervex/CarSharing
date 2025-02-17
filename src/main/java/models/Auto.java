@@ -4,21 +4,22 @@ import java.util.Objects;
 
 public class Auto {
 
-    
     private int id;
+    private int idUtente; 
     private String targa;
     private String modello;
     private String carburante;
-    private double livello; 
+    private double livello;
     private int numeroPosti;
     private String cambio; // Manuale o Automatico
     private String posizione; // Posizione corrente dell'auto
     private double prezzo; // Prezzo per noleggio o acquisto
 
-    
-    public Auto(int id, String targa, String modello, String carburante, double livello, 
-    		int numeroPosti, String cambio, String posizione, double prezzo) {
+    // Costruttore con idUtente
+    public Auto(int id, int idUtente, String targa, String modello, String carburante, double livello,
+                int numeroPosti, String cambio, String posizione, double prezzo) {
         this.id = id;
+        this.idUtente = idUtente;  
         this.targa = targa;
         this.modello = modello;
         this.carburante = carburante;
@@ -27,7 +28,20 @@ public class Auto {
         this.cambio = cambio;
         this.posizione = posizione;
         this.prezzo = prezzo;
-        
+    }
+
+    // Costruttore senza idUtente
+    public Auto(int id, String targa, String modello, String carburante, double livello,
+                int numeroPosti, String cambio, String posizione, double prezzo) {
+        this.id = id; 
+        this.targa = targa;
+        this.modello = modello;
+        this.carburante = carburante;
+        this.livello = livello;
+        this.numeroPosti = numeroPosti;
+        this.cambio = cambio;
+        this.posizione = posizione;
+        this.prezzo = prezzo;
     }
 
     // Getter e Setter
@@ -37,6 +51,14 @@ public class Auto {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdUtente() {  
+        return idUtente;
+    }
+
+    public void setIdUtente(int idUtente) {  
+        this.idUtente = idUtente;
     }
 
     public String getTarga() {
@@ -103,32 +125,27 @@ public class Auto {
         this.prezzo = prezzo;
     }
 
-   
+    @Override
+    public String toString() {
+        return "Auto [id=" + id + ", idUtente=" + idUtente + ", targa=" + targa + ", modello=" + modello
+                + ", carburante=" + carburante + ", livello=" + livello + ", numeroPosti=" + numeroPosti
+                + ", cambio=" + cambio + ", posizione=" + posizione + ", prezzo=" + prezzo + "]";
+    }
 
-	@Override
-	public String toString() {
-		return "Auto [id=" + id + ", targa=" + targa + ", modello=" + modello + ", carburante=" + carburante
-				+ ", livello=" + livello + ", numeroPosti=" + numeroPosti + ", cambio=" + cambio + ", posizione="
-				+ posizione + ", prezzo=" + prezzo + ", citta=" + "]";
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, targa);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, targa);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Auto other = (Auto) obj;
-		return id == other.id && Objects.equals(targa, other.targa);
-	}
-
-
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Auto other = (Auto) obj;
+        return id == other.id && Objects.equals(targa, other.targa);
+    }
 }

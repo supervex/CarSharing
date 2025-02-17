@@ -32,4 +32,10 @@ public class CriptaPassword {
         }
         return lettera;
     }
+    public static boolean verifica(String passwordInChiaro, String passwordCifrata) {
+        // Verifica se la password in chiaro, una volta criptata, corrisponde alla password cifrata
+        String passwordCriptataInChiaro = cripta(14, passwordInChiaro);
+        return passwordCifrata.equals(passwordCriptataInChiaro);
+    }
+
 }
