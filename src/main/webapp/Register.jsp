@@ -12,7 +12,7 @@
     <nav class="navbar">
         <div class="logo">🚗 Drive Easy</div>
         <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
+            <li><a href="HomeController?method=get">Home</a></li>
             <li><a href="area_utente.html">Area Utente</a></li>
             <li><a href="register.html">Registrati</a></li>
         </ul>

@@ -10,7 +10,13 @@
 </head>
 <body>
 
-    <% Utente utenteLoggato = (Utente) session.getAttribute("user"); %>
+    <% 
+        Utente utenteLoggato = (Utente) session.getAttribute("user");
+        if (utenteLoggato == null) {
+            response.sendRedirect("HomeController?method=get"); 
+            return;
+        }
+    %>
 
     <!-- Navbar -->
     <nav class="navbar">
@@ -25,17 +31,13 @@
             <li><a href="#pagamenti">Pagamenti</a></li>
             <li><a href="#prenotazioni">Prenotazioni</a></li>
             
-            <% if (utenteLoggato != null) { %>
-                <li class="user-info">Benvenuto, <%= utenteLoggato.getNome() %>!</li>
-                <li>
-                    <form action="UtenteController" method="post">
-                        <input type="hidden" name="tipoOperazione" value="logout">
-                        <button class="logout-btn">Logout</button>
-                    </form>
-                </li>
-            <% } else { 
-                response.sendRedirect("login.jsp"); // Redirect se non loggato
-               } %>
+            <li class="user-info">Benvenuto, <%= utenteLoggato.getNome() %>!</li>
+            <li>
+                <form action="UtenteController" method="post">
+                    <input type="hidden" name="tipoOperazione" value="logout">
+                    <button class="logout-btn">Logout</button>
+                </form>
+            </li>
         </ul>
     </nav>
 

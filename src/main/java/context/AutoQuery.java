@@ -170,4 +170,41 @@ public class AutoQuery {
 
         return autos;
     }
+    
+    public List<Auto> cercaAutoByUsername(String username) {
+		String query = "SELECT a.* FROM auto a JOIN utente u ON a.ID_utente = u.ID_utente WHERE u.username = ?";
+		List<Auto> autos = new ArrayList<>();
+
+		try (Connection connection = DataBaseConnection.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+			preparedStatement.setString(1, username);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				int id = resultSet.getInt("ID_auto");
+				String targa = resultSet.getString("targa");
+				String modello = resultSet.getString("modello");
+				String carburante = resultSet.getString("carburante");
+				double livello = resultSet.getDouble("livello");
+				int numeroPosti = resultSet.getInt("numero_posti");
+				String cambio = resultSet.getString("cambio");
+				String posizione = resultSet.getString("posizione");
+				double prezzo = resultSet.getDouble("prezzo");
+
+				Auto auto = new Auto(id, targa, modello, carburante, livello, numeroPosti, cambio, posizione, prezzo);
+				autos.add(auto);
+			}
+
+			if (autos.isEmpty()) {
+				System.out.println("Nessuna auto trovata per l'utente: " + username);
+			}
+
+		} catch (SQLException e) {
+			System.err.println("Errore SQL: " + e.getMessage());
+			throw new RuntimeException("Errore nel recupero delle auto per l'utente.");
+		}
+
+		return autos;
+	}
 }

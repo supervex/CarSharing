@@ -94,7 +94,7 @@ public class UtenteController extends HttpServlet {
         }
 
         String passwordCriptata = CriptaPassword.cripta(14, password);
-        Utente nuovoUtente = new Utente(0, username, nome, cognome, dataNascitaSQL, passwordCriptata, citta, telefono, email);
+        Utente nuovoUtente = new Utente(0, username, nome, cognome, dataNascitaSQL, passwordCriptata, citta, telefono, email, false);
         utenteQuery.aggiungiUtente(nuovoUtente);
         response.sendRedirect("successo.jsp");
     }
@@ -104,7 +104,7 @@ public class UtenteController extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("HomeController?method=get");
     }
     
     private void gestisciModificaUtente(HttpServletRequest request, HttpServletResponse response)
@@ -156,7 +156,7 @@ public class UtenteController extends HttpServlet {
         }
 
         // Salvataggio nel database
-        boolean success = utenteQuery.modificaUtente(utente);
+        boolean success = utenteQuery.aggiornaUtente(utente);
 
         if (success) {
             session.setAttribute("user", utente); // Aggiorniamo la sessione con i nuovi dati
