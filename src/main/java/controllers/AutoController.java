@@ -122,7 +122,7 @@ public class AutoController extends HttpServlet {
         }
     }
   
-    // Metodo per gestire l'aggiornamento di un'auto (da implementare)
+    // Metodo per gestire l'aggiornamento di un'auto 
     private void gestisciAggiornamentoAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Recupera l'ID dell'auto che si vuole aggiornare
         String idAutoStr = request.getParameter("id");
@@ -194,15 +194,14 @@ public class AutoController extends HttpServlet {
 
     // Metodo per gestire l'eliminazione di un'auto (da implementare)
     private void gestisciEliminazioneAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String idAutoStr = request.getParameter("idAuto");
+        String idAutoStr = request.getParameter("id");
 
-        // Verifica che l'ID auto sia presente e valido
         if (idAutoStr != null && !idAutoStr.isEmpty()) {
             try {
                 int idAuto = Integer.parseInt(idAutoStr);
                 autoQuery.eliminaAuto(idAuto);  // Esegui l'eliminazione dell'auto
 
-                response.sendRedirect("AutoController");
+                response.sendRedirect("AutoController?tipoOperazione=autoUtente");  
             } catch (NumberFormatException e) {
                 request.setAttribute("errorMessage", "ID auto non valido!");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("errore.jsp");

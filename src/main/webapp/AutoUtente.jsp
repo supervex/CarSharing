@@ -29,9 +29,15 @@
                         <p class="card-text"><strong>Cambio:</strong> <%= auto.getCambio() %></p>
                         <p class="card-text"><strong>Posizione:</strong> <%= auto.getPosizione() %></p>
                         <p class="card-text"><strong>Prezzo:</strong> €<%= auto.getPrezzo() %> al giorno</p>
+                        
+                        <!-- Bottone Modifica -->
                         <a href="AutoController?tipoOperazione=aggiorna&id=<%= auto.getId() %>" class="btn btn-primary">Modifica</a>
 
-
+                      <form action="AutoController" method="post" onsubmit="return confirm('Sei sicuro di voler eliminare questa auto?');">
+    <input type="hidden" name="tipoOperazione" value="elimina">
+    <input type="hidden" name="id" value="<%= auto.getId() %>">
+    <button type="submit" class="btn btn-danger">Elimina</button>
+</form>
 
                     </div>
                 </div>
