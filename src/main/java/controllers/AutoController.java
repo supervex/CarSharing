@@ -11,6 +11,7 @@ import context.AutoQuery;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/AutoController")
 public class AutoController extends HttpServlet {
@@ -101,15 +102,94 @@ public class AutoController extends HttpServlet {
             dispatcher.forward(request, response);
         }
     }
+    
+    
 
     // Metodo per gestire l'aggiornamento di un'auto (da implementare)
+//    private void gestisciAggiornamentoAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        // Logica di aggiornamento
+//        // Eseguiamo l'aggiornamento dell'auto in base ai dati ricevuti
+//        request.setAttribute("message", "Funzionalità di aggiornamento non implementata ancora.");
+//        RequestDispatcher dispatcher = request.getRequestDispatcher("aggiornaAuto.jsp");
+//        dispatcher.forward(request, response);
+//    }
+
     private void gestisciAggiornamentoAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Logica di aggiornamento
-        // Eseguiamo l'aggiornamento dell'auto in base ai dati ricevuti
-        request.setAttribute("message", "Funzionalità di aggiornamento non implementata ancora.");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("aggiornaAuto.jsp");
-        dispatcher.forward(request, response);
+        // Recupero lo username dalla sessione
+        String username = (String) request.getSession().getAttribute("username");
+
+        // Recupero la lista delle auto associate all'username
+        List<Auto> autos = autoQuery.cercaAutoByUsername(username);
+
+        if (autos == null || autos.isEmpty()) {
+            request.setAttribute("errorMessage", "Nessuna auto trovata per l'username fornito!");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("aggiornaAuto.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        // Recupero l'ID dell'auto dal form per identificare quale auto aggiornare
+        String idAutoStr = request.getParameter("idAuto");
+
+        if (idAutoStr == null || idAutoStr.isEmpty()) {
+            request.setAttribute("errorMessage", "ID auto mancante!");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("aggiornaAuto.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        int idAuto = Integer.parseInt(idAutoStr);
+        Auto autoDaAggiornare = null;
+
+        for (Auto auto : autos) {
+            if (auto.getId() == idAuto) {
+                autoDaAggiornare = auto;
+                break;
+            }
+        }
+
+        if (autoDaAggiornare == null) {
+            request.setAttribute("errorMessage", "Auto non trovata per l'ID fornito!");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("aggiornaAuto.jsp");
+            dispatcher.forward(request, response);
+            return;
+        }
+
+        // Recupero i nuovi dati dell'auto dal form
+        String modello = request.getParameter("modello");
+        String carburante = request.getParameter("carburante");
+        String livelloStr = request.getParameter("livello");
+        String numeroPostiStr = request.getParameter("numeroPosti");
+        String prezzoStr = request.getParameter("prezzo");
+
+        try {
+            double livello = Double.parseDouble(livelloStr);
+            int numeroPosti = Integer.parseInt(numeroPostiStr);
+            double prezzo = Double.parseDouble(prezzoStr);
+
+            // Aggiornamento dei dati dell'auto
+            autoDaAggiornare.setModello(modello);
+            autoDaAggiornare.setCarburante(carburante);
+            autoDaAggiornare.setLivello(livello);
+            autoDaAggiornare.setNumeroPosti(numeroPosti);
+            autoDaAggiornare.setPrezzo(prezzo);
+
+            // Eseguiamo l'aggiornamento nel database
+            autoQuery.modificaAuto(autoDaAggiornare);
+
+            // Successo, redirect alla lista delle auto
+            response.sendRedirect("AutoController");
+
+        } catch (NumberFormatException e) {
+            // Gestione errori di parsing numerico
+            request.setAttribute("errorMessage", "Valori numerici invalidi!");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("aggiornaAuto.jsp");
+            dispatcher.forward(request, response);
+        }
     }
+
+
+    
 
     // Metodo per gestire l'eliminazione di un'auto (da implementare)
     private void gestisciEliminazioneAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

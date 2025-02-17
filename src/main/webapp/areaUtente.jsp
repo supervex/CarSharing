@@ -65,7 +65,7 @@
 			<a href="modificaUtente.jsp" class="btn">Modifica Profilo</a>
 		</section>
 		
-		<section id="Auto" class="card">
+		<section id="Auto" class="card"> <!-- aggiungere pulsante che porta a tutte le auto -->
 			<h2>Le Tue Auto</h2>
 			<ul>
 				<li>Tesla Model 3 - Dal 10/02/2025 al 15/02/2025</li>
