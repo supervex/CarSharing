@@ -3,6 +3,7 @@ package controllers;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 import context.UtenteQuery;
 import jakarta.servlet.RequestDispatcher;
@@ -18,15 +19,11 @@ import utils.CriptaPassword;
 @WebServlet("/UtenteController")
 public class UtenteController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static UtenteQuery utenteQuery = new UtenteQuery();
-
-    public UtenteController() {
-        super();
-    }
+    private static final UtenteQuery utenteQuery = new UtenteQuery();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String tipoOperazione = request.getParameter("tipoOperazione");
+        String tipoOperazione = Optional.ofNullable(request.getParameter("tipoOperazione")).orElse("");
 
         switch (tipoOperazione) {
             case "login":
@@ -40,6 +37,9 @@ public class UtenteController extends HttpServlet {
                 break;
             case "modificaUtente":
                 gestisciModificaUtente(request, response);
+                break;
+            case "eliminaUtente":
+                gestisciEliminaUtente(request, response);
                 break;
             default:
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Operazione non valida");
@@ -56,10 +56,10 @@ public class UtenteController extends HttpServlet {
             return;
         }
 
-        String passwordCriptata = CriptaPassword.cripta(14, password);
         Utente utente = utenteQuery.getUtenteByUsername(username);
+        
 
-        if (utente == null || !utente.getPasswordUtente().equals(passwordCriptata)) {
+        if (utente == null || !utente.getPasswordUtente().equals(CriptaPassword.cripta(14,password))) {
             inviaErrore(request, response, "Username o password errati.", "/login.jsp");
         } else {
             HttpSession session = request.getSession();
@@ -86,27 +86,26 @@ public class UtenteController extends HttpServlet {
 
         java.sql.Date dataNascitaSQL;
         try {
-            LocalDate dataNascita = LocalDate.parse(dataNascitaStr);
-            dataNascitaSQL = java.sql.Date.valueOf(dataNascita);
+            dataNascitaSQL = java.sql.Date.valueOf(LocalDate.parse(dataNascitaStr));
         } catch (DateTimeParseException e) {
             inviaErrore(request, response, "Formato della data non valido. Usa 'yyyy-MM-dd'.", "/Register.jsp");
             return;
         }
 
-        String passwordCriptata = CriptaPassword.cripta(14, password);
+        String passwordCriptata = CriptaPassword.cripta(14,password);
         Utente nuovoUtente = new Utente(0, username, nome, cognome, dataNascitaSQL, passwordCriptata, citta, telefono, email, false);
         utenteQuery.aggiungiUtente(nuovoUtente);
-        response.sendRedirect("successo.jsp");
+        response.sendRedirect("HomeController?method=get");
     }
 
     private void gestisciLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate();
+            session.removeAttribute("user");
         }
-        response.sendRedirect("HomeController?method=get");
+        response.sendRedirect("home.jsp");
     }
-    
+
     private void gestisciModificaUtente(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -117,53 +116,38 @@ public class UtenteController extends HttpServlet {
             return;
         }
 
-        String nome = request.getParameter("nome");
-        String cognome = request.getParameter("cognome");
-        String dataNascitaStr = request.getParameter("dataNascita");
-        String email = request.getParameter("email");
-        String telefono = request.getParameter("telefono");
-        String citta = request.getParameter("citta");
-        String nuovaPassword = request.getParameter("passwordUtente");
-
+        utente.setNome(request.getParameter("nome"));
+        utente.setCognome(request.getParameter("cognome"));
+        utente.setEmail(request.getParameter("email"));
+        utente.setTelefono(request.getParameter("telefono"));
+        utente.setCitta(request.getParameter("citta"));
         
-        if (nome.isEmpty() || cognome.isEmpty() || email.isEmpty() || telefono.isEmpty() || citta.isEmpty()) {
-            inviaErrore(request, response, "Tutti i campi sono obbligatori, eccetto la password.", "/modificaUtente.jsp");
-            return;
-        }
-
-        // Gestione della data di nascita
-        java.sql.Date dataNascitaSQL;
+        String dataNascitaStr = request.getParameter("dataNascita");
         try {
-            LocalDate dataNascita = LocalDate.parse(dataNascitaStr);
-            dataNascitaSQL = java.sql.Date.valueOf(dataNascita);
+            utente.setDataNascita(java.sql.Date.valueOf(LocalDate.parse(dataNascitaStr)));
         } catch (DateTimeParseException e) {
-            inviaErrore(request, response, "Formato della data non valido. Usa 'yyyy-MM-dd'.", "/modificaUtente.jsp");
+            inviaErrore(request, response, "Formato della data non valido.", "/modificaUtente.jsp");
             return;
         }
-
-        // Aggiornamento utente
-        utente.setNome(nome);
-        utente.setCognome(cognome);
-        utente.setDataNascita(dataNascitaSQL);
-        utente.setEmail(email);
-        utente.setTelefono(telefono);
-        utente.setCitta(citta);
-
-        // Se l'utente ha inserito una nuova password, la criptiamo
+        
+        String nuovaPassword = request.getParameter("passwordUtente");
         if (nuovaPassword != null && !nuovaPassword.isEmpty()) {
-            String passwordCriptata = CriptaPassword.cripta(14, nuovaPassword);
-            utente.setPasswordUtente(passwordCriptata);
+            utente.setPasswordUtente(CriptaPassword.cripta(14,nuovaPassword));
         }
-
-        // Salvataggio nel database
+        
         boolean success = utenteQuery.aggiornaUtente(utente);
-
         if (success) {
-            session.setAttribute("user", utente); // Aggiorniamo la sessione con i nuovi dati
+            session.setAttribute("user", utente);
             response.sendRedirect("areaUtente.jsp?success=1");
         } else {
-            inviaErrore(request, response, "Errore durante l'aggiornamento dei dati.", "/modificaUtente.jsp");
+            inviaErrore(request, response, "Errore durante l'aggiornamento.", "/modificaUtente.jsp");
         }
+    }
+
+    private void gestisciEliminaUtente(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int idUtente = Integer.parseInt(request.getParameter("idUtente"));
+        utenteQuery.eliminaUtente(idUtente);
+        response.sendRedirect("gestione.jsp");
     }
 
     private void inviaErrore(HttpServletRequest request, HttpServletResponse response, String messaggio, String pagina)
