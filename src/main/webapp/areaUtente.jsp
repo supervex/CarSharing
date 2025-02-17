@@ -18,7 +18,7 @@
             <i class="fas fa-car"></i> Drive Easy
         </div>
         <ul class="nav-links">
-            <li><a href="home.jsp">Home</a></li>
+            <li><a href="homeController?method=get">Home</a></li>
             <li><a href="#assistenza">Assistenza</a></li>
             <li><a href="inserisciVeicolo.jsp">Aggiungi Auto</a></li>
             <li><a href="#impostazioni">Impostazioni</a></li>
