@@ -89,6 +89,69 @@ public class NoleggioQuery {
 
 	    return autoDisponibili;
 	}
-
 	
+	public List<Noleggio> trovaNoleggiPerUtente(int idUtente) {
+	    List<Noleggio> listaNoleggi = new ArrayList<>();
+	    String query = "SELECT * FROM noleggio WHERE ID_utente = ?";
+
+	    try (Connection connection = DataBaseConnection.getConnection();
+	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	        
+	        preparedStatement.setInt(1, idUtente);
+	        
+	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+	            while (resultSet.next()) {
+	                // Creazione dell'oggetto Noleggio con i dati del database
+	                Noleggio noleggio = new Noleggio(
+	                    resultSet.getInt("ID_noleggio"),
+	                    resultSet.getInt("ID_utente"),
+	                    resultSet.getInt("ID_auto"),
+	                    resultSet.getTimestamp("data_inizio").toLocalDateTime(),
+	                    resultSet.getTimestamp("data_fine").toLocalDateTime()
+	                );
+	                listaNoleggi.add(noleggio);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Errore SQL durante il recupero dei noleggi: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+
+	    return listaNoleggi;
+	}
+
+	public boolean eliminaNoleggio(int idNoleggio) {
+	    String sql = "DELETE FROM noleggio WHERE ID_noleggio = ?";
+	    try (Connection connection = DataBaseConnection.getConnection();
+	         PreparedStatement stmt = connection.prepareStatement(sql)) {
+	        stmt.setInt(1, idNoleggio);
+	        int rowsAffected = stmt.executeUpdate();
+	        return rowsAffected > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	public Noleggio trovaNoleggioPerId(int idNoleggio) {
+	    String sql = "SELECT * FROM noleggio WHERE ID_noleggio = ?";
+	    try (Connection connection = DataBaseConnection.getConnection();
+	         PreparedStatement stmt = connection.prepareStatement(sql)) {
+	        stmt.setInt(1, idNoleggio);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                
+	                int id = rs.getInt("ID_noleggio");
+	                int idUtente = rs.getInt("ID_utente");
+	                int idAuto = rs.getInt("ID_auto");
+	                LocalDateTime dataInizio = rs.getTimestamp("data_inizio").toLocalDateTime();
+	                LocalDateTime dataFine = rs.getTimestamp("data_fine").toLocalDateTime();
+	                return new Noleggio(id, idUtente, idAuto, dataInizio, dataFine);
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null; 
+	}
+
 }

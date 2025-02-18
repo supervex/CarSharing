@@ -82,7 +82,7 @@
 				<li>Tesla Model 3 - Dal 10/02/2025 al 15/02/2025</li>
 				<li>BMW 3 Series - Dal 20/03/2025 al 25/03/2025</li>
 			</ul>
-			<button class="btn">Visualizza Tutte</button>
+			<a href="NoleggioController?tipoOperazione=prenotazioniUtente" class="btn">Le tue prenotazioni</a>
 		</section>
 
 		<!-- Sezione Pagamenti -->

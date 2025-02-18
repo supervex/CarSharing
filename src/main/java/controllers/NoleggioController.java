@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import models.Utente;
 import models.Auto;
 import models.Noleggio;
+import context.AutoQuery;
+import context.NoleggioQuery;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -16,141 +18,223 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import context.AutoQuery;
-import context.NoleggioQuery;
-
-/**
- * Servlet implementation class NoleggioController
- */
 @WebServlet("/NoleggioController")
 public class NoleggioController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private static NoleggioQuery noleggioQuery = new NoleggioQuery();
-	private static AutoQuery autoQuery = new AutoQuery();
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public NoleggioController() {
-        super();
-        // TODO Auto-generated constructor stub
+    private static final long serialVersionUID = 1L;
+    private static final NoleggioQuery noleggioQuery = new NoleggioQuery();
+    private static final AutoQuery autoQuery = new AutoQuery();
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String tipoOperazione = request.getParameter("tipoOperazione");
+
+        if (tipoOperazione == null) {
+            mostraErrore(request, response, "Operazione non valida!");
+            return;
+        }
+
+        switch (tipoOperazione) {
+            case "mostra":
+                mostraAutoDisponibili(request, response);
+                break;
+            case "inserisci":
+                preparaInserimentoPrenotazione(request, response);
+                break;
+            case "prenotazioniUtente":
+                mostraPrenotazioniUtente(request, response);
+                break;
+            case "dettagli":
+                mostraAutoDisponibili(request, response);
+                break;
+            default:
+                mostraErrore(request, response, "Operazione non valida!");
+                break;
+        }
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		String tipoOperazione = request.getParameter("tipoOperazione");
-		
-		switch (tipoOperazione) {
-         case "mostra":
-             mostraAutoDisponibili(request, response);
-             break;
-         case "inserisci":
-        	 int idAuto = Integer.parseInt(request.getParameter("idAuto"));
-        	 Auto auto = autoQuery.trovaAutoPerId(idAuto);
-     		 String dataRitiro = request.getParameter("dataRitiro");
-    		 String oraRitiro = request.getParameter("oraRitiro");
-    		 String dataRiconsegna = request.getParameter("dataRiconsegna");
-    		 String oraRiconsegna = request.getParameter("oraRiconsegna");
-    	
-    		 request.setAttribute("auto", auto);
-    			request.setAttribute("dataRitiro", dataRitiro);
-    			request.setAttribute("oraRitiro", oraRitiro);
-    			request.setAttribute("dataRiconsegna", dataRiconsegna);
-    			request.setAttribute("oraRiconsegna", oraRiconsegna);
-    			
-    			 RequestDispatcher dispatcher1 = request.getRequestDispatcher("inserimentoPrenotazione.jsp");
-                 dispatcher1.forward(request, response);
-        	 
-           //  gestisciEliminazioneAuto(request, response);
-             break;
-//         case "autoUtente":
-//             mostraAutoUtente(request, response);
-//             break;
-         default:
-             // Gestione di operazioni non riconosciute
-             request.setAttribute("errorMessage", "Operazione non valida!");
-             RequestDispatcher dispatcher = request.getRequestDispatcher("errore.jsp");
-             dispatcher.forward(request, response);
-             break;
-     }
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String tipoOperazione = request.getParameter("tipoOperazione");
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-         String tipoOperazione = request.getParameter("tipoOperazione");
-		
-		switch (tipoOperazione) {
-		 case "confermaPrenotazione":
-             gestisciInserimentoPrenotazione(request, response);
-             break;
-		 default:
-             // Gestione di operazioni non riconosciute
-             request.setAttribute("errorMessage", "Operazione non valida!");
-             RequestDispatcher dispatcher = request.getRequestDispatcher("errore.jsp");
-             dispatcher.forward(request, response);
-             break;
-		}
-	}
-	protected void gestisciInserimentoPrenotazione(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		Utente utenteLoggato = (Utente) request.getSession().getAttribute("user");
-	    //String username =utenteLoggato.getUsername();
-		int idUtente = utenteLoggato.getId();
-		
-		int idAuto = Integer.parseInt(request.getParameter("idAuto"));
-		String dataRitiro = request.getParameter("dataRitiro");
-		String oraRitiro = request.getParameter("oraRitiro");
-		String dataRiconsegna = request.getParameter("dataRiconsegna");
-		String oraRiconsegna = request.getParameter("oraRiconsegna");
-		
+        if (tipoOperazione == null) {
+            mostraErrore(request, response, "Operazione non valida!");
+            return;
+        }
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        switch (tipoOperazione) {
+            case "confermaPrenotazione":
+                gestisciInserimentoPrenotazione(request, response);
+                break;
+            case "elimina":
+                eliminaPrenotazione(request, response);
+                break;
+            default:
+                mostraErrore(request, response, "Operazione non valida!");
+                break;
+        }
+    }
+    private void eliminaPrenotazione(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idNoleggioStr = request.getParameter("idNoleggio");
 
-		LocalDateTime ritiro = LocalDateTime.parse(dataRitiro + " " + oraRitiro, formatter);
-		LocalDateTime riconsegna = LocalDateTime.parse(dataRiconsegna + " " + oraRiconsegna, formatter);
-		
-		Noleggio noleggio = new Noleggio(0,idUtente,idAuto,ritiro,riconsegna);
-		
-		noleggioQuery.inserisciNoleggio(noleggio);
-				
-		
-	}
-	protected void mostraAutoDisponibili(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String luogo = request.getParameter("luogo");
-		
-		String dataRitiro = request.getParameter("dataRitiro");
-		String oraRitiro = request.getParameter("oraRitiro");
-		String dataRiconsegna = request.getParameter("dataRiconsegna");
-		String oraRiconsegna = request.getParameter("oraRiconsegna");
-	
-		
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        if (idNoleggioStr == null || idNoleggioStr.isEmpty()) {
+            mostraErrore(request, response, "ID noleggio non valido!");
+            return;
+        }
 
-		LocalDateTime ritiro = LocalDateTime.parse(dataRitiro + " " + oraRitiro, formatter);
-		LocalDateTime riconsegna = LocalDateTime.parse(dataRiconsegna + " " + oraRiconsegna, formatter);
-		
-		List<Auto> autos = noleggioQuery.trovaAutoDisponibiliPerNoleggio(luogo, ritiro, riconsegna);
-		
-		request.getSession().setAttribute("listaAuto", autos);
-		request.setAttribute("luogo", luogo);
-		request.setAttribute("dataRitiro", dataRitiro);
-		request.setAttribute("oraRitiro", oraRitiro);
-		request.setAttribute("dataRiconsegna", dataRiconsegna);
-		request.setAttribute("oraRiconsegna", oraRiconsegna);
-		
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
+        int idNoleggio = -1;
+        try {
+            idNoleggio = Integer.parseInt(idNoleggioStr);
+        } catch (NumberFormatException e) {
+            mostraErrore(request, response, "ID noleggio non valido!");
+            return;
+        }
+
+        // Recupero il noleggio da eliminare
+        Noleggio noleggio = noleggioQuery.trovaNoleggioPerId(idNoleggio);
+        if (noleggio == null) {
+            mostraErrore(request, response, "Noleggio non trovato!");
+            return;
+        }
+
+        // Elimina il noleggio
+        boolean eliminato = noleggioQuery.eliminaNoleggio(idNoleggio);
+
+        if (eliminato) {
+            // Successo nell'eliminazione
+            request.setAttribute("successMessage", "Prenotazione eliminata con successo.");
+            mostraPrenotazioniUtente(request, response);
+        } else {
+            // Errore nell'eliminazione
+            mostraErrore(request, response, "Errore durante l'eliminazione della prenotazione.");
+        }
+    }
+
+    private void mostraPrenotazioniUtente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Utente utenteLoggato = (Utente) request.getSession().getAttribute("user");
+        if (utenteLoggato == null) {
+            mostraErrore(request, response, "Devi effettuare il login per visualizzare le prenotazioni.");
+            return;
+        }
+
+        int idUtente = utenteLoggato.getId();
+        List<Noleggio> noleggi = noleggioQuery.trovaNoleggiPerUtente(idUtente);
+
+        List<Auto> autos = new ArrayList<>();
+        for (Noleggio noleggio : noleggi) {
+            Auto auto = autoQuery.trovaAutoPerId(noleggio.getIdAuto());
+            if (auto != null) {
+                autos.add(auto);
+            }
+        }
+
+        request.setAttribute("noleggi", noleggi);
+        request.setAttribute("autos", autos);
+        forward(request, response, "prenotazioniUtente.jsp");
+    }
+
+    private void preparaInserimentoPrenotazione(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idAutoStr = request.getParameter("idAuto");
+        if (idAutoStr == null || idAutoStr.isEmpty()) {
+            mostraErrore(request, response, "ID auto mancante!");
+            return;
+        }
+
+        int idAuto = Integer.parseInt(idAutoStr);
+        Auto auto = autoQuery.trovaAutoPerId(idAuto);
+        if (auto == null) {
+            mostraErrore(request, response, "Auto non trovata!");
+            return;
+        }
+
+        request.setAttribute("auto", auto);
+        request.setAttribute("dataRitiro", request.getParameter("dataRitiro"));
+        request.setAttribute("oraRitiro", request.getParameter("oraRitiro"));
+        request.setAttribute("dataRiconsegna", request.getParameter("dataRiconsegna"));
+        request.setAttribute("oraRiconsegna", request.getParameter("oraRiconsegna"));
+
+        forward(request, response, "inserimentoPrenotazione.jsp");
+    }
+
+    private void gestisciInserimentoPrenotazione(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Utente utenteLoggato = (Utente) request.getSession().getAttribute("user");
+        if (utenteLoggato == null) {
+            mostraErrore(request, response, "Devi essere loggato per prenotare un'auto.");
+            return;
+        }
+
+        int idUtente = utenteLoggato.getId();
+        int idAuto = parseInteger(request.getParameter("idAuto"), request, response);
+        if (idAuto == -1) return;
+
+        LocalDateTime ritiro = parseDateTime(request.getParameter("dataRitiro"), request.getParameter("oraRitiro"), request, response);
+        if (ritiro == null) return;
+
+        LocalDateTime riconsegna = parseDateTime(request.getParameter("dataRiconsegna"), request.getParameter("oraRiconsegna"), request, response);
+        if (riconsegna == null) return;
+
+        if (riconsegna.isBefore(ritiro)) {
+            mostraErrore(request, response, "La data di riconsegna non può essere precedente alla data di ritiro.");
+            return;
+        }
+
+        Noleggio noleggio = new Noleggio(0, idUtente, idAuto, ritiro, riconsegna);
+        noleggioQuery.inserisciNoleggio(noleggio);
+
+        forward(request, response, "home.jsp");
+    }
+
+    private void mostraAutoDisponibili(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String luogo = request.getParameter("luogo");
+
+        LocalDateTime ritiro = parseDateTime(request.getParameter("dataRitiro"), request.getParameter("oraRitiro"), request, response);
+        if (ritiro == null) return;
+
+        LocalDateTime riconsegna = parseDateTime(request.getParameter("dataRiconsegna"), request.getParameter("oraRiconsegna"), request, response);
+        if (riconsegna == null) return;
+
+        if (riconsegna.isBefore(ritiro)) {
+            mostraErrore(request, response, "La data di riconsegna non può essere precedente alla data di ritiro.");
+            return;
+        }
+
+        List<Auto> autos = noleggioQuery.trovaAutoDisponibiliPerNoleggio(luogo, ritiro, riconsegna);
+
+        request.getSession().setAttribute("listaAuto", autos);
+        request.setAttribute("luogo", luogo);
+        request.setAttribute("dataRitiro", request.getParameter("dataRitiro"));
+        request.setAttribute("oraRitiro", request.getParameter("oraRitiro"));
+        request.setAttribute("dataRiconsegna", request.getParameter("dataRiconsegna"));
+        request.setAttribute("oraRiconsegna", request.getParameter("oraRiconsegna"));
+
+        forward(request, response, "home.jsp");
+    }
+
+    private void mostraErrore(HttpServletRequest request, HttpServletResponse response, String messaggio) throws ServletException, IOException {
+        request.setAttribute("errorMessage", messaggio);
+        forward(request, response, "errore.jsp");
+    }
+
+    private void forward(HttpServletRequest request, HttpServletResponse response, String pagina) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher(pagina);
         dispatcher.forward(request, response);
-		
-		
-	//LocalDateTime orario1 =LocalDateTime.of(Integer.parseInt(dataRitiro.substring(0,4)),Integer.parseInt( dataRitiro.substring(5,7)),Integer.parseInt (dataRitiro.substring(8,9)),Integer.parseInt (oraRitiro.substring(0,3)), Integer.parseInt(oraRitiro.substring(4,6)));
-	
-	}
+    }
+
+    private LocalDateTime parseDateTime(String data, String ora, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (data == null || ora == null) {
+            mostraErrore(request, response, "Data o ora mancanti!");
+            return null;
+        }
+        return LocalDateTime.parse(data + " " + ora, FORMATTER);
+    }
+    private int parseInteger(String value, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (value == null || value.isEmpty()) {
+            mostraErrore(request, response, "ID auto mancante!");
+            return -1;
+        }
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            mostraErrore(request, response, "ID auto non valido!");
+            return -1;
+        }
+    }
 }

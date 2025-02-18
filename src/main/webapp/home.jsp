@@ -3,6 +3,7 @@
 <%@ page import="models.Utente"%>
 <%@ page import="java.util.List"%>
 <%@ page import="models.Auto"%>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
