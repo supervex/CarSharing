@@ -42,6 +42,9 @@ public class AutoController extends HttpServlet {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("modificaAuto.jsp");
                 dispatcher.forward(request, response);
                 break;
+            case "dettagli":
+                mostraDettagli(request, response);
+                break;
             default:
                 mostraTutteLeAuto(request, response); // Comportamento predefinito
                 break;
@@ -229,5 +232,15 @@ public class AutoController extends HttpServlet {
          
          RequestDispatcher dispatcher = request.getRequestDispatcher("mostraAuto.jsp");
          dispatcher.forward(request, response);
+    }
+    
+    private void mostraDettagli(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	String idAutoStr = request.getParameter("id");
+    	int idAuto = Integer.parseInt(idAutoStr);               
+        Auto autoDettagli = autoQuery.trovaAutoPerId(idAuto);
+        request.setAttribute("auto", autoDettagli);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("dettagliAuto.jsp");
+        dispatcher.forward(request, response);
+        
     }
 }

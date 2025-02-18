@@ -71,6 +71,29 @@
 		%>
 	</div>
 
+<form class="search-bar">
+    <div class="search-item">
+        <input type="text" placeholder="🔍 Luogo di ritiro" class="input-field">
+    </div>
+    <div class="date-time">
+        <label for="data-ritiro">📅 Data di ritiro</label>
+        <input type="date" id="data-ritiro" value="2025-02-22" class="input-field">
+    </div>
+    <div class="date-time">
+        <label for="ora-ritiro">🕒 Ora</label>
+        <input type="time" id="ora-ritiro" value="10:00" class="input-field">
+    </div>
+    <div class="date-time">
+        <label for="data-riconsegna">📅 Data di riconsegna</label>
+        <input type="date" id="data-riconsegna" value="2025-02-25" class="input-field">
+    </div>
+    <div class="date-time">
+        <label for="ora-riconsegna">🕒 Ora</label>
+        <input type="time" id="ora-riconsegna" value="10:00" class="input-field">
+    </div>
+    <button class="search-btn">Cerca</button>
+</form>
+
 
 	<!-- Available Cars -->
 	<section class="cars">
@@ -111,6 +134,8 @@
 								<strong>Prezzo:</strong> €<%=auto.getPrezzo()%>
 								al giorno
 							</p>
+							<a href="AutoController?tipoOperazione=dettagli&id=<%=auto.getId()%>"
+								class="btn btn-primary">dettagli</a>
 							<a href="prenotaAuto?id=<%=auto.getId()%>"
 								class="btn btn-primary">Prenota</a>
 						</div>
