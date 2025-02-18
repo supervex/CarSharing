@@ -71,29 +71,42 @@
 		%>
 	</div>
 
+
 <form class="search-bar" method="get" action="NoleggioController">
     <div class="search-item">
-        <input type="text" name="luogo" placeholder="🔍 Luogo di ritiro" class="input-field">
+        <input type="text" name="luogo" placeholder="🔍 Luogo di ritiro" class="input-field" 
+               value="<%= request.getAttribute("luogo") != null ? request.getAttribute("luogo") : "" %>">
     </div>
+    
     <div class="date-time">
         <label for="data-ritiro">📅 Data di ritiro</label>
-        <input type="date" name="dataRitiro" id="data-ritiro" value="2025-02-22" class="input-field">
+        <input type="date" name="dataRitiro" id="data-ritiro" class="input-field" 
+               value="<%= request.getAttribute("dataRitiro") != null ? request.getAttribute("dataRitiro") : "" %>">
     </div>
+    
     <div class="date-time">
         <label for="ora-ritiro">🕒 Ora</label>
-        <input type="time" id="ora-ritiro" name="oraRitiro" value="10:00" class="input-field">
+        <input type="time" id="ora-ritiro" name="oraRitiro" class="input-field" 
+               value="<%= request.getAttribute("oraRitiro") != null ? request.getAttribute("oraRitiro") : "" %>">
     </div>
+    
     <div class="date-time">
         <label for="data-riconsegna">📅 Data di riconsegna</label>
-        <input type="date" id="data-riconsegna" name="dataRiconsegna" value="2025-02-25" class="input-field">
+        <input type="date" id="data-riconsegna" name="dataRiconsegna" class="input-field" 
+               value="<%= request.getAttribute("dataRiconsegna") != null ? request.getAttribute("dataRiconsegna") : "" %>">
     </div>
+    
     <div class="date-time">
         <label for="ora-riconsegna">🕒 Ora</label>
-        <input type="time" id="ora-riconsegna" name="oraRiconsegna" value="10:00" class="input-field">
+        <input type="time" id="ora-riconsegna" name="oraRiconsegna" class="input-field" 
+               value="<%= request.getAttribute("oraRiconsegna") != null ? request.getAttribute("oraRiconsegna") : "" %>">
     </div>
+    
     <input type="hidden" name="tipoOperazione" value="mostra">
     <button type="submit" class="btn btn-primary">Cerca</button>
 </form>
+
+
 
 
 
@@ -132,14 +145,22 @@
 							<p class="card-text">
 								<strong>Posizione:</strong>
 								<%=auto.getPosizione()%></p>
+								<p class="card-text">
+								<strong>città:</strong>
+								<%=auto.getCitta()%></p>
 							<p class="card-text">
 								<strong>Prezzo:</strong> €<%=auto.getPrezzo()%>
 								al giorno
 							</p>
-							<a href="AutoController?tipoOperazione=dettagli&id=<%=auto.getId()%>"
-								class="btn btn-primary">dettagli</a>
-							<a href="prenotaAuto?id=<%=auto.getId()%>"
-								class="btn btn-primary">Prenota</a>
+							<form action="NoleggioController" method="get">
+                            <input type="hidden" name="idAuto" value="<%=auto.getId()%>">
+                                <input type="hidden" name="dataRitiro" value="<%= request.getAttribute("dataRitiro") != null ? request.getAttribute("dataRitiro") : "" %>">
+                               <input type="hidden" name="oraRitiro" value="<%= request.getAttribute("oraRitiro") != null ? request.getAttribute("oraRitiro") : "" %>">
+                              <input type="hidden" name="dataRiconsegna" value="<%= request.getAttribute("dataRiconsegna") != null ? request.getAttribute("dataRiconsegna") : "" %>">
+                             <input type="hidden" name="oraRiconsegna" value="<%= request.getAttribute("oraRiconsegna") != null ? request.getAttribute("oraRiconsegna") : "" %>">     
+                             <input type="hidden" name="tipoOperazione" value="inserisci">                       
+                            <button type="submit" class="btn btn-success">Prenota</button>
+                        </form>
 						</div>
 					</div>
 				</div>

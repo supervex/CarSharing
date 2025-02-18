@@ -11,50 +11,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Auto;
+import models.Noleggio;
 
 public class NoleggioQuery {
 	
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm:ss");
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	
-	public void inserisciNoleggio(int idNoleggio, int idUtente, int idAuto, LocalDateTime data_inizio, LocalDateTime data_fine) {
-	    String query = "INSERT INTO noleggio(ID_noleggio, ID_utente, ID_auto, data_inizio, data_fine) VALUES (?,?,?,?,?)";
-	    Connection connection = null;
-	    PreparedStatement preparedStatement = null;
+	public void inserisciNoleggio(Noleggio noleggio) {
+        String query = "INSERT INTO noleggio (ID_utente, ID_auto, data_inizio, data_fine) VALUES (?, ?, ?, ?)";
 
-	    try {
-	        
-	        connection = DataBaseConnection.getConnection();
-	        preparedStatement = connection.prepareStatement(query);
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-	        
-	        preparedStatement.setInt(1, idNoleggio);
-	        preparedStatement.setInt(2, idUtente);
-	        preparedStatement.setInt(3, idAuto);
-	        preparedStatement.setTimestamp(4, Timestamp.valueOf(data_inizio));
-	        preparedStatement.setTimestamp(5, Timestamp.valueOf(data_fine));
-	       
-	        int rowsAffected = preparedStatement.executeUpdate();
-	        System.out.println("Inserimento completato con successo. Righe interessate: " + rowsAffected);
+            preparedStatement.setInt(1, noleggio.getIdUtente());
+            preparedStatement.setInt(2, noleggio.getIdAuto());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(noleggio.getData_inizio()));
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(noleggio.getData_fine()));
 
-	    } catch (SQLException e) {
-	        
-	        System.err.println("Errore durante l'inserimento nella tabella prenotazioni_pizze: " + e.getMessage());
-	        e.printStackTrace();
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Inserimento completato con successo. Righe interessate: " + rowsAffected);
 
-	    } finally {
-	       
-	        try {
-	            if (preparedStatement != null) {
-	                preparedStatement.close();
-	            }
-	            if (connection != null) {
-	                connection.close();
-	            }
-	        } catch (SQLException e) {
-	            System.err.println("Errore durante la chiusura delle risorse: " + e.getMessage());
-	        }
-	    }
-	}
+        } catch (SQLException e) {
+            System.err.println("Errore durante l'inserimento nella tabella noleggio: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 	
 	public List<Auto> trovaAutoDisponibiliPerNoleggio(String luogo, LocalDateTime dataInizio, LocalDateTime dataFine) {
 	    List<Auto> autoDisponibili = new ArrayList<>();
