@@ -40,7 +40,7 @@ public class NoleggioQuery {
 	public List<Auto> trovaAutoDisponibiliPerNoleggio(String luogo, LocalDateTime dataInizio, LocalDateTime dataFine) {
 	    List<Auto> autoDisponibili = new ArrayList<>();
 	    String query = 
-	        "SELECT a.ID_auto, a.targa, a.modello, a.carburante, a.livello, a.numero_posti, a.cambio, a.posizione, a.citta, a.prezzo " +
+	        "SELECT a.ID_auto, a.targa, a.modello, a.carburante, a.livello, a.numero_posti, a.cambio, a.posizione, a.citta, a.prezzo, a.immagine " +
 	        "FROM auto AS a " +
 	        "WHERE a.citta = ? " +
 	        "AND a.ID_auto NOT IN (" +
@@ -77,7 +77,8 @@ public class NoleggioQuery {
 	                    resultSet.getString("cambio"),
 	                    resultSet.getString("posizione"),
 	                    resultSet.getString("citta"),
-	                    resultSet.getDouble("prezzo")
+	                    resultSet.getDouble("prezzo"),
+	                    resultSet.getString("immagine")  // Recupera il percorso dell'immagine
 	                );
 	                autoDisponibili.add(auto);
 	            }
@@ -89,6 +90,7 @@ public class NoleggioQuery {
 
 	    return autoDisponibili;
 	}
+
 	
 	public List<Noleggio> trovaNoleggiPerUtente(int idUtente) {
 	    List<Noleggio> listaNoleggi = new ArrayList<>();

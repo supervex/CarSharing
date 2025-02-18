@@ -2,21 +2,27 @@ package controllers;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import models.Auto;
 import models.Utente;
 import context.AutoQuery;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 @WebServlet("/AutoController")
+@MultipartConfig
 public class AutoController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final AutoQuery autoQuery = new AutoQuery();
+    private static final String UPLOAD_DIR = "C:\\Users\\Alberto\\CarSharingImages";
 
     public AutoController() {
         super();
@@ -56,7 +62,7 @@ public class AutoController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String tipoOperazione = request.getParameter("tipoOperazione");
-
+       
         
         switch (tipoOperazione) {
             case "inserisci":
@@ -92,15 +98,22 @@ public class AutoController extends HttpServlet {
         String citta = request.getParameter("citta");
         String posizione = request.getParameter("posizione");
         String cambio = request.getParameter("cambio");
-        
-        if (targa.isEmpty() || modello.isEmpty() || carburante.isEmpty()) {
-            request.setAttribute("errorMessage", "Campi obbligatori mancanti!");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("inserisciVeicolo.jsp");
-            dispatcher.forward(request, response);
-            return;
+
+        // Caricamento dell'immagine
+        Part immaginePart = request.getPart("immagine");
+        String immaginePath = null;
+
+        if (immaginePart != null && immaginePart.getSize() > 0) {
+            String fileName = Path.of(immaginePart.getSubmittedFileName()).getFileName().toString();
+            File uploadDirFile = new File(UPLOAD_DIR);
+            if (!uploadDirFile.exists()) {
+                uploadDirFile.mkdirs();
+            }
+            File file = new File(UPLOAD_DIR, fileName);
+            immaginePart.write(file.getAbsolutePath());
+            immaginePath = fileName; // Salviamo solo il nome del file
         }
 
-        
         try {
             double livello = Double.parseDouble(livelloStr);
             int numeroPosti = Integer.parseInt(numeroPostiStr);
@@ -109,23 +122,20 @@ public class AutoController extends HttpServlet {
             Auto auto;
             if (idUtenteStr != null && !idUtenteStr.isEmpty()) {
                 int idUtente = Integer.parseInt(idUtenteStr);
-                auto = new Auto(0, idUtente, targa, modello, carburante, livello, numeroPosti, cambio, posizione ,citta, prezzo);
+                auto = new Auto(0, idUtente, targa, modello, carburante, livello, numeroPosti, cambio, posizione, citta, prezzo, immaginePath);
             } else {
-                auto = new Auto(0, targa, modello, carburante, livello, numeroPosti, cambio, posizione,citta, prezzo);
+                auto = new Auto(0, targa, modello, carburante, livello, numeroPosti, cambio, posizione, citta, prezzo, immaginePath);
             }
 
             autoQuery.aggiungiAuto(auto);
-
-            // Successo, redirect alla lista delle auto
             response.sendRedirect("AutoController");
-
         } catch (NumberFormatException e) {
-            // Gestione errori di parsing numerico
             request.setAttribute("errorMessage", "Valori numerici invalidi!");
             RequestDispatcher dispatcher = request.getRequestDispatcher("inserisciVeicolo.jsp");
             dispatcher.forward(request, response);
         }
     }
+
   
     // Metodo per gestire l'aggiornamento di un'auto 
     private void gestisciAggiornamentoAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

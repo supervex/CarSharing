@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @WebServlet("/NoleggioController")
 public class NoleggioController extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -32,7 +33,6 @@ public class NoleggioController extends HttpServlet {
             mostraErrore(request, response, "Operazione non valida!");
             return;
         }
-
         switch (tipoOperazione) {
             case "mostra":
                 mostraAutoDisponibili(request, response);

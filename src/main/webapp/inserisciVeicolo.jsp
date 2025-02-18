@@ -48,7 +48,7 @@
         <h1>Area Utente</h1>
         <section>
             <h2>Inserisci il tuo veicolo</h2>
-            <form id="carForm" action="AutoController" method="post">
+            <form id="carForm" action="AutoController" method="post" enctype="multipart/form-data">
                 <!-- Controllo se l'utente è loggato -->
                 <%
                     if (utenteLoggatoHome != null) {
@@ -63,6 +63,7 @@
                 <%
                     }
                 %>
+                <input type="hidden" name="tipoOperazione" value="inserisci">
                 <input type="text" name="targa" placeholder="Targa" required>
                 <input type="text" name="modello" placeholder="Modello" required>
                 <input type="text" name="carburante" placeholder="Carburante" required>
@@ -74,9 +75,13 @@
                     <option value="automatico">Automatico</option>
                 </select>
                 <input type="text" name="posizione" placeholder="Indirizzo" required>
-                <input type="text" name="citta" placeholder="citta" required>
+                <input type="text" name="citta" placeholder="Città" required>
                 <input type="number" name="prezzo" step="0.01" placeholder="Prezzo" required>
-                <input type="hidden" name="tipoOperazione" value="inserisci">
+                
+                <!-- Aggiunta del campo per caricare l'immagine -->
+                <input type="file" name="immagine" accept="image/*" required>
+                
+                
                 <button type="submit">Invia</button>
             </form>
         </section>

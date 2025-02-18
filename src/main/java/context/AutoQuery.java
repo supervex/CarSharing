@@ -8,93 +8,96 @@ import models.Auto;
 public class AutoQuery {
 
     // Aggiungere un'auto
-    public boolean aggiungiAuto(Auto auto) {
-        String query = "INSERT INTO auto (ID_utente, targa, modello, carburante, livello, numero_posti, cambio, posizione, citta, prezzo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DataBaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	   public boolean aggiungiAuto(Auto auto) {
+	        String query = "INSERT INTO auto (ID_utente, targa, modello, carburante, livello, numero_posti, cambio, posizione, citta, prezzo, immagine) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	        try (Connection connection = DataBaseConnection.getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setInt(1, auto.getIdUtente());
-            preparedStatement.setString(2, auto.getTarga());
-            preparedStatement.setString(3, auto.getModello());
-            preparedStatement.setString(4, auto.getCarburante());
-            preparedStatement.setDouble(5, auto.getLivello());
-            preparedStatement.setInt(6, auto.getNumeroPosti());
-            preparedStatement.setString(7, auto.getCambio());
-            preparedStatement.setString(8, auto.getPosizione());
-            preparedStatement.setString(9, auto.getCitta());
-            preparedStatement.setDouble(10, auto.getPrezzo());
+	            preparedStatement.setInt(1, auto.getIdUtente());
+	            preparedStatement.setString(2, auto.getTarga());
+	            preparedStatement.setString(3, auto.getModello());
+	            preparedStatement.setString(4, auto.getCarburante());
+	            preparedStatement.setDouble(5, auto.getLivello());
+	            preparedStatement.setInt(6, auto.getNumeroPosti());
+	            preparedStatement.setString(7, auto.getCambio());
+	            preparedStatement.setString(8, auto.getPosizione());
+	            preparedStatement.setString(9, auto.getCitta());
+	            preparedStatement.setDouble(10, auto.getPrezzo());
+	            preparedStatement.setString(11, auto.getImmagine());  // Gestisci immagine
 
-            int righeModificate = preparedStatement.executeUpdate();
-            return righeModificate > 0;
+	            int righeModificate = preparedStatement.executeUpdate();
+	            return righeModificate > 0;
 
-        } catch (SQLException e) {
-            System.err.println("Errore SQL: " + e.getMessage());
-            return false;
-        }
-    }
+	        } catch (SQLException e) {
+	            System.err.println("Errore SQL: " + e.getMessage());
+	            return false;
+	        }
+	    }
 
-    // Modificare un'auto
-    public boolean modificaAuto(Auto auto) {
-        String query = "UPDATE auto SET targa = ?, modello = ?, carburante = ?, livello = ?, numero_posti = ?, cambio = ?, posizione = ?, citta = ?, prezzo = ? WHERE ID_auto = ?";
-        try (Connection connection = DataBaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	    // Modificare un'auto
+	    public boolean modificaAuto(Auto auto) {
+	        String query = "UPDATE auto SET targa = ?, modello = ?, carburante = ?, livello = ?, numero_posti = ?, cambio = ?, posizione = ?, citta = ?, prezzo = ?, immagine = ? WHERE ID_auto = ?";
+	        try (Connection connection = DataBaseConnection.getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            preparedStatement.setString(1, auto.getTarga());
-            preparedStatement.setString(2, auto.getModello());
-            preparedStatement.setString(3, auto.getCarburante());
-            preparedStatement.setDouble(4, auto.getLivello());
-            preparedStatement.setInt(5, auto.getNumeroPosti());
-            preparedStatement.setString(6, auto.getCambio());
-            preparedStatement.setString(7, auto.getPosizione());
-            preparedStatement.setString(8, auto.getCitta());
-            preparedStatement.setDouble(9, auto.getPrezzo());
-            preparedStatement.setInt(10, auto.getId());
+	            preparedStatement.setString(1, auto.getTarga());
+	            preparedStatement.setString(2, auto.getModello());
+	            preparedStatement.setString(3, auto.getCarburante());
+	            preparedStatement.setDouble(4, auto.getLivello());
+	            preparedStatement.setInt(5, auto.getNumeroPosti());
+	            preparedStatement.setString(6, auto.getCambio());
+	            preparedStatement.setString(7, auto.getPosizione());
+	            preparedStatement.setString(8, auto.getCitta());
+	            preparedStatement.setDouble(9, auto.getPrezzo());
+	            preparedStatement.setString(10, auto.getImmagine());  // Gestisci immagine
+	            preparedStatement.setInt(11, auto.getId());
 
-            int righeModificate = preparedStatement.executeUpdate();
-            return righeModificate > 0;
+	            int righeModificate = preparedStatement.executeUpdate();
+	            return righeModificate > 0;
 
-        } catch (SQLException e) {
-            System.err.println("Errore SQL: " + e.getMessage());
-            return false;
-        }
-    }
+	        } catch (SQLException e) {
+	            System.err.println("Errore SQL: " + e.getMessage());
+	            return false;
+	        }
+	    }
 
-    // Recuperare tutte le auto
-    public List<Auto> stampaAuto() {
-        List<Auto> autos = new ArrayList<>();
-        String query = "SELECT * FROM auto";
+	    // Metodo per creare un'istanza di Auto da un ResultSet (con immagine)
+	    private Auto creaAutoDaResultSet(ResultSet resultSet) throws SQLException {
+	        return new Auto(
+	            resultSet.getInt("ID_auto"),
+	            resultSet.getInt("ID_utente"),
+	            resultSet.getString("targa"),
+	            resultSet.getString("modello"),
+	            resultSet.getString("carburante"),
+	            resultSet.getDouble("livello"),
+	            resultSet.getInt("numero_posti"),
+	            resultSet.getString("cambio"),
+	            resultSet.getString("posizione"),
+	            resultSet.getString("citta"),
+	            resultSet.getDouble("prezzo"),
+	            resultSet.getString("immagine")  // Recupera immagine
+	        );
+	    }
 
-        try (Connection connection = DataBaseConnection.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
+	    // Recuperare tutte le auto
+	    public List<Auto> stampaAuto() {
+	        List<Auto> autos = new ArrayList<>();
+	        String query = "SELECT * FROM auto";
 
-            while (resultSet.next()) {
-                autos.add(creaAutoDaResultSet(resultSet));
-            }
+	        try (Connection connection = DataBaseConnection.getConnection();
+	             Statement statement = connection.createStatement();
+	             ResultSet resultSet = statement.executeQuery(query)) {
 
-        } catch (SQLException e) {
-            System.err.println("Errore SQL: " + e.getMessage());
-        }
+	            while (resultSet.next()) {
+	                autos.add(creaAutoDaResultSet(resultSet));
+	            }
 
-        return autos;
-    }
+	        } catch (SQLException e) {
+	            System.err.println("Errore SQL: " + e.getMessage());
+	        }
 
-    // Metodo per creare un'istanza di Auto da un ResultSet
-    private Auto creaAutoDaResultSet(ResultSet resultSet) throws SQLException {
-        return new Auto(
-            resultSet.getInt("ID_auto"),
-            resultSet.getInt("ID_utente"),
-            resultSet.getString("targa"),
-            resultSet.getString("modello"),
-            resultSet.getString("carburante"),
-            resultSet.getDouble("livello"),
-            resultSet.getInt("numero_posti"),
-            resultSet.getString("cambio"),
-            resultSet.getString("posizione"),
-            resultSet.getString("citta"),
-            resultSet.getDouble("prezzo")
-        );
-    }
+	        return autos;
+	    }
 
     // Recuperare auto per ID utente
     public List<Auto> trovaAutoPerUtente(int idUtente) {

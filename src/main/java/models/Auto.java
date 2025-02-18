@@ -15,11 +15,11 @@ public class Auto {
     private String posizione; // Posizione corrente dell'auto
     private String citta;
     private double prezzo; // Prezzo per noleggio o acquisto
-    
+    private String immagine; // Nuovo campo per l'immagine
 
     // Costruttore con idUtente
     public Auto(int id, int idUtente, String targa, String modello, String carburante, double livello,
-                int numeroPosti, String cambio, String posizione, String citta, double prezzo) {
+                int numeroPosti, String cambio, String posizione, String citta, double prezzo, String immagine) {
         this.id = id;
         this.idUtente = idUtente;  
         this.targa = targa;
@@ -31,11 +31,12 @@ public class Auto {
         this.posizione = posizione;
         this.citta = citta;
         this.prezzo = prezzo;
+        this.immagine = immagine; // Imposta l'immagine
     }
 
     // Costruttore senza idUtente
     public Auto(int id, String targa, String modello, String carburante, double livello,
-                int numeroPosti, String cambio, String posizione, String citta, double prezzo) {
+                int numeroPosti, String cambio, String posizione, String citta, double prezzo, String immagine) {
         this.id = id; 
         this.targa = targa;
         this.modello = modello;
@@ -46,6 +47,7 @@ public class Auto {
         this.posizione = posizione;
         this.citta = citta;
         this.prezzo = prezzo;
+        this.immagine = immagine; // Imposta l'immagine
     }
 
     // Getter e Setter
@@ -137,11 +139,20 @@ public class Auto {
         this.prezzo = prezzo;
     }
 
+    public String getImmagine() {
+        return immagine; // Getter per immagine
+    }
+
+    public void setImmagine(String immagine) {
+        this.immagine = immagine; // Setter per immagine
+    }
+
     @Override
     public String toString() {
         return "Auto [id=" + id + ", idUtente=" + idUtente + ", targa=" + targa + ", modello=" + modello
                 + ", carburante=" + carburante + ", livello=" + livello + ", numeroPosti=" + numeroPosti
-                + ", cambio=" + cambio + ", posizione=" + posizione + ", citta=" + citta + ", prezzo=" + prezzo + "]";
+                + ", cambio=" + cambio + ", posizione=" + posizione + ", citta=" + citta + ", prezzo=" + prezzo
+                + ", immagine=" + immagine + "]"; // Includi immagine nella stringa
     }
 
     @Override
