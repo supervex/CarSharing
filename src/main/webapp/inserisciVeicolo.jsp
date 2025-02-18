@@ -74,6 +74,7 @@
                     <option value="automatico">Automatico</option>
                 </select>
                 <input type="text" name="posizione" placeholder="Indirizzo" required>
+                <input type="text" name="citta" placeholder="citta" required>
                 <input type="number" name="prezzo" step="0.01" placeholder="Prezzo" required>
                 <input type="hidden" name="tipoOperazione" value="inserisci">
                 <button type="submit">Invia</button>

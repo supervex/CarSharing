@@ -71,28 +71,30 @@
 		%>
 	</div>
 
-<form class="search-bar">
+<form class="search-bar" method="get" action="NoleggioController">
     <div class="search-item">
-        <input type="text" placeholder="🔍 Luogo di ritiro" class="input-field">
+        <input type="text" name="luogo" placeholder="🔍 Luogo di ritiro" class="input-field">
     </div>
     <div class="date-time">
         <label for="data-ritiro">📅 Data di ritiro</label>
-        <input type="date" id="data-ritiro" value="2025-02-22" class="input-field">
+        <input type="date" name="dataRitiro" id="data-ritiro" value="2025-02-22" class="input-field">
     </div>
     <div class="date-time">
         <label for="ora-ritiro">🕒 Ora</label>
-        <input type="time" id="ora-ritiro" value="10:00" class="input-field">
+        <input type="time" id="ora-ritiro" name="oraRitiro" value="10:00" class="input-field">
     </div>
     <div class="date-time">
         <label for="data-riconsegna">📅 Data di riconsegna</label>
-        <input type="date" id="data-riconsegna" value="2025-02-25" class="input-field">
+        <input type="date" id="data-riconsegna" name="dataRiconsegna" value="2025-02-25" class="input-field">
     </div>
     <div class="date-time">
         <label for="ora-riconsegna">🕒 Ora</label>
-        <input type="time" id="ora-riconsegna" value="10:00" class="input-field">
+        <input type="time" id="ora-riconsegna" name="oraRiconsegna" value="10:00" class="input-field">
     </div>
-    <button class="search-btn">Cerca</button>
+    <input type="hidden" name="tipoOperazione" value="mostra">
+    <button type="submit" class="btn btn-primary">Cerca</button>
 </form>
+
 
 
 	<!-- Available Cars -->

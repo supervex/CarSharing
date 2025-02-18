@@ -50,6 +50,10 @@
                 <label class="form-label">Posizione:</label>
                 <input type="text" class="form-control" name="posizione" value="<%= auto.getPosizione() %>" required>
             </div>
+            <div class="mb-3">
+                <label class="form-label">citta:</label>
+                <input type="text" class="form-control" name="citta" value="<%= auto.getCitta() %>" required>
+            </div>
 
             <div class="mb-3">
                 <label class="form-label">Prezzo al giorno (€):</label>

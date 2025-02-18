@@ -28,8 +28,9 @@
         <div class="detail"><strong>Numero Posti:</strong> <%= auto.getNumeroPosti() %></div>
         <div class="detail"><strong>Cambio:</strong> <%= auto.getCambio() %></div>
         <div class="detail"><strong>Posizione:</strong> <%= auto.getPosizione() %></div>
+        <div class="detail"><strong>Citta:</strong> <%= auto.getCitta() %></div>
         <div class="detail"><strong>Prezzo:</strong> <%= auto.getPrezzo() %> €</div>
-        <a href="NoleggioController?id=<%=auto.getId()%>"class="btn btn-primary">Prenota</a>
+        <a href="NoleggioController?tipoOperazione=prenota&id=<%=auto.getId()%>"class="btn btn-primary">Prenota</a>
     </div>
 </body>
 </html>

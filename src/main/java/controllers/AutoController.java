@@ -89,7 +89,9 @@ public class AutoController extends HttpServlet {
         String numeroPostiStr = request.getParameter("numeroPosti");
         String prezzoStr = request.getParameter("prezzo");
         String idUtenteStr = request.getParameter("utente");
-
+        String citta = request.getParameter("citta");
+        String posizione = request.getParameter("posizione");
+        String cambio = request.getParameter("cambio");
         
         if (targa.isEmpty() || modello.isEmpty() || carburante.isEmpty()) {
             request.setAttribute("errorMessage", "Campi obbligatori mancanti!");
@@ -107,9 +109,9 @@ public class AutoController extends HttpServlet {
             Auto auto;
             if (idUtenteStr != null && !idUtenteStr.isEmpty()) {
                 int idUtente = Integer.parseInt(idUtenteStr);
-                auto = new Auto(0, idUtente, targa, modello, carburante, livello, numeroPosti, "Manuale", "Posizione", prezzo);
+                auto = new Auto(0, idUtente, targa, modello, carburante, livello, numeroPosti, cambio, posizione ,citta, prezzo);
             } else {
-                auto = new Auto(0, targa, modello, carburante, livello, numeroPosti, "Manuale", "Posizione", prezzo);
+                auto = new Auto(0, targa, modello, carburante, livello, numeroPosti, cambio, posizione,citta, prezzo);
             }
 
             autoQuery.aggiungiAuto(auto);
@@ -240,7 +242,7 @@ public class AutoController extends HttpServlet {
         Auto autoDettagli = autoQuery.trovaAutoPerId(idAuto);
         request.setAttribute("auto", autoDettagli);
         RequestDispatcher dispatcher = request.getRequestDispatcher("dettagliAuto.jsp");
-        dispatcher.forward(request, response);
+        dispatcher.forward(request, response);   
         
     }
 }

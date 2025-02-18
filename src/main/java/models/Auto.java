@@ -13,11 +13,13 @@ public class Auto {
     private int numeroPosti;
     private String cambio; // Manuale o Automatico
     private String posizione; // Posizione corrente dell'auto
+    private String citta;
     private double prezzo; // Prezzo per noleggio o acquisto
+    
 
     // Costruttore con idUtente
     public Auto(int id, int idUtente, String targa, String modello, String carburante, double livello,
-                int numeroPosti, String cambio, String posizione, double prezzo) {
+                int numeroPosti, String cambio, String posizione, String citta, double prezzo) {
         this.id = id;
         this.idUtente = idUtente;  
         this.targa = targa;
@@ -27,12 +29,13 @@ public class Auto {
         this.numeroPosti = numeroPosti;
         this.cambio = cambio;
         this.posizione = posizione;
+        this.citta = citta;
         this.prezzo = prezzo;
     }
 
     // Costruttore senza idUtente
     public Auto(int id, String targa, String modello, String carburante, double livello,
-                int numeroPosti, String cambio, String posizione, double prezzo) {
+                int numeroPosti, String cambio, String posizione, String citta, double prezzo) {
         this.id = id; 
         this.targa = targa;
         this.modello = modello;
@@ -41,6 +44,7 @@ public class Auto {
         this.numeroPosti = numeroPosti;
         this.cambio = cambio;
         this.posizione = posizione;
+        this.citta = citta;
         this.prezzo = prezzo;
     }
 
@@ -116,6 +120,14 @@ public class Auto {
     public void setPosizione(String posizione) {
         this.posizione = posizione;
     }
+    
+    public String getCitta() {
+        return citta;
+    }
+
+    public void setCitta(String citta) {
+        this.citta = citta;
+    }
 
     public double getPrezzo() {
         return prezzo;
@@ -129,7 +141,7 @@ public class Auto {
     public String toString() {
         return "Auto [id=" + id + ", idUtente=" + idUtente + ", targa=" + targa + ", modello=" + modello
                 + ", carburante=" + carburante + ", livello=" + livello + ", numeroPosti=" + numeroPosti
-                + ", cambio=" + cambio + ", posizione=" + posizione + ", prezzo=" + prezzo + "]";
+                + ", cambio=" + cambio + ", posizione=" + posizione + ", citta=" + citta + ", prezzo=" + prezzo + "]";
     }
 
     @Override

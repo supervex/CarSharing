@@ -28,6 +28,7 @@
                         <p class="card-text"><strong>Numero posti:</strong> <%= auto.getNumeroPosti() %></p>
                         <p class="card-text"><strong>Cambio:</strong> <%= auto.getCambio() %></p>
                         <p class="card-text"><strong>Posizione:</strong> <%= auto.getPosizione() %></p>
+                        <p class="card-text"><strong>Citta:</strong> <%= auto.getCitta() %></p>
                         <p class="card-text"><strong>Prezzo:</strong> €<%= auto.getPrezzo() %> al giorno</p>
                         
                         <!-- Bottone Modifica -->
