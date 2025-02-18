@@ -10,6 +10,15 @@
 <body>
     <div class="container mt-4">
         <h2 class="text-center">Modifica Auto</h2>
+         <% 
+            // Verifica se esiste un messaggio di errore
+            String errorMessage = (String) request.getAttribute("errorMessage");
+            if (errorMessage != null) { 
+        %>
+            <div class="alert alert-danger" role="alert">
+                <%= errorMessage %>
+            </div>
+        <% } %>
 
         <% Auto auto = (Auto) request.getAttribute("auto"); %>
         <form action="AutoController" method="post">

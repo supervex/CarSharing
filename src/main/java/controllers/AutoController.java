@@ -22,7 +22,9 @@ import java.util.ArrayList;
 public class AutoController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final AutoQuery autoQuery = new AutoQuery();
-    private static final String UPLOAD_DIR = "C:\\Users\\Alberto\\CarSharingImages";
+    private static final String UPLOAD_DIR = "images"; // La cartella images è relativa alla cartella webapp
+
+
 
     public AutoController() {
         super();
@@ -105,13 +107,18 @@ public class AutoController extends HttpServlet {
 
         if (immaginePart != null && immaginePart.getSize() > 0) {
             String fileName = Path.of(immaginePart.getSubmittedFileName()).getFileName().toString();
-            File uploadDirFile = new File(UPLOAD_DIR);
+            
+            // Usa getServletContext().getRealPath per ottenere il percorso assoluto della cartella images
+            String uploadPath = getServletContext().getRealPath("/images");
+            File uploadDirFile = new File(uploadPath);
+            
             if (!uploadDirFile.exists()) {
                 uploadDirFile.mkdirs();
             }
-            File file = new File(UPLOAD_DIR, fileName);
+            
+            File file = new File(uploadPath, fileName);
             immaginePart.write(file.getAbsolutePath());
-            immaginePath = fileName; // Salviamo solo il nome del file
+            immaginePath = "images/" + fileName; // Salviamo il percorso relativo dell'immagine
         }
 
         try {
@@ -228,6 +235,7 @@ public class AutoController extends HttpServlet {
             dispatcher.forward(request, response);
         }
     }
+    
     private void mostraAutoUtente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
     	Utente utenteLoggato = (Utente) request.getSession().getAttribute("user");

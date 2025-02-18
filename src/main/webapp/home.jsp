@@ -123,8 +123,8 @@
 				%>
 				<div class="col-md-4">
 					<div class="card mb-3">
-						<img src="img/auto_default.jpg" class="card-img-top"
-							alt="Immagine auto">
+						<img src="<%= auto.getImmagine() %>" class="card-img-top" alt="Immagine auto">
+
 						<div class="card-body">
 							<h5 class="card-title"><%=auto.getModello()%></h5>
 							<p class="card-text">
