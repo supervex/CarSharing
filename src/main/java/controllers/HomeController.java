@@ -38,7 +38,7 @@ public class HomeController extends HttpServlet {
         request.getSession().setAttribute("listaAuto", autos);
 
         // Inoltra la richiesta alla home.jsp
-        RequestDispatcher dispatcher = request.getRequestDispatcher("HomeController?method=get");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
         dispatcher.forward(request, response);
     }
 
