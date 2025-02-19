@@ -64,7 +64,7 @@ public class UtenteController extends HttpServlet {
         } else {
             HttpSession session = request.getSession();
             session.setAttribute("user", utente);
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("HomeController?method=get");
         }
     }
 
@@ -119,7 +119,7 @@ public class UtenteController extends HttpServlet {
         if (session != null) {
             session.removeAttribute("user");
         }
-        response.sendRedirect("home.jsp");
+        response.sendRedirect("HomeController?method=get");
     }
 
     private void gestisciModificaUtente(HttpServletRequest request, HttpServletResponse response)
