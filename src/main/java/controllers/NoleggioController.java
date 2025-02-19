@@ -46,6 +46,9 @@ public class NoleggioController extends HttpServlet {
             case "dettagli":
                 mostraAutoDisponibili(request, response);
                 break;
+            case "preparaPagamento":
+            	preparaPagamento(request, response);
+                break;
             default:
                 mostraErrore(request, response, "Operazione non valida!");
                 break;
@@ -107,7 +110,87 @@ public class NoleggioController extends HttpServlet {
             mostraErrore(request, response, "Errore durante l'eliminazione della prenotazione.");
         }
     }
+    private void preparaPagamento(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idAutoStr = request.getParameter("idAuto");
+        if (idAutoStr == null || idAutoStr.isEmpty()) {
+            mostraErrore(request, response, "ID auto mancante!");
+            return;
+        }
 
+        int idAuto = Integer.parseInt(idAutoStr);
+        Auto auto = autoQuery.trovaAutoPerId(idAuto);
+        if (auto == null) {
+            mostraErrore(request, response, "Auto non trovata!");
+            return;
+        }
+
+//        request.setAttribute("auto", auto);
+//        request.setAttribute("dataRitiro", request.getParameter("dataRitiro"));
+//        request.setAttribute("oraRitiro", request.getParameter("oraRitiro"));
+//        request.setAttribute("dataRiconsegna", request.getParameter("dataRiconsegna"));
+//        request.setAttribute("oraRiconsegna", request.getParameter("oraRiconsegna"));
+        
+        LocalDateTime ritiro = parseDateTime(request.getParameter("dataRitiro"), request.getParameter("oraRitiro"), request, response);
+        if (ritiro == null) return;
+
+        LocalDateTime riconsegna = parseDateTime(request.getParameter("dataRiconsegna"), request.getParameter("oraRiconsegna"), request, response);
+        if (riconsegna == null) return;
+
+        if (riconsegna.isBefore(ritiro)) {
+            request.setAttribute("auto", auto);
+            inviaErrore(request, response, "La data di riconsegna non può essere precedente alla data di ritiro.", "/inserimentoPrenotazione.jsp");
+            return;
+        }
+
+     // Verifica la disponibilità dell'auto
+        if (noleggioQuery.verificaDisponibilitaAuto(idAuto, ritiro, riconsegna)) {
+            request.setAttribute("auto", auto);
+            request.setAttribute("ritiro", ritiro);
+            request.setAttribute("riconsegna", riconsegna);
+            
+            request.setAttribute("dataRitiro", request.getParameter("dataRitiro"));
+            request.setAttribute("oraRitiro", request.getParameter("oraRitiro"));
+            request.setAttribute("dataRiconsegna", request.getParameter("dataRiconsegna"));
+            request.setAttribute("oraRiconsegna", request.getParameter("oraRiconsegna"));
+            // Calcola la durata in minuti
+            long durataInMinuti = java.time.Duration.between(ritiro, riconsegna).toMinutes();
+            
+            // Converte la durata in ore (incluso il frazionamento dei minuti)
+            double durataInOre = durataInMinuti / 60.0;
+
+            // Calcola il prezzo totale (moltiplicato per la durata in ore frazionate)
+            double prezzoPerOra = auto.getPrezzo(); // Supponiamo che questo restituisca il prezzo per ora
+            double prezzoTotale = prezzoPerOra * durataInOre;
+
+            // Calcola il 2% del prezzo totale
+            double percentuale = 0.02;
+            double incremento2Percento = prezzoTotale * percentuale;
+
+            // Aggiungi il 2% al prezzo totale
+            double prezzoTotaleConSconto = prezzoTotale + incremento2Percento;
+
+            // Format the total price (2 decimal places)
+            String prezzoTotaleFormattato = String.format("%.2f", prezzoTotaleConSconto);
+            String prezzoTotaleFormattato2 = String.format("%.2f", prezzoTotale);
+            
+
+            // Imposta gli attributi per il JSP
+            request.setAttribute("prezzoTotaleSenzaIncremento", prezzoTotaleFormattato2);
+            request.setAttribute("prezzoTotale", prezzoTotaleFormattato);
+            request.setAttribute("durataInOre", durataInOre);
+            request.setAttribute("incremento2Percento", String.format("%.2f", incremento2Percento));
+
+            // Invia la richiesta al JSP di pagamento
+            RequestDispatcher dispatcher = request.getRequestDispatcher("pagamento.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            request.setAttribute("auto", auto);
+            inviaErrore(request, response, "L'auto non è disponibile", "/inserimentoPrenotazione.jsp");
+        }
+
+
+        
+    }
     private void mostraPrenotazioniUtente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Utente utenteLoggato = (Utente) request.getSession().getAttribute("user");
         if (utenteLoggato == null) {
@@ -236,5 +319,11 @@ public class NoleggioController extends HttpServlet {
             mostraErrore(request, response, "ID auto non valido!");
             return -1;
         }
+    }
+    private void inviaErrore(HttpServletRequest request, HttpServletResponse response, String messaggio, String pagina)
+            throws ServletException, IOException {
+        request.setAttribute("errorMessage", messaggio);
+        RequestDispatcher dispatcher = request.getRequestDispatcher(pagina);
+        dispatcher.forward(request, response);
     }
 }

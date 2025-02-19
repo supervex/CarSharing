@@ -23,6 +23,10 @@
     </style>
 </head>
 <body>
+<% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+            <% if (errorMessage != null) { %>
+                <p class="error"><%= errorMessage %></p>
+            <% } %>
     <div class="card">
         <img src="placeholder.jpg" alt="Immagine Auto">
         <h2>Dettagli Auto</h2>
@@ -38,7 +42,7 @@
         <div class="detail"><strong>Prezzo:</strong> €<%= auto.getPrezzo() %> al giorno</div>
     </div>
 
-    <form class="search-bar" method="post" action="NoleggioController">
+    <form class="search-bar" method="get" action="NoleggioController">
         <input type="hidden" name="idAuto" value="<%= auto.getId() %>">
         
         <div class="date-time">
@@ -65,8 +69,8 @@
                    value="<%= oraRiconsegna != null ? oraRiconsegna : "" %>">
         </div>
 
-        <input type="hidden" name="tipoOperazione" value="confermaPrenotazione">
-        <button type="submit" class="btn-primary">Conferma Prenotazione</button>
+        <input type="hidden" name="tipoOperazione" value="preparaPagamento">
+        <button type="submit" class="btn-primary">vai al pagamento</button>
     </form>
 </body>
 </html>

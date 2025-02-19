@@ -155,5 +155,37 @@ public class NoleggioQuery {
 	    }
 	    return null; 
 	}
+	
+	public boolean verificaDisponibilitaAuto(int idAuto, LocalDateTime dataInizio, LocalDateTime dataFine) {
+	    String query = 
+	        "SELECT COUNT(*) FROM noleggio " +
+	        "WHERE ID_auto = ? " +
+	        "AND (? BETWEEN data_inizio AND data_fine " +
+	        "     OR ? BETWEEN data_inizio AND data_fine " +
+	        "     OR (data_inizio BETWEEN ? AND ?) " +
+	        "     OR (data_fine BETWEEN ? AND ?))";
 
+	    try (Connection connection = DataBaseConnection.getConnection();
+	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+	        preparedStatement.setInt(1, idAuto);
+	        preparedStatement.setTimestamp(2, Timestamp.valueOf(dataInizio));
+	        preparedStatement.setTimestamp(3, Timestamp.valueOf(dataFine));
+	        preparedStatement.setTimestamp(4, Timestamp.valueOf(dataInizio));
+	        preparedStatement.setTimestamp(5, Timestamp.valueOf(dataFine));
+	        preparedStatement.setTimestamp(6, Timestamp.valueOf(dataInizio));
+	        preparedStatement.setTimestamp(7, Timestamp.valueOf(dataFine));
+
+	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+	            if (resultSet.next() && resultSet.getInt(1) == 0) {
+	                return true; // L'auto è disponibile
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        System.err.println("Errore SQL: " + e.getMessage());
+	    }
+
+	    return false; // L'auto non è disponibile
+	}
 }

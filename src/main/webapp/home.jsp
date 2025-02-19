@@ -108,9 +108,6 @@
 </form>
 
 
-
-
-
 	<!-- Available Cars -->
 	<section class="cars">
 		<div class="container mt-4">
@@ -172,7 +169,7 @@
 				<p class="text-center">Nessuna auto disponibile.</p>
 				<%
 				}
-				%>
+				%>			
 			</div>
 		</div>
 	</section>
