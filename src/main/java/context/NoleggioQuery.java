@@ -18,7 +18,7 @@ public class NoleggioQuery {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	
 	public void inserisciNoleggio(Noleggio noleggio) {
-        String query = "INSERT INTO noleggio (ID_utente, ID_auto, data_inizio, data_fine) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO noleggio (ID_utente, ID_auto, data_inizio, data_fine, pagamento) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection connection = DataBaseConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -27,6 +27,7 @@ public class NoleggioQuery {
             preparedStatement.setInt(2, noleggio.getIdAuto());
             preparedStatement.setTimestamp(3, Timestamp.valueOf(noleggio.getData_inizio()));
             preparedStatement.setTimestamp(4, Timestamp.valueOf(noleggio.getData_fine()));
+            preparedStatement.setDouble(5, noleggio.getPagamento());
 
             int rowsAffected = preparedStatement.executeUpdate();
             System.out.println("Inserimento completato con successo. Righe interessate: " + rowsAffected);
@@ -92,35 +93,35 @@ public class NoleggioQuery {
 	}
 
 	
-	public List<Noleggio> trovaNoleggiPerUtente(int idUtente) {
-	    List<Noleggio> listaNoleggi = new ArrayList<>();
-	    String query = "SELECT * FROM noleggio WHERE ID_utente = ?";
+	   public List<Noleggio> trovaNoleggiPerUtente(int idUtente) {
+	        List<Noleggio> listaNoleggi = new ArrayList<>();
+	        String query = "SELECT * FROM noleggio WHERE ID_utente = ?";
 
-	    try (Connection connection = DataBaseConnection.getConnection();
-	         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-	        
-	        preparedStatement.setInt(1, idUtente);
-	        
-	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
-	            while (resultSet.next()) {
-	                // Creazione dell'oggetto Noleggio con i dati del database
-	                Noleggio noleggio = new Noleggio(
-	                    resultSet.getInt("ID_noleggio"),
-	                    resultSet.getInt("ID_utente"),
-	                    resultSet.getInt("ID_auto"),
-	                    resultSet.getTimestamp("data_inizio").toLocalDateTime(),
-	                    resultSet.getTimestamp("data_fine").toLocalDateTime()
-	                );
-	                listaNoleggi.add(noleggio);
+	        try (Connection connection = DataBaseConnection.getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+	            preparedStatement.setInt(1, idUtente);
+
+	            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+	                while (resultSet.next()) {
+	                    Noleggio noleggio = new Noleggio(
+	                        resultSet.getInt("ID_noleggio"),
+	                        resultSet.getInt("ID_utente"),
+	                        resultSet.getInt("ID_auto"),
+	                        resultSet.getTimestamp("data_inizio").toLocalDateTime(),
+	                        resultSet.getTimestamp("data_fine").toLocalDateTime(),
+	                        resultSet.getDouble("pagamento")
+	                    );
+	                    listaNoleggi.add(noleggio);
+	                }
 	            }
+	        } catch (SQLException e) {
+	            System.err.println("Errore SQL durante il recupero dei noleggi: " + e.getMessage());
+	            e.printStackTrace();
 	        }
-	    } catch (SQLException e) {
-	        System.err.println("Errore SQL durante il recupero dei noleggi: " + e.getMessage());
-	        e.printStackTrace();
-	    }
 
-	    return listaNoleggi;
-	}
+	        return listaNoleggi;
+	    }
 
 	public boolean eliminaNoleggio(int idNoleggio) {
 	    String sql = "DELETE FROM noleggio WHERE ID_noleggio = ?";
@@ -135,26 +136,27 @@ public class NoleggioQuery {
 	    }
 	}
 	public Noleggio trovaNoleggioPerId(int idNoleggio) {
-	    String sql = "SELECT * FROM noleggio WHERE ID_noleggio = ?";
-	    try (Connection connection = DataBaseConnection.getConnection();
-	         PreparedStatement stmt = connection.prepareStatement(sql)) {
-	        stmt.setInt(1, idNoleggio);
-	        try (ResultSet rs = stmt.executeQuery()) {
-	            if (rs.next()) {
-	                
-	                int id = rs.getInt("ID_noleggio");
-	                int idUtente = rs.getInt("ID_utente");
-	                int idAuto = rs.getInt("ID_auto");
-	                LocalDateTime dataInizio = rs.getTimestamp("data_inizio").toLocalDateTime();
-	                LocalDateTime dataFine = rs.getTimestamp("data_fine").toLocalDateTime();
-	                return new Noleggio(id, idUtente, idAuto, dataInizio, dataFine);
-	            }
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return null; 
-	}
+        String sql = "SELECT * FROM noleggio WHERE ID_noleggio = ?";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idNoleggio);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Noleggio(
+                        rs.getInt("ID_noleggio"),
+                        rs.getInt("ID_utente"),
+                        rs.getInt("ID_auto"),
+                        rs.getTimestamp("data_inizio").toLocalDateTime(),
+                        rs.getTimestamp("data_fine").toLocalDateTime(),
+                        rs.getDouble("pagamento")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 	
 	public boolean verificaDisponibilitaAuto(int idAuto, LocalDateTime dataInizio, LocalDateTime dataFine) {
 	    String query = 

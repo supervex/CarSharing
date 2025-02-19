@@ -35,7 +35,7 @@ public class HomeController extends HttpServlet {
         ArrayList<Auto> autos = (ArrayList<Auto>) autoQuery.stampaAuto();
 
         // Salva la lista delle auto nella sessione
-        request.getSession().setAttribute("listaAuto", autos);
+        request.setAttribute("listaAuto", autos);
 
         // Inoltra la richiesta alla home.jsp
         RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");

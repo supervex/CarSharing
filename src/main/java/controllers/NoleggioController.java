@@ -258,8 +258,10 @@ public class NoleggioController extends HttpServlet {
             mostraErrore(request, response, "La data di riconsegna non può essere precedente alla data di ritiro.");
             return;
         }
-
-        Noleggio noleggio = new Noleggio(0, idUtente, idAuto, ritiro, riconsegna);
+        String pagamentoStr = request.getParameter("pagametoTotale").replace(",", ".");
+        double prezzoTot = Double.parseDouble(pagamentoStr);
+        
+        Noleggio noleggio = new Noleggio(0, idUtente, idAuto, ritiro, riconsegna, prezzoTot);
         noleggioQuery.inserisciNoleggio(noleggio);
 
         forward(request, response, "prenotazioneSuccesso.jsp");
@@ -281,7 +283,7 @@ public class NoleggioController extends HttpServlet {
 
         List<Auto> autos = noleggioQuery.trovaAutoDisponibiliPerNoleggio(luogo, ritiro, riconsegna);
 
-        request.getSession().setAttribute("listaAuto", autos);
+        request.setAttribute("listaAuto", autos);
         request.setAttribute("luogo", luogo);
         request.setAttribute("dataRitiro", request.getParameter("dataRitiro"));
         request.setAttribute("oraRitiro", request.getParameter("oraRitiro"));

@@ -78,19 +78,17 @@ public class UtenteController extends HttpServlet {
         String citta = request.getParameter("citta");
         String telefono = request.getParameter("telefono");
         String email = request.getParameter("email");
-        
-        // Controllo dei campi vuoti
+
         if (username == null || username.isEmpty() || nome == null || nome.isEmpty() || cognome == null || cognome.isEmpty() ||
             dataNascitaStr == null || dataNascitaStr.isEmpty() || password == null || password.isEmpty() || citta == null || citta.isEmpty() ||
             telefono == null || telefono.isEmpty() || email == null || email.isEmpty()) {
             inviaErrore(request, response, "Tutti i campi devono essere compilati!", "/Register.jsp");
             return;
         }
-        
-        // Controllo dell'email
+
+        // Controllo email
         String emailPattern = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
         if (!email.matches(emailPattern)) {
-        	//controllo durante l'immissione???????
             inviaErrore(request, response, "Inserisci un'email valida!", "/Register.jsp");
             return;
         }
@@ -108,11 +106,19 @@ public class UtenteController extends HttpServlet {
             return;
         }
 
-        String passwordCriptata = CriptaPassword.cripta(14,password);
+        String passwordCriptata = CriptaPassword.cripta(14, password);
         Utente nuovoUtente = new Utente(0, username, nome, cognome, dataNascitaSQL, passwordCriptata, citta, telefono, email, false);
+        
         utenteQuery.aggiungiUtente(nuovoUtente);
-        response.sendRedirect("HomeController?method=get");//??
+
+        // Crea una sessione e imposta l'utente registrato come loggato
+        HttpSession session = request.getSession();
+        session.setAttribute("user", nuovoUtente);
+
+        // Reindirizza alla home o all'area utente
+        response.sendRedirect("HomeController?method=get");
     }
+
 
     private void gestisciLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);

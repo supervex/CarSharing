@@ -167,7 +167,7 @@ public class AutoController extends HttpServlet {
 
                 if (autoDaAggiornare != null) {
                     // Recupera i nuovi valori da aggiornare
-                    String targa = request.getParameter("targa");
+                    String targa = request.getParameter("targa").trim().replaceAll("\\s+", "");
                     String modello = request.getParameter("modello");
                     String carburante = request.getParameter("carburante");
                     String livelloStr = request.getParameter("livello");
@@ -181,6 +181,25 @@ public class AutoController extends HttpServlet {
                         dispatcher.forward(request, response);
                         return;
                     }
+                    
+                    Auto autoEsistente = autoQuery.trovaAutoPerTarga(targa);
+                    if (autoEsistente != null && autoEsistente.getId() != idAuto) { // Controlla che non sia la stessa auto
+                        request.setAttribute("errorMessage", "Esiste già un'auto con la stessa targa!");
+                        request.setAttribute("auto", autoDaAggiornare); // Passa di nuovo l'auto alla JSP
+                        
+                        // Mantieni i valori inseriti
+                        request.setAttribute("targaInserita", targa);
+                        request.setAttribute("modelloInserito", modello);
+                        request.setAttribute("carburanteInserito", carburante);
+                        request.setAttribute("livelloInserito", livelloStr);
+                        request.setAttribute("numeroPostiInserito", numeroPostiStr);
+                        request.setAttribute("prezzoInserito", prezzoStr);
+
+                        RequestDispatcher dispatcher = request.getRequestDispatcher("modificaAuto.jsp");
+                        dispatcher.forward(request, response);
+                        return;
+                    }
+
 
                     try {
                         double livello = Double.parseDouble(livelloStr);
@@ -200,6 +219,7 @@ public class AutoController extends HttpServlet {
 
                         // Successo, redirect alla pagina delle auto
                         response.sendRedirect("AutoController?tipoOperazione=autoUtente");
+                        
 
                     } catch (NumberFormatException e) {
                         request.setAttribute("errorMessage", "Valori numerici invalidi!");
@@ -254,6 +274,7 @@ public class AutoController extends HttpServlet {
     	request.setAttribute("listaAutoUtente", listaAutoUtente);
     	RequestDispatcher dispatcher = request.getRequestDispatcher("AutoUtente.jsp");
         dispatcher.forward(request, response);
+        
     }
     
     private void mostraTutteLeAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
