@@ -23,7 +23,7 @@
             <i class="fas fa-car"></i> Drive Easy
         </div>
         <ul class="nav-links">
-            <li><a href="home.jsp">Home</a></li>
+            <li><a href="HomeController?method=get">Home</a></li>
             <li><a href="areaUtente.jsp">Area Utente</a></li>
             <li><a href="logout.jsp" class="logout-btn">Logout</a></li>
         </ul>

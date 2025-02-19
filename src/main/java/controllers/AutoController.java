@@ -88,9 +88,9 @@ public class AutoController extends HttpServlet {
         }
     }
 
-    // Metodo per gestire l'inserimento di un'auto
     private void gestisciInserimentoAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String targa = request.getParameter("targa");
+        // Recupero e pulizia della targa, rimuovendo eventuali spazi
+        String targa = request.getParameter("targa").trim().replaceAll("\\s+", "");
         String modello = request.getParameter("modello");
         String carburante = request.getParameter("carburante");
         String livelloStr = request.getParameter("livello");
@@ -126,6 +126,15 @@ public class AutoController extends HttpServlet {
             int numeroPosti = Integer.parseInt(numeroPostiStr);
             double prezzo = Double.parseDouble(prezzoStr);
 
+            // Controllo se esiste già un'auto con la stessa targa
+            Auto autoEsistente = autoQuery.trovaAutoPerTarga(targa);
+            if (autoEsistente != null) {
+                request.setAttribute("errorMessage", "Esiste già un'auto con la stessa targa!");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("inserisciVeicolo.jsp");
+                dispatcher.forward(request, response);
+                return;
+            }
+
             Auto auto;
             if (idUtenteStr != null && !idUtenteStr.isEmpty()) {
                 int idUtente = Integer.parseInt(idUtenteStr);
@@ -142,6 +151,7 @@ public class AutoController extends HttpServlet {
             dispatcher.forward(request, response);
         }
     }
+
 
   
     // Metodo per gestire l'aggiornamento di un'auto 
