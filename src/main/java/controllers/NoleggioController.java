@@ -262,7 +262,7 @@ public class NoleggioController extends HttpServlet {
         Noleggio noleggio = new Noleggio(0, idUtente, idAuto, ritiro, riconsegna);
         noleggioQuery.inserisciNoleggio(noleggio);
 
-        forward(request, response, "home.jsp");
+        forward(request, response, "prenotazioneSuccesso.jsp");
     }
 
     private void mostraAutoDisponibili(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
