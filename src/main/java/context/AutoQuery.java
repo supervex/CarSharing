@@ -182,4 +182,24 @@ public class AutoQuery {
             return false;
         }
     }
+    
+    public Auto trovaAutoPerTarga(String targa) {
+        String query = "SELECT * FROM auto WHERE targa = ?";
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, targa);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return creaAutoDaResultSet(resultSet);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore SQL: " + e.getMessage());
+        }
+
+        return null; // Ritorna null se l'auto non viene trovata
+    }
 }

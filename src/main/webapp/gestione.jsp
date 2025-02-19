@@ -6,7 +6,7 @@
 <% 
     Utente utenteLoggato = (Utente) session.getAttribute("user");
     if (utenteLoggato == null || !utenteLoggato.isAmministratore()) {
-        response.sendRedirect("home.jsp"); // Reindirizza se non è admin
+        response.sendRedirect("HomeController?method=get"); // Reindirizza se non è admin
         return;
     }
 
@@ -29,7 +29,7 @@
         <i class="fas fa-car"></i> Drive Easy - Gestione
     </div>
     <ul class="nav-links">
-        <li><a href="home.jsp">Home</a></li>
+        <li><a href="HomeController?method=get">Home</a></li>
         <li><a href="gestione.jsp">Gestione</a></li>
         <li>
             <form action="UtenteController" method="post" style="display:inline;">

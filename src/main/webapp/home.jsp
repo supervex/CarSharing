@@ -21,7 +21,7 @@
 		Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
 		%>
 		<ul class="nav-links">
-			<li><a href="home.jsp">Home</a></li>
+			<li><a href="HomeController?method=get">Home</a></li>
 			<%
 			if (utenteLoggatoHome != null) {
 			%>
