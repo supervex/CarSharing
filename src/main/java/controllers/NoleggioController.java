@@ -288,7 +288,7 @@ public class NoleggioController extends HttpServlet {
         request.setAttribute("dataRiconsegna", request.getParameter("dataRiconsegna"));
         request.setAttribute("oraRiconsegna", request.getParameter("oraRiconsegna"));
 
-        forward(request, response, "home.jsp");
+        forward(request, response, "HomeController?method=get");
     }
 
     private void mostraErrore(HttpServletRequest request, HttpServletResponse response, String messaggio) throws ServletException, IOException {
