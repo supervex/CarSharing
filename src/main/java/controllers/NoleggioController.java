@@ -258,11 +258,13 @@ public class NoleggioController extends HttpServlet {
             mostraErrore(request, response, "La data di riconsegna non può essere precedente alla data di ritiro.");
             return;
         }
-
-        Noleggio noleggio = new Noleggio(0, idUtente, idAuto, ritiro, riconsegna);
+        String pagamentoStr = request.getParameter("pagametoTotale").replace(",", ".");
+        double prezzoTot = Double.parseDouble(pagamentoStr);
+        
+        Noleggio noleggio = new Noleggio(0, idUtente, idAuto, ritiro, riconsegna, prezzoTot);
         noleggioQuery.inserisciNoleggio(noleggio);
 
-        forward(request, response, "home.jsp");
+        forward(request, response, "prenotazioneSuccesso.jsp");
     }
 
     private void mostraAutoDisponibili(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -281,14 +283,14 @@ public class NoleggioController extends HttpServlet {
 
         List<Auto> autos = noleggioQuery.trovaAutoDisponibiliPerNoleggio(luogo, ritiro, riconsegna);
 
-        request.getSession().setAttribute("listaAuto", autos);
+        request.setAttribute("listaAuto", autos);
         request.setAttribute("luogo", luogo);
         request.setAttribute("dataRitiro", request.getParameter("dataRitiro"));
         request.setAttribute("oraRitiro", request.getParameter("oraRitiro"));
         request.setAttribute("dataRiconsegna", request.getParameter("dataRiconsegna"));
         request.setAttribute("oraRiconsegna", request.getParameter("oraRiconsegna"));
 
-        forward(request, response, "HomeController?method=get");
+        forward(request, response, "home.jsp");
     }
 
     private void mostraErrore(HttpServletRequest request, HttpServletResponse response, String messaggio) throws ServletException, IOException {

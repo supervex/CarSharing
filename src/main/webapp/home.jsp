@@ -114,7 +114,7 @@
 			<h2 class="text-center">Auto Disponibili</h2>
 			<div class="row">
 				<%
-				List<Auto> listaAuto = (List<Auto>) session.getAttribute("listaAuto");
+				List<Auto> listaAuto = (List<Auto>) request.getAttribute("listaAuto");
 				if (listaAuto != null && !listaAuto.isEmpty()) {
 					for (Auto auto : listaAuto) {
 				%>
@@ -150,15 +150,31 @@
 								<strong>Prezzo:</strong> €<%=auto.getPrezzo()%>
 								al giorno
 							</p>
-							<form action="NoleggioController" method="get">
-                            <input type="hidden" name="idAuto" value="<%=auto.getId()%>">
-                                <input type="hidden" name="dataRitiro" value="<%= request.getAttribute("dataRitiro") != null ? request.getAttribute("dataRitiro") : "" %>">
-                               <input type="hidden" name="oraRitiro" value="<%= request.getAttribute("oraRitiro") != null ? request.getAttribute("oraRitiro") : "" %>">
-                              <input type="hidden" name="dataRiconsegna" value="<%= request.getAttribute("dataRiconsegna") != null ? request.getAttribute("dataRiconsegna") : "" %>">
-                             <input type="hidden" name="oraRiconsegna" value="<%= request.getAttribute("oraRiconsegna") != null ? request.getAttribute("oraRiconsegna") : "" %>">     
-                             <input type="hidden" name="tipoOperazione" value="inserisci">                       
-                            <button type="submit" class="btn btn-success">Prenota</button>
-                        </form>
+							<%
+if (utenteLoggatoHome != null) {
+%>
+    <form action="NoleggioController" method="get">
+        <input type="hidden" name="idAuto" value="<%=auto.getId()%>">
+        <input type="hidden" name="dataRitiro" value="<%= request.getAttribute("dataRitiro") != null ? request.getAttribute("dataRitiro") : "" %>">
+        <input type="hidden" name="oraRitiro" value="<%= request.getAttribute("oraRitiro") != null ? request.getAttribute("oraRitiro") : "" %>">
+        <input type="hidden" name="dataRiconsegna" value="<%= request.getAttribute("dataRiconsegna") != null ? request.getAttribute("dataRiconsegna") : "" %>">
+        <input type="hidden" name="oraRiconsegna" value="<%= request.getAttribute("oraRiconsegna") != null ? request.getAttribute("oraRiconsegna") : "" %>">     
+        <input type="hidden" name="tipoOperazione" value="inserisci">                       
+        <button type="submit" class="btn btn-success">Prenota</button>
+    </form>
+<%
+} else {
+%>
+    <button type="button" class="btn btn-danger" onclick="avvisaUtente()">Prenota</button>
+    <script>
+        function avvisaUtente() {
+            alert("Devi effettuare il login per poter prenotare un'auto.");
+            window.location.href = "login.jsp";
+        }
+    </script>
+<%
+}
+%>
 						</div>
 					</div>
 				</div>

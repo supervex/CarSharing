@@ -20,6 +20,21 @@
     String dataRiconsegna = (String) request.getAttribute("dataRiconsegna");
     String oraRiconsegna = (String) request.getAttribute("oraRiconsegna");
 %>
+ <% 
+                // Recupera gli attributi dalla request
+                
+                LocalDateTime ritiro = (LocalDateTime) request.getAttribute("ritiro");
+                LocalDateTime riconsegna = (LocalDateTime) request.getAttribute("riconsegna");
+                String prezzoTotaleStr = (String) request.getAttribute("prezzoTotale"); // Recupera come String
+                String incremento2Percento = (String) request.getAttribute("incremento2Percento");
+                String prezzoTotSenz = (String) request.getAttribute("prezzoTotaleSenzaIncremento");
+               
+
+                // Formattazione delle date per la visualizzazione
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                String ritiroFormatted = ritiro != null ? ritiro.format(formatter) : "N/A";
+                String riconsegnaFormatted = riconsegna != null ? riconsegna.format(formatter) : "N/A";
+            %>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -93,28 +108,14 @@
 <input type="hidden" name="oraRitiro" value="<%= oraRitiro != null ? oraRitiro : "" %>">
 <input type="hidden" name="dataRiconsegna" value="<%= dataRiconsegna != null ? dataRiconsegna : "" %>">
 <input type="hidden" name="oraRiconsegna" value="<%= oraRiconsegna != null ? oraRiconsegna : "" %>">
-            
+            <input type="hidden" name="pagametoTotale" value="<%= prezzoTotaleStr %>">
             <button type="submit">Paga</button>
         </form>
     </div>
     <div class="details-container">
         <div class="price-details">
             <h3>Dettaglio prezzi dell'auto</h3>
-            <% 
-                // Recupera gli attributi dalla request
-                
-                LocalDateTime ritiro = (LocalDateTime) request.getAttribute("ritiro");
-                LocalDateTime riconsegna = (LocalDateTime) request.getAttribute("riconsegna");
-                String prezzoTotaleStr = (String) request.getAttribute("prezzoTotale"); // Recupera come String
-                String incremento2Percento = (String) request.getAttribute("incremento2Percento");
-                String prezzoTotSenz = (String) request.getAttribute("prezzoTotaleSenzaIncremento");
-               
-
-                // Formattazione delle date per la visualizzazione
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-                String ritiroFormatted = ritiro != null ? ritiro.format(formatter) : "N/A";
-                String riconsegnaFormatted = riconsegna != null ? riconsegna.format(formatter) : "N/A";
-            %>
+           
             <p><strong>Modello Auto:</strong> <%= auto != null ? auto.getModello() : "N/A" %></p>
             <p><strong>Targa:</strong> <%= auto != null ? auto.getTarga() : "N/A" %></p>
             <p><strong>Data di Ritiro:</strong> <%= ritiroFormatted %></p>

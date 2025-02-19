@@ -70,7 +70,7 @@
             </div>
 
             <button type="submit" class="btn btn-success">Salva Modifiche</button>
-            <a href="AutoUtente.jsp" class="btn btn-secondary">Annulla</a>
+            <a href="AutoController?tipoOperazione=autoUtente" class="btn btn-secondary">Annulla</a>
         </form>
     </div>
 </body>
