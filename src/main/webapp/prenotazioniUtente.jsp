@@ -136,6 +136,6 @@
         </table>
     <% } %>
 
-    <a href="home.jsp">Torna alla Home</a>
+    <a href="HomeController?method=get">Torna alla Home</a>
 </body>
 </html>

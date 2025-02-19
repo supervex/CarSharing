@@ -76,7 +76,7 @@
         </div>
     </form>
 
-    <a href="storicoPrenotazioni.jsp">Torna allo storico delle prenotazioni</a>
+     <a href="javascript:history.back()">Torna alla pagina precedente</a>
 
 </body>
 </html>

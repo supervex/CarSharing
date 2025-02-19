@@ -44,7 +44,7 @@ public class NoleggioController extends HttpServlet {
                 mostraPrenotazioniUtente(request, response);
                 break;
             case "dettagli":
-                mostraAutoDisponibili(request, response);
+                mostraDettagli(request, response);
                 break;
             case "preparaPagamento":
             	preparaPagamento(request, response);
@@ -74,6 +74,20 @@ public class NoleggioController extends HttpServlet {
                 mostraErrore(request, response, "Operazione non valida!");
                 break;
         }
+    }
+    private void mostraDettagli(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	
+    	int idNoleggio =Integer.parseInt(request.getParameter("idNoleggio")) ;
+    	
+    	Noleggio noleggio = noleggioQuery.trovaNoleggioPerId(idNoleggio);
+    	int idAuto = noleggio.getIdAuto();
+    	Auto auto = autoQuery.trovaAutoPerId(idAuto);
+    	
+    	request.setAttribute("auto", auto);
+    	request.setAttribute("noleggio", noleggio);
+    	
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("dettagliPrenotazione.jsp");
+        dispatcher.forward(request, response);
     }
     private void eliminaPrenotazione(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idNoleggioStr = request.getParameter("idNoleggio");
