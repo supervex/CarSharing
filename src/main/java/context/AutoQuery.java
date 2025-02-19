@@ -203,3 +203,4 @@ public class AutoQuery {
         return null; // Ritorna null se l'auto non viene trovata
     }
 }
+

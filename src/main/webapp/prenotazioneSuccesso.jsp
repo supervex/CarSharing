@@ -51,4 +51,8 @@
         <a href="HomeController?method=get" class="button">Torna alla Home</a>
     </div>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> origin/main

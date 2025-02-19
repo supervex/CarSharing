@@ -4,36 +4,37 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import models.Recensione;
+
 
 public class RecensioneQuery {
 	
-	public void inserisciRecensione(int idRecensione, int idUtente, int idAuto, String descrizione, int valutazione) {
-	    String query = "INSERT INTO noleggio(ID_noleggio, ID_utente, ID_auto, data_inizio, data_fine) VALUES (?,?,?,?,?)";
+	public void inserisciRecensione(Recensione recensione) {
+	    String query = "INSERT INTO recensione (ID_utente, ID_auto, descrizione, valutazione) VALUES (?,?,?,?)";
 	    Connection connection = null;
 	    PreparedStatement preparedStatement = null;
 
 	    try {
-	        
+	        // Connessione al database
 	        connection = DataBaseConnection.getConnection();
 	        preparedStatement = connection.prepareStatement(query);
 
-	        
-	        preparedStatement.setInt(1, idRecensione);
-	        preparedStatement.setInt(2, idUtente);
-	        preparedStatement.setInt(3, idAuto);
-	        preparedStatement.setString(4, descrizione);
-	        preparedStatement.setInt(5, valutazione);
-	       
+	        // Impostazione dei parametri per la query
+	        preparedStatement.setInt(1, recensione.getIdUtente()); // ID dell'utente
+	        preparedStatement.setInt(2, recensione.getIdAuto()); // ID dell'auto
+	        preparedStatement.setString(3, recensione.getDescrizione()); // Descrizione della recensione
+	        preparedStatement.setInt(4, recensione.getValuatzione()); // Valutazione (1-5)
+
+	        // Esecuzione della query
 	        int rowsAffected = preparedStatement.executeUpdate();
 	        System.out.println("Inserimento completato con successo. Righe interessate: " + rowsAffected);
 
 	    } catch (SQLException e) {
-	        
-	        System.err.println("Errore durante l'inserimento nella tabella prenotazioni_pizze: " + e.getMessage());
+	        System.err.println("Errore durante l'inserimento nella tabella recensione: " + e.getMessage());
 	        e.printStackTrace();
 
 	    } finally {
-	       
+	        
 	        try {
 	            if (preparedStatement != null) {
 	                preparedStatement.close();
@@ -47,4 +48,7 @@ public class RecensioneQuery {
 	    }
 	}
 
-}
+}	
+
+
+

@@ -122,6 +122,13 @@
                                 <input type="hidden" name="tipoOperazione" value="dettagli">
                                 <button type="submit">Dettagli</button>
                             </form>
+
+                            <!-- Pulsante per lasciare una recensione -->
+                            <form action="RecensioneController" method="GET" style="display:inline;">
+                                <input type="hidden" name="idNoleggio" value="<%= noleggio.getId() %>">
+                                <input type="hidden" name="tipoOperazione" value="lasciaRecensione">
+                                <button type="submit">Lascia una recensione</button>
+                            </form>
                         </td>
                     </tr>
                 <% } %>
