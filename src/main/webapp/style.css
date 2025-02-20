@@ -1,31 +1,43 @@
-/* Stili di base */
 body {
-	font-family: Arial, sans-serif;
+	font-family: 'Montserrat', sans-serif;
 	margin: 0;
 	padding: 0;
-	background-color: #f8f9fa;
+	background-color: rgb(133 0 255 / 45%);
 }
+
 
 /* Navbar */
 header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 15px 50px;
+	padding: 0px 50px;
 	background-color: white;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.logo {
-	font-size: 35px;
-	font-weight: bold;
-	color: #ffffff;
+.logo-container {
+	display: flex;
+	align-items: center;
+}
+
+.logo_immagine {
+	margin-top: 5px;
+	width: 220px; 
+	height: 80px; 
+	
 }
 
 nav ul {
 	list-style: none;
 	display: flex;
 	gap: 20px;
+}
+.user-info{
+	color: #0081e9;
+	font-size: 20px; 
+    font-weight: bold;
+	
 }
 
 nav ul li {
@@ -40,12 +52,47 @@ nav ul li a {
 	padding: 10px 15px;
 }
 
-.register-btn {
-	background-color: #ffa600;
+.login-btn {
+	background-color: #ff5600;
 	color: white !important;
-	border-radius: 5px;
+	border-radius: 15px;
+	font-weight: bold;
 }
 
+.hero {
+    position: relative; /* Necessario per l'overlay */
+    background-image: url("images/noleggio.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    padding: 50px;
+    text-align: center;
+    max-height: 570px;
+}
+
+/* Overlay scuro */
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Cambia l'ultimo valore per scurire di più (0.7 è più scuro) */
+    z-index: 1;
+}
+
+/* Porta il contenuto sopra l'overlay */
+.hero * {
+    position: relative;
+    z-index: 2;
+}
+
+.titolo_home{
+	font-size: 4em;
+	
+}
 /* Sezioni principali */
 main {
 	padding: 20px;
@@ -58,7 +105,7 @@ section {
 	margin: 20px auto;
 	border-radius: 10px;
 	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-	max-width: 600px;
+	max-width: 750px;
 	/* Allinea il contenuto in colonna */
 	display: flex;
 	flex-direction: column;
@@ -68,6 +115,7 @@ section {
 
 /* Pulsanti corretti */
 button {
+	font-weight: bold;
 	display: block;
 	margin: 10px auto;
 	width: auto;
@@ -75,10 +123,10 @@ button {
 	padding: 10px 20px;
 	font-size: 16px;
 	border: none;
-	background-color: #e45b00;
+	background-color: #ff5600;
 	color: white;
 	cursor: pointer;
-	border-radius: 5px;
+	border-radius: 15px;
 	transition: background 0.3s;
 	text-align: center;
 }
@@ -87,12 +135,13 @@ button:hover {
 	background-color: #000000;
 }
 
+
 /* Impostazioni per i moduli */
 form {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
-	width: 500px;
+	width: 860px;
 	border-radius: 10px;
 	margin: auto;
 	align-items: center;
@@ -104,24 +153,26 @@ input, select {
 	padding: 8px;
 	border: 1px solid #ddd;
 	border-radius: 5px;
-	margin-bottom: 10px;
+	
 }
 
 /* Navbar personalizzata */
-.navbar {
-	display: flex;
-	justify-content: space-between;
-	background-color: #fd7c25;
-	padding: 10px;
-	color: white;
-	align-items: center;
+.my-navbar {
+    display: flex;
+    height: 60px;
+    justify-content: space-between;
+    background-color: #2d0057;
+    padding: 5px;
+    color: white;
+    align-items: center;
 }
 
 .nav-links {
 	list-style: none;
 	display: flex;
-	gap: 15px;
+	gap: 12px;
 	align-items: center;
+	margin-right: 15px;
 }
 
 .nav-links a {
@@ -138,47 +189,82 @@ ul {
 
 /* Stile titoli */
 h2 {
-	color: #e45b00;
+	color: #ff5600;
 	margin-top: 20px;
 }
 
-/* Stile barra di ricerca */
+
+
+
 .search-bar {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: white;
-	border: 2px solid #ffc107;
-	border-radius: 10px;
-	padding: 10px;
-	gap: 10px;
-	max-width: 800px;
-	margin: auto;
-	flex-wrap: nowrap; /* Evita che gli elementi vadano a capo */
+		width: 900px;
+		margin-top: 100px;
+		color: black;
+		border: 2px solid #ff5600;
+		outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        background: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        gap: 15px;
+        flex-direction: row;
+    }
+
+    .search-item,
+    .date-time {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .search-item input,
+    .date-time input {
+    	
+        width: 100%;
+        max-width: 180px;
+        padding: 5px;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        text-align: center;
+        color: #777777;
+        font-weight: bold;
+        
+    }
+
+    .date-time label {
+    	color: #777777;
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .btn-primary {
+        background-color: #ff5600;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .btn-primary:hover {
+        background-color: #ff5600;
+    }
+
+.cars {
+  max-width: 100% !important;   /* Sovrascrive il max-width: 750px */
+  margin: 0 !important;         /* Rimuove il margin: 20px auto */
+  padding: 0;                   /* Se vuoi rimuovere padding nella sezione */
+  border-radius: 0;             /* Rimuovi eventuali bordi arrotondati */
+  box-shadow: none;             /* Rimuovi ombra se non la vuoi */
+  background: none;             /* O imposta un colore di sfondo diverso */
 }
 
-.search-item, .date-time {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-}
 
-.search-bar input {
-	padding: 8px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	font-size: 14px;
-	width: auto;
-	min-width: 120px;
-}
-
-.search-btn {
-	background-color: #28a745;
-	color: white;
-	border: none;
-	padding: 10px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 14px;
-	width: auto;
-}
