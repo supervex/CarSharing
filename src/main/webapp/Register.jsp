@@ -40,7 +40,7 @@
 			<%
 			} else {
 			%>
-			<li><a href="home.jsp"><button class="login-btn">Home</button></a></li>
+			<li><a href="HomeController?method=get"><button class="login-btn">Home</button></a></li>
 			<%
 			}
 			%>
@@ -69,7 +69,7 @@
 					<label class="label">Data di nascita</label>
 				<input type="date" id="dataNascita" name="dataNascita" required
 					value="<%= request.getAttribute("dataNascita") != null ? request.getAttribute("dataNascita") : "" %>">
-				<label class="label">Città</label>
+				<label class="label">CittÃ </label>
 				<input type="text"
 					id="citta" name="citta"  required
 					value="<%= request.getAttribute("citta") != null ? request.getAttribute("citta") : "" %>">

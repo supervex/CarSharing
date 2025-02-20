@@ -43,6 +43,10 @@
 			<%
 			} else {
 			%>
+<<<<<<< HEAD
+=======
+			<li><a href="login.jsp">Accedi</a></li>
+>>>>>>> 9de2c7d396b95a7c661e40c3f8f4649cc8e71920
 			<li><a href="Register.jsp"><button class="register-btn">Registrati</button></a></li>
 			<%
 			}
