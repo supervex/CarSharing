@@ -98,7 +98,7 @@
             <td><%= auto.getModello() %></td>
             <td><%= auto.getTarga() %></td>
             <td><%= auto.getCarburante() %></td>
-            <td>€<%= auto.getPrezzo() %> al giorno</td>
+            <td>€<%= auto.getPrezzo() %> all'ora</td>
             <td>
                 <form action="AutoController" method="post" style="display:inline;">
                     <input type="hidden" name="tipoOperazione" value="eliminaAuto">
