@@ -81,7 +81,7 @@
                         <input type="hidden" name="idUtente" value="<%= utente.getId() %>">
                         <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo utente?')">Elimina</button>
                     </form>
-                    <a href="UtenteController?tipoOperazione=dettagli&idUtente=<%= utente.getId() %>">
+                    <a href="dettagliUtente.jsp">
                         <button type="button">Dettagli</button>
                     </a>
                 </td>
@@ -120,7 +120,7 @@
                         <input type="hidden" name="id" value="<%= auto.getId() %>">
                         <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questa auto?')">Elimina</button>
                     </form>
-                    <a href="AutoController?tipoOperazione=dettagli&idAuto=<%= auto.getId() %>">
+                    <a href="AutoController?tipoOperazione=dettagli&id=<%= auto.getId() %>">
                         <button type="button">Dettagli</button>
                     </a>
                 </td>

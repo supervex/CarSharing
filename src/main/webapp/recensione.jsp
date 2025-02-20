@@ -44,7 +44,7 @@
        <input type="hidden" name="idNoleggio" value="<%= noleggio.getId() %>">
         <input type="hidden" name="idAuto" value="<%= auto.getId() %>">
         <input type="hidden" name="idUtente" value="<%= utente.getId() %>">
-
+<input type="hidden" name="tipoOperazione" value="inserisciRecensione">
         <div class="form-group">
             <label for="descrizione">Descrizione Recensione:</label>
             <textarea name="descrizione" id="descrizione" rows="4" class="input-field" required></textarea>

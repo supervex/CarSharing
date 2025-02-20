@@ -41,11 +41,20 @@ public class UtenteController extends HttpServlet {
             case "eliminaUtente":
                 gestisciEliminaUtente(request, response);
                 break;
+            case "dettagli":
+                dettagliUtente(request, response);
+                break;  
             default:
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Operazione non valida");
         }
     }
-    
+    private void dettagliUtente(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    	
+        RequestDispatcher dispatcher = request.getRequestDispatcher("dettagliAuto.jsp");
+        dispatcher.forward(request, response);  
+    	
+    }
     private void gestisciLogin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
@@ -79,6 +88,7 @@ public class UtenteController extends HttpServlet {
         String telefono = request.getParameter("telefono");
         String email = request.getParameter("email");
 
+        // Controllo se tutti i campi sono compilati
         if (username == null || username.isEmpty() || nome == null || nome.isEmpty() || cognome == null || cognome.isEmpty() ||
             dataNascitaStr == null || dataNascitaStr.isEmpty() || password == null || password.isEmpty() || citta == null || citta.isEmpty() ||
             telefono == null || telefono.isEmpty() || email == null || email.isEmpty()) {
@@ -86,15 +96,22 @@ public class UtenteController extends HttpServlet {
             return;
         }
 
-        // Controllo email
+        // Controllo formato email
         String emailPattern = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
         if (!email.matches(emailPattern)) {
             inviaErrore(request, response, "Inserisci un'email valida!", "/Register.jsp");
             return;
         }
 
+        // Controllo se l'username esiste già
         if (utenteQuery.getUtenteByUsername(username) != null) {
             inviaErrore(request, response, "Username già in uso. Scegli un altro username.", "/Register.jsp");
+            return;
+        }
+
+        // Controllo se l'email esiste già
+        if (utenteQuery.getUtenteByEmail(email) != null) { 
+            inviaErrore(request, response, "Email già registrata. Usa un'altra email.", "/Register.jsp");
             return;
         }
 
@@ -175,7 +192,9 @@ public class UtenteController extends HttpServlet {
         if(utente.isAmministratore()) {
         	request.setAttribute("successMessage", "utente eliminato con successo.");
         	response.sendRedirect("AdminController?method=get");
-        	
+        	if(utente.getId() == idUtente) {
+        		gestisciLogout(request, response);   
+        	}
         }else {        	
         	gestisciLogout(request, response);        	
         }       

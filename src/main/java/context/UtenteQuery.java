@@ -129,4 +129,32 @@ public class UtenteQuery {
             resultSet.getBoolean("amministratore")
         );
     }
+    
+    public Utente getUtenteByEmail(String email) {
+        String sql = "SELECT * FROM utente WHERE email = ?";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Utente(
+                        rs.getInt("ID_utente"),
+                        rs.getString("username"),
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        rs.getDate("dataNascita"),
+                        rs.getString("passwordUtente"),
+                        rs.getString("citta"),
+                        rs.getString("telefono"),
+                        rs.getString("email"),
+                        rs.getBoolean("amministratore")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Se non trova l'utente, ritorna null
+    }
+
 }

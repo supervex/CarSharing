@@ -87,11 +87,13 @@
 
 		<!-- Sezione Pagamenti -->
 		<section id="pagamenti" class="card">
-			<h2>Fatture e Pagamenti</h2>
+			<h2>le tue recensioni</h2>
 			<p>
-				<strong>Ultimo pagamento:</strong> 109€ per Mercedes GLC
+				<strong>recensioni:</strong>
 			</p>
-			<button class="btn">Visualizza Fatture</button>
+			
+			<a href="RecensioneController?tipoOperazione=mostraRecensioni" class="btn">le recensioni</a>
+			
 		</section>
 
 		<!-- Sezione Assistenza -->

@@ -12,6 +12,7 @@ import models.Utente;
 import models.Noleggio;
 import models.Auto;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import context.AutoQuery;
 import context.NoleggioQuery;
@@ -42,6 +43,12 @@ public class RecensioneController extends HttpServlet {
     	 switch (tipoOperazione != null ? tipoOperazione : "") {
          case "lasciaRecensione":
              preparaFormRecensione(request, response);
+             break;
+         case "dettagli":
+             mostraDettagli(request, response);
+             break;
+         case "mostraRecensioni":
+            mostraRecensioni(request, response);
              break;
          default:
               // Comportamento predefinito
@@ -123,7 +130,16 @@ public class RecensioneController extends HttpServlet {
             response.sendRedirect("gestione.jsp");
         }
     }
-
+    protected void mostraRecensioni(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	HttpSession session = request.getSession();
+        Utente utente = (Utente) session.getAttribute("user");
+        
+      ArrayList<Recensione> recensioni = (ArrayList<Recensione>) receQuery.cercaRecensioniPerIdUtente(utente.getId());
+      request.setAttribute("recensioni", recensioni);
+      RequestDispatcher dispatcher = request.getRequestDispatcher("recensioniUtente.jsp");
+      dispatcher.forward(request, response);
+    	
+    }
     protected void preparaFormRecensione(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	int idNoleggio = Integer.parseInt(request.getParameter("idNoleggio"));
     	Noleggio noleggio = noleggioQuery.trovaNoleggioPerId(idNoleggio);
@@ -141,4 +157,26 @@ public class RecensioneController extends HttpServlet {
         dispatcher.forward(request, response);
     	
     }
+    
+    protected void mostraDettagli(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            int idRecensione = Integer.parseInt(request.getParameter("idRecensione"));
+            Recensione recensione = receQuery.cercaRecensionePerId(idRecensione);
+
+            if (recensione != null) {
+                request.setAttribute("recensione", recensione);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("dettagliRecensione.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                request.setAttribute("errore", "Recensione non trovata.");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("errore.jsp");
+                dispatcher.forward(request, response);
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("errore", "ID recensione non valido.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("errore.jsp");
+            dispatcher.forward(request, response);
+        }
+    }
+
 }

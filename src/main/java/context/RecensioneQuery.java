@@ -104,6 +104,64 @@ public class RecensioneQuery {
         }
         return false;
     }
+    
+    public Recensione cercaRecensionePerId(int idRecensione) {
+        String sql = "SELECT * FROM recensione WHERE ID_recensione = ?";
+        Recensione recensione = null;
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, idRecensione);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    recensione = new Recensione(
+                        rs.getInt("ID_recensione"),
+                        rs.getInt("ID_utente"),
+                        rs.getInt("ID_auto"),
+                        rs.getString("descrizione"),
+                        rs.getInt("valutazione")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore durante la ricerca della recensione: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return recensione;
+    }
+    
+    public List<Recensione> cercaRecensioniPerIdUtente(int idUtente) {
+        List<Recensione> listaRecensioni = new ArrayList<>();
+        String sql = "SELECT * FROM recensione WHERE ID_utente = ?";
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, idUtente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Recensione recensione = new Recensione(
+                        rs.getInt("ID_recensione"),
+                        rs.getInt("ID_utente"),
+                        rs.getInt("ID_auto"),
+                        rs.getString("descrizione"),
+                        rs.getInt("valutazione")
+                    );
+                    listaRecensioni.add(recensione);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Errore durante la ricerca delle recensioni per ID utente: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return listaRecensioni;
+    }
+
 }	
 
 
