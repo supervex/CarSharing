@@ -161,7 +161,31 @@ public class RecensioneQuery {
 
         return listaRecensioni;
     }
-
+    
+    public List<Recensione> getAllRecensioniPerAuto(int idAuto) {
+        List<Recensione> listaRecensioni = new ArrayList<>();
+        String sql = "SELECT * FROM recensione WHERE ID_auto = ?";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idAuto);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Recensione recensione = new Recensione(
+                        rs.getInt("ID_recensione"),
+                        rs.getInt("ID_utente"),
+                        rs.getInt("ID_auto"),
+                        rs.getString("descrizione"),
+                        rs.getInt("valutazione")
+                    );
+                    listaRecensioni.add(recensione);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Errore durante la ricerca delle recensioni per ID auto: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return listaRecensioni;
+    }
 }	
 
 

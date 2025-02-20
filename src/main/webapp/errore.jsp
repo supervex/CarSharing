@@ -27,8 +27,9 @@
         <% } %>
 
         <div class="text-center">
-            <a href="AutoUtente.jsp" class="btn btn-primary">Torna alla lista auto</a>
-            <a href="index.jsp" class="btn btn-secondary">Torna alla homepage</a>
+            
+            <a href="HomeController?method=get" class="btn btn-secondary">Torna alla homepage</a>
+             <a href="javascript:history.back()">Torna alla pagina precedente</a>
         </div>
     </div>
 </body>

@@ -3,6 +3,8 @@
 <%@ page import="models.Utente"%>
 <%@ page import="java.util.List"%>
 <%@ page import="models.Auto"%>
+<%@ page import= "context.RecensioneQuery" %>
+<%@ page import="models.Recensione" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -75,6 +77,16 @@
 			Scegli tra la nostra ampia selezione di auto e parti per la strada
 			con stile.</p>
 		<%
+		}
+		%>
+				<%
+		String errorMessage = (String) request.getAttribute("errorMessage");
+		%>
+			<%
+		if (errorMessage != null) {
+		%>
+			<p class="error"><%=errorMessage%></p>
+			<%
 		}
 		%>
 		<form class="search-bar" method="get" action="NoleggioController">
@@ -150,20 +162,35 @@
                   <p class="card-text"><strong>Cambio:</strong> <%= auto.getCambio() %></p>
                   <p class="card-text"><strong>Posizione:</strong> <%= auto.getPosizione() %></p>
                   <p class="card-text"><strong>Città:</strong> <%= auto.getCitta() %></p>
-                  <p class="card-text"><strong>Prezzo:</strong> €<%= auto.getPrezzo() %> al giorno</p>
+                  <p class="card-text"><strong>Prezzo:</strong> €<%= auto.getPrezzo() %> al ora</p>
+                  <%  
+                  RecensioneQuery recensioneQuery = new RecensioneQuery();
+                  List<Recensione> recensioni = recensioneQuery.getAllRecensioniPerAuto(auto.getId());
+                  double somma = 0;
+                  double c = 0;
+                  for(Recensione recensione : recensioni){
+                	somma = somma + recensione.getValuatzione();
+                	c ++;
+                  }
+                  double media = somma /c;
+                  %>
+                  <p class="card-text"><strong>Valutazione media:</strong> <%= media %> ⭐</p>
                   <% if (utenteLoggatoHome != null) { %>
-                    <form action="NoleggioController" method="get">
-                      <input type="hidden" name="idAuto" value="<%= auto.getId() %>">
-                      <input type="hidden" name="dataRitiro" value="<%= request.getAttribute("dataRitiro") != null ? request.getAttribute("dataRitiro") : "" %>">
-                      <input type="hidden" name="oraRitiro" value="<%= request.getAttribute("oraRitiro") != null ? request.getAttribute("oraRitiro") : "" %>">
-                      <input type="hidden" name="dataRiconsegna" value="<%= request.getAttribute("dataRiconsegna") != null ? request.getAttribute("dataRiconsegna") : "" %>">
-                      <input type="hidden" name="oraRiconsegna" value="<%= request.getAttribute("oraRiconsegna") != null ? request.getAttribute("oraRiconsegna") : "" %>">
-                      <input type="hidden" name="tipoOperazione" value="inserisci">
-                      <button type="submit" class="btn btn-success">Prenota</button>
-                    </form>
-                  <% } else { %>
-                    <button type="button" class="btn btn-danger" onclick="avvisaUtente()">Prenota</button>
-                  <% } %>
+    <form action="NoleggioController" method="get" class="prenota-form text-center">
+        <input type="hidden" name="idAuto" value="<%= auto.getId() %>">
+        <input type="hidden" name="dataRitiro" value="<%= request.getAttribute("dataRitiro") != null ? request.getAttribute("dataRitiro") : "" %>">
+        <input type="hidden" name="oraRitiro" value="<%= request.getAttribute("oraRitiro") != null ? request.getAttribute("oraRitiro") : "" %>">
+        <input type="hidden" name="dataRiconsegna" value="<%= request.getAttribute("dataRiconsegna") != null ? request.getAttribute("dataRiconsegna") : "" %>">
+        <input type="hidden" name="oraRiconsegna" value="<%= request.getAttribute("oraRiconsegna") != null ? request.getAttribute("oraRiconsegna") : "" %>">
+        <input type="hidden" name="tipoOperazione" value="inserisci">
+        <button type="submit" class="btn d-block mx-auto franco">Prenota</button>
+    </form>
+<% } else { %>
+    <div class="text-center">
+        <button type="button" class="franco" onclick="avvisaUtente()">Prenota</button>
+    </div>
+<% } %>
+
                 </div>
               </div>
             </div>

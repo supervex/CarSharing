@@ -1,270 +1,331 @@
-body {
-	font-family: 'Montserrat', sans-serif;
-	margin: 0;
-	padding: 0;
-	background-color: rgb(133 0 255 / 45%);
+body { /* Definisce lo stile di base per il body della pagina */
+    font-family: 'Montserrat', sans-serif; /* Imposta il font principale a Montserrat con fallback a sans-serif */
+    margin: 0; /* Rimuove i margini predefiniti */
+    padding: 0; /* Rimuove il padding predefinito */
+    background-color: rgb(133 0 255 / 45%); /* Imposta il colore di sfondo con trasparenza (45%) */
 }
-
 
 /* Navbar */
-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0px 50px;
-	background-color: white;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+header { /* Seleziona l'elemento header */
+    display: flex; /* Usa il flexbox per il layout */
+    justify-content: space-between; /* Distribuisce lo spazio tra gli elementi in modo uniforme */
+    align-items: center; /* Allinea verticalmente gli elementi al centro */
+    padding: 0px 50px; /* Applica 0px di padding verticale e 50px orizzontale */
+    background-color: white; /* Imposta lo sfondo dell'header a bianco */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Applica un'ombra leggera sotto l'header */
 }
 
-.logo-container {
-	display: flex;
-	align-items: center;
+.logo-container { /* Seleziona il contenitore del logo */
+    display: flex; /* Usa il flexbox per posizionare il logo */
+    align-items: center; /* Allinea verticalmente il logo al centro */
 }
 
-.logo_immagine {
-	margin-top: 5px;
-	width: 220px; 
-	height: 80px; 
-	
+.logo_immagine { /* Seleziona l'immagine del logo */
+    margin-top: 5px; /* Aggiunge un margine superiore di 5px */
+    width: 220px; /* Imposta la larghezza a 220px */
+    height: 80px; /* Imposta l'altezza a 80px */
 }
 
-nav ul {
-	list-style: none;
-	display: flex;
-	gap: 20px;
-}
-.user-info{
-	color: #0081e9;
-	font-size: 20px; 
-    font-weight: bold;
-	
+nav ul { /* Seleziona le liste non ordinate all'interno del nav */
+    list-style: none; /* Rimuove i bullet point dalla lista */
+    display: flex; /* Usa il flexbox per disporre gli elementi in riga */
+    gap: 20px; /* Aggiunge uno spazio di 20px tra gli elementi della lista */
 }
 
-nav ul li {
-	display: inline;
+.user-info { /* Seleziona gli elementi con classe user-info */
+    color: #0081e9; /* Imposta il colore del testo a blu */
+    font-size: 20px; /* Imposta la dimensione del font a 20px */
+    font-weight: bold; /* Rende il testo in grassetto */
 }
 
-nav ul li a {
-	text-decoration: none;
-	font-size: 16px;
-	color: black;
-	font-weight: bold;
-	padding: 10px 15px;
+nav ul li { /* Seleziona ogni elemento della lista nel nav */
+    display: inline; /* Visualizza gli elementi in linea */
 }
 
-.login-btn {
-	background-color: #ff5600;
-	color: white !important;
-	border-radius: 15px;
-	font-weight: bold;
+nav ul li a { /* Seleziona i link presenti all'interno degli elementi della lista */
+    text-decoration: none; /* Rimuove la sottolineatura dai link */
+    font-size: 16px; /* Imposta la dimensione del font a 16px */
+    color: black; /* Imposta il colore del testo a nero */
+    font-weight: bold; /* Rende il testo in grassetto */
+    padding: 10px 15px; /* Applica 10px di padding verticale e 15px orizzontale */
 }
 
-.hero {
-    position: relative; /* Necessario per l'overlay */
-    background-image: url("images/noleggio.webp");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: white;
-    padding: 50px;
-    text-align: center;
-    max-height: 570px;
+.login-btn { /* Seleziona il bottone di login */
+    background-color: #ff5600; /* Imposta il colore di sfondo arancione */
+    color: white !important; /* Imposta il colore del testo a bianco, con priorità grazie a !important */
+    border-radius: 15px; /* Arrotonda gli angoli del bottone a 15px */
+    font-weight: bold; /* Rende il testo in grassetto */
+}
+
+.hero { /* Seleziona la sezione hero */
+    position: relative; /* Necessario per posizionare l'overlay rispetto a questo elemento */
+    background-image: url("images/noleggio.webp"); /* Imposta l'immagine di sfondo */
+    background-size: cover; /* Fa in modo che l'immagine copra interamente l'area */
+    background-position: center; /* Centra l'immagine di sfondo */
+    background-repeat: no-repeat; /* Evita la ripetizione dell'immagine */
+    color: white; /* Imposta il colore del testo a bianco */
+    padding: 50px; /* Applica un padding di 50px su tutti i lati */
+    text-align: center; /* Centra il testo all'interno della sezione */
+    max-height: 570px; /* Imposta un'altezza massima di 570px */
 }
 
 /* Overlay scuro */
-.hero::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Cambia l'ultimo valore per scurire di più (0.7 è più scuro) */
-    z-index: 1;
+.hero::before { /* Seleziona l'elemento pseudo ::before della sezione hero per creare un overlay */
+    content: ""; /* Inserisce un contenuto vuoto per rendere visibile l'overlay */
+    position: absolute; /* Posiziona l'overlay in modo assoluto rispetto alla hero */
+    top: 0; /* Posiziona l'overlay in alto */
+    left: 0; /* Posiziona l'overlay a sinistra */
+    width: 100%; /* Occupa il 100% della larghezza della hero */
+    height: 100%; /* Occupa il 100% dell'altezza della hero */
+    background-color: rgba(0, 0, 0, 0.5); /* Imposta un colore nero con trasparenza del 50% per l'overlay */
+    z-index: 1; /* Posiziona l'overlay sotto il contenuto principale della hero */
 }
 
 /* Porta il contenuto sopra l'overlay */
-.hero * {
-    position: relative;
-    z-index: 2;
+.hero * { /* Seleziona tutti gli elementi all'interno della sezione hero */
+    position: relative; /* Imposta la posizione relativa per permettere il corretto layering */
+    z-index: 2; /* Posiziona questi elementi sopra l'overlay */
 }
 
-.titolo_home{
-	font-size: 4em;
-	
+.titolo_home { /* Seleziona gli elementi con classe titolo_home */
+    font-size: 4em; /* Imposta la dimensione del font a 4em */
 }
+
 /* Sezioni principali */
-main {
-	padding: 20px;
-	text-align: center;
+main { /* Seleziona l'elemento main */
+    padding: 20px; /* Applica un padding di 20px */
+    text-align: center; /* Centra il testo all'interno del main */
 }
 
-section {
-	background: rgb(240, 240, 240);
-	padding: 20px;
-	margin: 20px auto;
-	border-radius: 10px;
-	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-	max-width: 750px;
-	/* Allinea il contenuto in colonna */
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
+section { /* Seleziona gli elementi section */
+    background: rgb(240, 240, 240); /* Imposta un colore di sfondo grigio chiaro */
+    padding: 20px; /* Applica un padding di 20px */
+    margin: 20px auto; /* Aggiunge un margine verticale di 20px e centra orizzontalmente */
+    border-radius: 10px; /* Arrotonda gli angoli della sezione a 10px */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra leggera intorno alla sezione */
+    max-width: 750px; /* Imposta la larghezza massima a 750px */
+    display: flex; /* Usa il flexbox per il layout interno */
+    flex-direction: column; /* Dispone gli elementi in colonna */
+    align-items: center; /* Centra gli elementi orizzontalmente */
+    text-align: center; /* Centra il testo all'interno della sezione */
 }
 
 /* Pulsanti corretti */
-button {
-	font-weight: bold;
-	display: block;
-	margin: 10px auto;
-	width: auto;
-	max-width: 200px;
-	padding: 10px 20px;
-	font-size: 16px;
-	border: none;
-	background-color: #ff5600;
-	color: white;
-	cursor: pointer;
-	border-radius: 15px;
-	transition: background 0.3s;
-	text-align: center;
+button{ /* Seleziona tutti i pulsanti */
+    font-weight: bold; /* Rende il testo in grassetto */
+    display: block; /* Visualizza il pulsante come blocco */
+    margin: 5px auto; /* Aggiunge un margine verticale di 5px e centra il pulsante orizzontalmente */
+    width: auto; /* Larghezza automatica */
+    max-width: 250px; /* Imposta una larghezza massima di 250px */
+    padding: 10px 20px; /* Applica un padding di 10px verticalmente e 20px orizzontale */
+    font-size: 16px; /* Imposta la dimensione del font a 16px */
+    border: none; /* Rimuove il bordo */
+    background-color: #ff5600; /* Imposta il colore di sfondo arancione */
+    color: white; /* Imposta il colore del testo a bianco */
+    cursor: pointer; /* Cambia il cursore a pointer per indicare interattività */
+    border-radius: 15px; /* Arrotonda gli angoli del pulsante a 15px */
+    transition: background 0.3s; /* Applica una transizione al cambio del colore di sfondo */
+    text-align: center; /* Centra il testo all'interno del pulsante */
 }
 
-button:hover {
-	background-color: #000000;
+button:hover { /* Stile per il pulsante al passaggio del mouse */
+    background-color: rgb(0, 0, 0, 0.001); /* Cambia leggermente il colore di sfondo quando il mouse è sopra */
 }
-
 
 /* Impostazioni per i moduli */
-form {
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
-	width: 860px;
-	border-radius: 10px;
-	margin: auto;
-	align-items: center;
+form { /* Seleziona tutti gli elementi form */
+    display: flex; /* Usa il flexbox per il layout del form */
+    flex-direction: column; /* Dispone gli elementi del form in colonna */
+    gap: 20px; /* Aggiunge uno spazio di 20px tra gli elementi del form */
+    width: 860px; /* Imposta la larghezza del form a 860px */
+    border-radius: 10px; /* Arrotonda gli angoli del form a 10px */
+    margin: auto; /* Centra il form orizzontalmente */
+    align-items: center; /* Centra gli elementi all'interno del form */
 }
 
 /* Campi input */
-input, select {
-	width: 100%;
-	padding: 8px;
-	border: 1px solid #ddd;
-	border-radius: 5px;
-	
+input, select { /* Seleziona gli elementi input e select */
+    width: 100%; /* Imposta la larghezza al 100% del contenitore */
+    padding: 8px; /* Applica un padding di 8px */
+    border: 1px solid #ddd; /* Applica un bordo sottile grigio chiaro */
+    border-radius: 5px; /* Arrotonda gli angoli degli input a 5px */
 }
 
 /* Navbar personalizzata */
-.my-navbar {
-    display: flex;
-    height: 60px;
-    justify-content: space-between;
-    background-color: #2d0057;
-    padding: 5px;
-    color: white;
-    align-items: center;
+.my-navbar { /* Seleziona l'elemento con classe my-navbar */
+    display: flex; /* Usa il flexbox per il layout */
+    height: 60px; /* Imposta l'altezza a 60px */
+    justify-content: space-between; /* Distribuisce lo spazio tra gli elementi in modo uniforme */
+    background-color: #2d0057; /* Imposta il colore di sfondo a un blu scuro */
+    padding: 5px; /* Applica un padding di 5px su tutti i lati */
+    color: white; /* Imposta il colore del testo a bianco */
+    align-items: center; /* Allinea verticalmente gli elementi al centro */
 }
 
-.nav-links {
-	list-style: none;
-	display: flex;
-	gap: 12px;
-	align-items: center;
-	margin-right: 15px;
+.nav-links { /* Seleziona l'elemento con classe nav-links */
+    list-style: none; /* Rimuove i bullet point dalla lista */
+    display: flex; /* Usa il flexbox per disporre gli elementi in riga */
+    gap: 12px; /* Aggiunge uno spazio di 12px tra gli elementi */
+    align-items: center; /* Allinea verticalmente gli elementi al centro */
+    margin-right: 15px; /* Aggiunge un margine destro di 15px */
 }
 
-.nav-links a {
-	color: white;
-	text-decoration: none;
-	font-weight: bold;
+.nav-links a { /* Seleziona i link all'interno di nav-links */
+    color: white; /* Imposta il colore del testo a bianco */
+    text-decoration: none; /* Rimuove la sottolineatura dai link */
+    font-weight: bold; /* Rende il testo in grassetto */
 }
 
 /* Stile liste */
-ul {
-	list-style-type: none;
-	padding: 0;
+ul { /* Seleziona tutti gli elementi ul */
+    list-style-type: none; /* Rimuove i bullet point dalle liste */
+    padding: 0; /* Rimuove il padding predefinito */
 }
 
 /* Stile titoli */
-h2 {
-	color: #ff5600;
-	margin-top: 20px;
+h2 { /* Seleziona tutti gli elementi h2 */
+    color: #ff5600; /* Imposta il colore del testo a arancione */
+    margin-top: 20px; /* Aggiunge un margine superiore di 20px */
 }
 
-
-
-
-.search-bar {
-		width: 900px;
-		margin-top: 100px;
-		color: black;
-		border: 2px solid #ff5600;
-		outline: none;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        background: #fff;
-        padding: 10px;
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        gap: 15px;
-        flex-direction: row;
-    }
-
-    .search-item,
-    .date-time {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-
-    .search-item input,
-    .date-time input {
-    	
-        width: 100%;
-        max-width: 180px;
-        padding: 5px;
-        border: none;
-        border-radius: 5px;
-        font-size: 18px;
-        text-align: center;
-        color: #777777;
-        font-weight: bold;
-        
-    }
-
-    .date-time label {
-    	color: #777777;
-        font-size: 15px;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .btn-primary {
-        background-color: #ff5600;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 15px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .btn-primary:hover {
-        background-color: #ff5600;
-    }
-
-.cars {
-  max-width: 100% !important;   /* Sovrascrive il max-width: 750px */
-  margin: 0 !important;         /* Rimuove il margin: 20px auto */
-  padding: 0;                   /* Se vuoi rimuovere padding nella sezione */
-  border-radius: 0;             /* Rimuovi eventuali bordi arrotondati */
-  box-shadow: none;             /* Rimuovi ombra se non la vuoi */
-  background: none;             /* O imposta un colore di sfondo diverso */
+.search-bar { /* Seleziona l'elemento con classe search-bar */
+    width: 900px; /* Imposta la larghezza a 900px */
+    margin-top: 100px; /* Aggiunge un margine superiore di 100px */
+    color: black; /* Imposta il colore del testo a nero */
+    border: 2px solid #ff5600; /* Applica un bordo arancione di 2px */
+    outline: none; /* Rimuove l'outline predefinito */
+    display: flex; /* Usa il flexbox per il layout */
+    align-items: center; /* Allinea verticalmente gli elementi al centro */
+    justify-content: space-between; /* Distribuisce lo spazio tra gli elementi */
+    flex-wrap: wrap; /* Consente agli elementi di andare a capo se necessario */
+    background: #fff; /* Imposta lo sfondo a bianco */
+    padding: 10px; /* Applica un padding di 10px */
+    border-radius: 10px; /* Arrotonda gli angoli a 10px */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Applica un'ombra leggera intorno alla search-bar */
+    gap: 15px; /* Aggiunge uno spazio di 15px tra gli elementi */
+    flex-direction: row; /* Dispone gli elementi in una riga */
 }
 
+.search-item,
+.date-time { /* Seleziona gli elementi con classe search-item e date-time */
+    display: flex; /* Usa il flexbox per il layout */
+    flex-direction: column; /* Dispone gli elementi in colonna */
+    align-items: center; /* Centra orizzontalmente gli elementi */
+}
 
+.search-item input,
+.date-time input { /* Seleziona gli input all'interno di search-item e date-time */
+    width: 100%; /* Imposta la larghezza al 100% del contenitore */
+    max-width: 180px; /* Imposta una larghezza massima di 180px */
+    padding: 5px; /* Applica un padding di 5px */
+    border: none; /* Rimuove il bordo */
+    border-radius: 5px; /* Arrotonda gli angoli a 5px */
+    font-size: 18px; /* Imposta la dimensione del font a 18px */
+    text-align: center; /* Centra il testo all'interno degli input */
+    color: #777777; /* Imposta il colore del testo a grigio */
+    font-weight: bold; /* Rende il testo in grassetto */
+}
+
+.date-time label { /* Seleziona le etichette all'interno di date-time */
+    color: #777777; /* Imposta il colore del testo a grigio */
+    font-size: 15px; /* Imposta la dimensione del font a 15px */
+    font-weight: bold; /* Rende il testo in grassetto */
+    margin-bottom: 5px; /* Applica un margine inferiore di 5px */
+}
+
+.btn-primary { /* Seleziona gli elementi con classe btn-primary */
+    background-color: #ff5600; /* Imposta il colore di sfondo a arancione */
+    color: white; /* Imposta il colore del testo a bianco */
+    padding: 10px 20px; /* Applica un padding di 10px verticalmente e 20px orizzontale */
+    border: none; /* Rimuove il bordo */
+    border-radius: 15px; /* Arrotonda gli angoli a 15px */
+    cursor: pointer; /* Cambia il cursore in pointer per indicare interattività */
+    font-size: 16px; /* Imposta la dimensione del font a 16px */
+}
+
+.btn-primary:hover { /* Stile per btn-primary al passaggio del mouse */
+    background-color: #ff5600; /* Mantiene il colore di sfondo arancione al passaggio del mouse */
+}
+
+.cars { /* Seleziona l'elemento con classe cars */
+    max-width: 100% !important; /* Imposta la larghezza massima al 100% e sovrascrive eventuali regole precedenti */
+    margin: 0 !important; /* Rimuove i margini e sovrascrive eventuali regole precedenti */
+    padding: 0; /* Rimuove il padding */
+    border-radius: 0; /* Rimuove eventuali bordi arrotondati */
+    box-shadow: none; /* Rimuove l'ombra */
+    background: none; /* Rimuove il colore di sfondo */
+}
+
+/* Nuove regole per le immagini delle card */
+.card-img-top { /* Seleziona le immagini con classe card-img-top */
+    width: 90%; /* Imposta la larghezza al 100% della card */
+    height: 250px;  /* Imposta un'altezza fissa di 200px */
+    object-fit: cover; /* Adatta l'immagine, ritagliando le parti in eccesso per coprire l'area disponibile */
+}
+
+/* Nuove regole per il pulsante Prenota */
+.btn-prenota { /* Seleziona gli elementi con classe btn-prenota */
+    display: block; /* Visualizza il pulsante come blocco */
+    width: 100%; /* Imposta la larghezza al 100% della card */
+    padding: 10px 17px; /* Applica un padding di 10px verticalmente e 17px orizzontale */
+    font-size: 16px; /* Imposta la dimensione del font a 16px */
+    font-weight: bold; /* Rende il testo in grassetto */
+    color: white; /* Imposta il colore del testo a bianco */
+    background-color: #ff5600; /* Imposta il colore di sfondo a arancione */
+    border: none; /* Rimuove il bordo */
+    border-radius: 15px; /* Arrotonda gli angoli del pulsante a 15px */
+    cursor: pointer; /* Cambia il cursore in pointer al passaggio del mouse */
+    transition: background 0.3s; /* Applica una transizione per il cambio del colore di sfondo */
+    
+    
+    
+}
+
+.franco:hover { /* Stile per il pulsante Prenota al passaggio del mouse */
+    background-color: #e64e00; /* Cambia il colore di sfondo ad un arancione leggermente più scuro */
+}
+
+/* Posizionamento degli indicatori del carosello per evitare la sovrapposizione con il pulsante Prenota */
+.carousel-indicators { 
+    bottom: -20px; /* Sposta gli indicatori 20px sotto il bordo inferiore del carosello */
+}
+.carousel-item img { 
+    margin: 20px; /* Aggiunge un margine di 10px su tutti i lati */
+    border-radius: 10px; /* Arrotonda gli angoli delle immagini */
+}
+/* Spazio laterale per il carosello */
+#autoCarousel { 
+    margin: 0 25px; /* Aggiunge 25px di spazio a sinistra e a destra del carosello */
+}
+.prenota-form {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto !important;
+    padding: 0;
+}
+
+.prenota-form button.franco {
+    background-color: #ff5600 !important;
+    border-color: #ff5600 !important;
+     font-weight: bold; /* Rende il testo in grassetto */
+    display: block; /* Visualizza il pulsante come blocco */
+    margin: 5px auto; /* Aggiunge un margine verticale di 5px e centra il pulsante orizzontalmente */
+    width: auto; /* Larghezza automatica */
+    max-width: 250px; /* Imposta una larghezza massima di 250px */
+    padding: 10px 20px; /* Applica un padding di 10px verticalmente e 20px orizzontale */
+    font-size: 16px; /* Imposta la dimensione del font a 16px */
+    border: none; /* Rimuove il bordo */
+   
+    color: white; /* Imposta il colore del testo a bianco */
+    cursor: pointer; /* Cambia il cursore a pointer per indicare interattività */
+    border-radius: 15px; /* Arrotonda gli angoli del pulsante a 15px */
+    transition: background 0.3s; /* Applica una transizione al cambio del colore di sfondo */
+    text-align: center; /* Centra il testo all'interno del pulsante */
+}
+
+.prenota-form button.franco:hover{
+    background-color: #e64e00 !important;
+    border-color: #e64e00 !important;
+}
