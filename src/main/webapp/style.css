@@ -213,6 +213,7 @@ h2 { /* Seleziona tutti gli elementi h2 */
     align-items: center; /* Centra orizzontalmente gli elementi */
 }
 
+
 .search-item input,
 .date-time input { /* Seleziona gli input all'interno di search-item e date-time */
     width: 100%; /* Imposta la larghezza al 100% del contenitore */
@@ -329,3 +330,121 @@ h2 { /* Seleziona tutti gli elementi h2 */
     border-color: #e64e00 !important;
 }
 
+
+
+.search-item input,
+.date-time input { /* Seleziona gli input all'interno di search-item e date-time */
+    width: 100%; /* Imposta la larghezza al 100% del contenitore */
+    max-width: 180px; /* Imposta una larghezza massima di 180px */
+    padding: 5px; /* Applica un padding di 5px */
+    border: none; /* Rimuove il bordo */
+    border-radius: 5px; /* Arrotonda gli angoli a 5px */
+    font-size: 18px; /* Imposta la dimensione del font a 18px */
+    text-align: center; /* Centra il testo all'interno degli input */
+    color: #777777; /* Imposta il colore del testo a grigio */
+    font-weight: bold; /* Rende il testo in grassetto */
+}
+
+.date-time label { /* Seleziona le etichette all'interno di date-time */
+    color: #777777; /* Imposta il colore del testo a grigio */
+    font-size: 15px; /* Imposta la dimensione del font a 15px */
+    font-weight: bold; /* Rende il testo in grassetto */
+    margin-bottom: 5px; /* Applica un margine inferiore di 5px */
+}
+
+.btn-primary { /* Seleziona gli elementi con classe btn-primary */
+    background-color: #ff5600; /* Imposta il colore di sfondo a arancione */
+    color: white; /* Imposta il colore del testo a bianco */
+    padding: 10px 20px; /* Applica un padding di 10px verticalmente e 20px orizzontale */
+    border: none; /* Rimuove il bordo */
+    border-radius: 15px; /* Arrotonda gli angoli a 15px */
+    cursor: pointer; /* Cambia il cursore in pointer per indicare interattività */
+    font-size: 16px; /* Imposta la dimensione del font a 16px */
+}
+
+.btn-primary:hover { /* Stile per btn-primary al passaggio del mouse */
+    background-color: #ff5600; /* Mantiene il colore di sfondo arancione al passaggio del mouse */
+}
+
+.cars { /* Seleziona l'elemento con classe cars */
+    max-width: 100% !important; /* Imposta la larghezza massima al 100% e sovrascrive eventuali regole precedenti */
+    margin: 0 !important; /* Rimuove i margini e sovrascrive eventuali regole precedenti */
+    padding: 0; /* Rimuove il padding */
+    border-radius: 0; /* Rimuove eventuali bordi arrotondati */
+    box-shadow: none; /* Rimuove l'ombra */
+    background: none; /* Rimuove il colore di sfondo */
+}
+
+/* Nuove regole per le immagini delle card */
+.card-img-top { /* Seleziona le immagini con classe card-img-top */
+    width: 90%; /* Imposta la larghezza al 100% della card */
+    height: 250px;  /* Imposta un'altezza fissa di 200px */
+    object-fit: cover; /* Adatta l'immagine, ritagliando le parti in eccesso per coprire l'area disponibile */
+}
+
+/* Nuove regole per il pulsante Prenota */
+.btn-prenota { /* Seleziona gli elementi con classe btn-prenota */
+    display: block; /* Visualizza il pulsante come blocco */
+    width: 100%; /* Imposta la larghezza al 100% della card */
+    padding: 10px 17px; /* Applica un padding di 10px verticalmente e 17px orizzontale */
+    font-size: 16px; /* Imposta la dimensione del font a 16px */
+    font-weight: bold; /* Rende il testo in grassetto */
+    color: white; /* Imposta il colore del testo a bianco */
+    background-color: #ff5600; /* Imposta il colore di sfondo a arancione */
+    border: none; /* Rimuove il bordo */
+    border-radius: 15px; /* Arrotonda gli angoli del pulsante a 15px */
+    cursor: pointer; /* Cambia il cursore in pointer al passaggio del mouse */
+    transition: background 0.3s; /* Applica una transizione per il cambio del colore di sfondo */
+    
+    
+    
+}
+
+.franco:hover { /* Stile per il pulsante Prenota al passaggio del mouse */
+    background-color: #e64e00; /* Cambia il colore di sfondo ad un arancione leggermente più scuro */
+}
+
+/* Posizionamento degli indicatori del carosello per evitare la sovrapposizione con il pulsante Prenota */
+.carousel-indicators { 
+    bottom: -20px; /* Sposta gli indicatori 20px sotto il bordo inferiore del carosello */
+}
+.carousel-item img { 
+    margin: 20px; /* Aggiunge un margine di 10px su tutti i lati */
+    border-radius: 10px; /* Arrotonda gli angoli delle immagini */
+}
+/* Spazio laterale per il carosello */
+#autoCarousel { 
+    margin: 0 25px; /* Aggiunge 25px di spazio a sinistra e a destra del carosello */
+}
+.prenota-form {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto !important;
+    padding: 0;
+}
+
+.prenota-form button.franco {
+    background-color: #ff5600 !important;
+    border-color: #ff5600 !important;
+     font-weight: bold; /* Rende il testo in grassetto */
+    display: block; /* Visualizza il pulsante come blocco */
+    margin: 5px auto; /* Aggiunge un margine verticale di 5px e centra il pulsante orizzontalmente */
+    width: auto; /* Larghezza automatica */
+    max-width: 250px; /* Imposta una larghezza massima di 250px */
+    padding: 10px 20px; /* Applica un padding di 10px verticalmente e 20px orizzontale */
+    font-size: 16px; /* Imposta la dimensione del font a 16px */
+    border: none; /* Rimuove il bordo */
+   
+    color: white; /* Imposta il colore del testo a bianco */
+    cursor: pointer; /* Cambia il cursore a pointer per indicare interattività */
+    border-radius: 15px; /* Arrotonda gli angoli del pulsante a 15px */
+    transition: background 0.3s; /* Applica una transizione al cambio del colore di sfondo */
+    text-align: center; /* Centra il testo all'interno del pulsante */
+}
+
+.prenota-form button.franco:hover{
+    background-color: #e64e00 !important;
+    border-color: #e64e00 !important;
+}

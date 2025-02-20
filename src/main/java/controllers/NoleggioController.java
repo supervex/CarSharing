@@ -6,11 +6,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import models.Utente;
 import models.Auto;
 import models.Noleggio;
+import models.Recensione;
 import context.AutoQuery;
 import context.NoleggioQuery;
+import context.RecensioneQuery;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -24,6 +27,7 @@ public class NoleggioController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final NoleggioQuery noleggioQuery = new NoleggioQuery();
     private static final AutoQuery autoQuery = new AutoQuery();
+    private static final RecensioneQuery receQuery = new RecensioneQuery();
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -117,8 +121,16 @@ public class NoleggioController extends HttpServlet {
 
         if (eliminato) {
             // Successo nell'eliminazione
+        	HttpSession session = request.getSession();
+            Utente utente = (Utente) session.getAttribute("user");
+            if(utente.isAmministratore()) {
+            	request.setAttribute("successMessage", "Prenotazione eliminata con successo.");
+            	response.sendRedirect("AdminController?method=get");
+            	
+            }else {
             request.setAttribute("successMessage", "Prenotazione eliminata con successo.");
             mostraPrenotazioniUtente(request, response);
+            }
         } else {
             // Errore nell'eliminazione
             mostraErrore(request, response, "Errore durante l'eliminazione della prenotazione.");
@@ -126,28 +138,40 @@ public class NoleggioController extends HttpServlet {
     }
     private void preparaPagamento(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idAutoStr = request.getParameter("idAuto");
-        if (idAutoStr == null || idAutoStr.isEmpty()) {
-            mostraErrore(request, response, "ID auto mancante!");
+        String dataRitiroStr = request.getParameter("dataRitiro");
+        String oraRitiroStr = request.getParameter("oraRitiro");
+        String dataRiconsegnaStr = request.getParameter("dataRiconsegna");
+        String oraRiconsegnaStr = request.getParameter("oraRiconsegna");
+
+        // Controllo che tutti i campi siano presenti
+        if (idAutoStr == null || idAutoStr.trim().isEmpty() ||
+            dataRitiroStr == null || dataRitiroStr.trim().isEmpty() ||
+            oraRitiroStr == null || oraRitiroStr.trim().isEmpty() ||
+            dataRiconsegnaStr == null || dataRiconsegnaStr.trim().isEmpty() ||
+            oraRiconsegnaStr == null || oraRiconsegnaStr.trim().isEmpty()) {
+
+            mostraErrore(request, response, "Tutti i campi devono essere compilati.");
             return;
         }
 
-        int idAuto = Integer.parseInt(idAutoStr);
+        int idAuto;
+        try {
+            idAuto = Integer.parseInt(idAutoStr);
+        } catch (NumberFormatException e) {
+            mostraErrore(request, response, "ID auto non valido.");
+            return;
+        }
+
         Auto auto = autoQuery.trovaAutoPerId(idAuto);
         if (auto == null) {
             mostraErrore(request, response, "Auto non trovata!");
             return;
         }
 
-//        request.setAttribute("auto", auto);
-//        request.setAttribute("dataRitiro", request.getParameter("dataRitiro"));
-//        request.setAttribute("oraRitiro", request.getParameter("oraRitiro"));
-//        request.setAttribute("dataRiconsegna", request.getParameter("dataRiconsegna"));
-//        request.setAttribute("oraRiconsegna", request.getParameter("oraRiconsegna"));
-        
-        LocalDateTime ritiro = parseDateTime(request.getParameter("dataRitiro"), request.getParameter("oraRitiro"), request, response);
+        LocalDateTime ritiro = parseDateTime(dataRitiroStr, oraRitiroStr, request, response);
         if (ritiro == null) return;
 
-        LocalDateTime riconsegna = parseDateTime(request.getParameter("dataRiconsegna"), request.getParameter("oraRiconsegna"), request, response);
+        LocalDateTime riconsegna = parseDateTime(dataRiconsegnaStr, oraRiconsegnaStr, request, response);
         if (riconsegna == null) return;
 
         if (riconsegna.isBefore(ritiro)) {
@@ -156,16 +180,17 @@ public class NoleggioController extends HttpServlet {
             return;
         }
 
-     // Verifica la disponibilità dell'auto
+        // Verifica la disponibilità dell'auto
         if (noleggioQuery.verificaDisponibilitaAuto(idAuto, ritiro, riconsegna)) {
             request.setAttribute("auto", auto);
             request.setAttribute("ritiro", ritiro);
             request.setAttribute("riconsegna", riconsegna);
             
-            request.setAttribute("dataRitiro", request.getParameter("dataRitiro"));
-            request.setAttribute("oraRitiro", request.getParameter("oraRitiro"));
-            request.setAttribute("dataRiconsegna", request.getParameter("dataRiconsegna"));
-            request.setAttribute("oraRiconsegna", request.getParameter("oraRiconsegna"));
+            request.setAttribute("dataRitiro", dataRitiroStr);
+            request.setAttribute("oraRitiro", oraRitiroStr);
+            request.setAttribute("dataRiconsegna", dataRiconsegnaStr);
+            request.setAttribute("oraRiconsegna", oraRiconsegnaStr);
+
             // Calcola la durata in minuti
             long durataInMinuti = java.time.Duration.between(ritiro, riconsegna).toMinutes();
             
@@ -187,7 +212,6 @@ public class NoleggioController extends HttpServlet {
             String prezzoTotaleFormattato = String.format("%.2f", prezzoTotaleConSconto);
             String prezzoTotaleFormattato2 = String.format("%.2f", prezzoTotale);
             
-
             // Imposta gli attributi per il JSP
             request.setAttribute("prezzoTotaleSenzaIncremento", prezzoTotaleFormattato2);
             request.setAttribute("prezzoTotale", prezzoTotaleFormattato);
@@ -201,10 +225,8 @@ public class NoleggioController extends HttpServlet {
             request.setAttribute("auto", auto);
             inviaErrore(request, response, "L'auto non è disponibile", "/inserimentoPrenotazione.jsp");
         }
-
-
-        
     }
+
     private void mostraPrenotazioniUtente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Utente utenteLoggato = (Utente) request.getSession().getAttribute("user");
         if (utenteLoggato == null) {
@@ -247,6 +269,9 @@ public class NoleggioController extends HttpServlet {
         request.setAttribute("oraRitiro", request.getParameter("oraRitiro"));
         request.setAttribute("dataRiconsegna", request.getParameter("dataRiconsegna"));
         request.setAttribute("oraRiconsegna", request.getParameter("oraRiconsegna"));
+        
+        List<Recensione> recensioni = receQuery.getAllRecensioniPerAuto(idAuto);
+        request.setAttribute("recensioni", recensioni);
 
         forward(request, response, "inserimentoPrenotazione.jsp");
     }
@@ -283,26 +308,45 @@ public class NoleggioController extends HttpServlet {
 
     private void mostraAutoDisponibili(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String luogo = request.getParameter("luogo");
+        String dataRitiroStr = request.getParameter("dataRitiro");
+        String oraRitiroStr = request.getParameter("oraRitiro");
+        String dataRiconsegnaStr = request.getParameter("dataRiconsegna");
+        String oraRiconsegnaStr = request.getParameter("oraRiconsegna");
 
-        LocalDateTime ritiro = parseDateTime(request.getParameter("dataRitiro"), request.getParameter("oraRitiro"), request, response);
+        // Controllo campi vuoti
+        if (luogo == null || luogo.trim().isEmpty() ||
+            dataRitiroStr == null || dataRitiroStr.trim().isEmpty() ||
+            oraRitiroStr == null || oraRitiroStr.trim().isEmpty() ||
+            dataRiconsegnaStr == null || dataRiconsegnaStr.trim().isEmpty() ||
+            oraRiconsegnaStr == null || oraRiconsegnaStr.trim().isEmpty()) {
+            
+            mostraErrore(request, response, "Tutti i campi devono essere compilati.");
+            return;
+        }
+
+        // Parsing delle date
+        LocalDateTime ritiro = parseDateTime(dataRitiroStr, oraRitiroStr, request, response);
         if (ritiro == null) return;
 
-        LocalDateTime riconsegna = parseDateTime(request.getParameter("dataRiconsegna"), request.getParameter("oraRiconsegna"), request, response);
+        LocalDateTime riconsegna = parseDateTime(dataRiconsegnaStr, oraRiconsegnaStr, request, response);
         if (riconsegna == null) return;
 
+        // Controllo sulla validità delle date
         if (riconsegna.isBefore(ritiro)) {
             mostraErrore(request, response, "La data di riconsegna non può essere precedente alla data di ritiro.");
             return;
         }
 
+        // Ricerca delle auto disponibili
         List<Auto> autos = noleggioQuery.trovaAutoDisponibiliPerNoleggio(luogo, ritiro, riconsegna);
 
+        // Settaggio attributi per la view
         request.setAttribute("listaAuto", autos);
         request.setAttribute("luogo", luogo);
-        request.setAttribute("dataRitiro", request.getParameter("dataRitiro"));
-        request.setAttribute("oraRitiro", request.getParameter("oraRitiro"));
-        request.setAttribute("dataRiconsegna", request.getParameter("dataRiconsegna"));
-        request.setAttribute("oraRiconsegna", request.getParameter("oraRiconsegna"));
+        request.setAttribute("dataRitiro", dataRitiroStr);
+        request.setAttribute("oraRitiro", oraRitiroStr);
+        request.setAttribute("dataRiconsegna", dataRiconsegnaStr);
+        request.setAttribute("oraRiconsegna", oraRiconsegnaStr);
 
         forward(request, response, "HomeController?method=get");
     }

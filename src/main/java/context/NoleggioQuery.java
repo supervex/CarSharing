@@ -190,4 +190,38 @@ public class NoleggioQuery {
 
 	    return false; // L'auto non è disponibile
 	}
+	
+	public List<Noleggio> stampaTuttiNoleggi() {
+	    List<Noleggio> listaNoleggi = new ArrayList<>();
+	    String sql = "SELECT * FROM noleggio";
+
+	    try (Connection connection = DataBaseConnection.getConnection();
+	         PreparedStatement stmt = connection.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            Noleggio noleggio = new Noleggio(
+	                rs.getInt("ID_noleggio"),
+	                rs.getInt("ID_utente"),
+	                rs.getInt("ID_auto"),
+	                rs.getTimestamp("data_inizio").toLocalDateTime(),
+	                rs.getTimestamp("data_fine").toLocalDateTime(),
+	                rs.getDouble("pagamento")
+	            );
+	            listaNoleggi.add(noleggio);
+	        }
+
+	        // Stampa ogni noleggio in console
+	        for (Noleggio n : listaNoleggi) {
+	            System.out.println(n);
+	        }
+
+	    } catch (SQLException e) {
+	        System.err.println("Errore durante il recupero di tutti i noleggi: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+
+	    return listaNoleggi;
+	}
+
 }

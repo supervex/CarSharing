@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import models.Auto;
 import models.Utente;
@@ -90,7 +91,15 @@ public class AutoController extends HttpServlet {
 
     private void gestisciInserimentoAuto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Recupero e pulizia della targa, rimuovendo eventuali spazi
-        String targa = request.getParameter("targa").trim().replaceAll("\\s+", "");
+    	String targa = request.getParameter("targa").trim().replaceAll("\\s+", "").toUpperCase();
+    	
+    	String targaPattern = "^[A-Z]{2}\\d{3}[A-Z]{2}$";
+    	if (!targa.matches(targaPattern)) {
+    	    request.setAttribute("errorMessage", "Formato targa non valido! Deve essere nel formato corretto");
+    	    RequestDispatcher dispatcher = request.getRequestDispatcher("inserisciVeicolo.jsp");
+    	    dispatcher.forward(request, response);
+    	    return;
+    	}
         String modello = request.getParameter("modello");
         String carburante = request.getParameter("carburante");
         String livelloStr = request.getParameter("livello");
@@ -167,7 +176,16 @@ public class AutoController extends HttpServlet {
 
                 if (autoDaAggiornare != null) {
                     // Recupera i nuovi valori da aggiornare
-                    String targa = request.getParameter("targa").trim().replaceAll("\\s+", "");
+                	String targa = request.getParameter("targa").trim().replaceAll("\\s+", "").toUpperCase();
+                	String targaPattern = "^[A-Z]{2}\\d{3}[A-Z]{2}$";
+                	
+                	if (!targa.matches(targaPattern)) {
+                	    request.setAttribute("errorMessage", "Formato targa non valido! Deve essere nel formato corretto");
+                	    RequestDispatcher dispatcher = request.getRequestDispatcher("inserisciVeicolo.jsp");
+                	    dispatcher.forward(request, response);
+                	    return;
+                	}
+                	
                     String modello = request.getParameter("modello");
                     String carburante = request.getParameter("carburante");
                     String livelloStr = request.getParameter("livello");
@@ -252,8 +270,15 @@ public class AutoController extends HttpServlet {
             try {
                 int idAuto = Integer.parseInt(idAutoStr);
                 autoQuery.eliminaAuto(idAuto);  // Esegui l'eliminazione dell'auto
-
+                HttpSession session = request.getSession();
+                Utente utente = (Utente) session.getAttribute("user");
+                if(utente.isAmministratore()) {
+                	request.setAttribute("successMessage", "auto eliminata con successo.");
+                	response.sendRedirect("AdminController?method=get");
+                	
+                }else {
                 response.sendRedirect("AutoController?tipoOperazione=autoUtente");  
+                }
             } catch (NumberFormatException e) {
                 request.setAttribute("errorMessage", "ID auto non valido!");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("errore.jsp");

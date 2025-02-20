@@ -64,6 +64,13 @@
 
                 <button type="submit" class="btn">Salva Modifiche</button>
             </form>
+
+            <!-- Form per eliminare l'account -->
+            <form action="UtenteController" method="post" onsubmit="return confirm('Sei sicuro di voler eliminare il tuo account? L\'operazione è irreversibile!')">
+                <input type="hidden" name="tipoOperazione" value="eliminaUtente">
+                <input type="hidden" name="idUtente" value="<%= utenteLoggato.getId() %>">
+                <button type="submit" class="btn btn-danger">Elimina Account</button>
+            </form>
         </section>
     </main>
 

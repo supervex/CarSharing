@@ -33,7 +33,8 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Ottieni la lista delle auto
         ArrayList<Auto> autos = (ArrayList<Auto>) autoQuery.stampaAuto();
-
+        
+        
         // Salva la lista delle auto nella sessione
         request.setAttribute("listaAuto", autos);
 
