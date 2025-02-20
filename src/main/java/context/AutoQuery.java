@@ -147,6 +147,7 @@ public class AutoQuery {
 
         return autos;
     }
+    
  // Recuperare un'auto per ID
     public Auto trovaAutoPerId(int idAuto) {
         String query = "SELECT * FROM auto WHERE ID_auto = ?";
@@ -201,5 +202,6 @@ public class AutoQuery {
         }
 
         return null; // Ritorna null se l'auto non viene trovata
+        
     }
 }

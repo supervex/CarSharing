@@ -126,9 +126,6 @@
 		</form>
 	</div>
 		
-		
-
-
 
 <!-- Available Cars -->
 	<section class="cars">
@@ -173,8 +170,9 @@
                 	c ++;
                   }
                   double media = somma /c;
+                  String mediaFormatted = String.format("%.1f", media);
                   %>
-                  <p class="card-text"><strong>Valutazione media:</strong> <%= media %> ⭐</p>
+                  <p class="card-text"><strong>Valutazione media:</strong> <%= mediaFormatted %> ⭐</p>
                   <% if (utenteLoggatoHome != null) { %>
     <form action="NoleggioController" method="get" class="prenota-form text-center">
         <input type="hidden" name="idAuto" value="<%= auto.getId() %>">
