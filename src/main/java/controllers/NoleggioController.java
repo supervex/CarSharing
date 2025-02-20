@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import models.Utente;
 import models.Auto;
 import models.Noleggio;
@@ -117,8 +118,16 @@ public class NoleggioController extends HttpServlet {
 
         if (eliminato) {
             // Successo nell'eliminazione
+        	HttpSession session = request.getSession();
+            Utente utente = (Utente) session.getAttribute("user");
+            if(utente.isAmministratore()) {
+            	request.setAttribute("successMessage", "Prenotazione eliminata con successo.");
+            	response.sendRedirect("AdminController?method=get");
+            	
+            }else {
             request.setAttribute("successMessage", "Prenotazione eliminata con successo.");
             mostraPrenotazioniUtente(request, response);
+            }
         } else {
             // Errore nell'eliminazione
             mostraErrore(request, response, "Errore durante l'eliminazione della prenotazione.");

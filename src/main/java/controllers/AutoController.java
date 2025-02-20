@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import models.Auto;
 import models.Utente;
@@ -252,8 +253,15 @@ public class AutoController extends HttpServlet {
             try {
                 int idAuto = Integer.parseInt(idAutoStr);
                 autoQuery.eliminaAuto(idAuto);  // Esegui l'eliminazione dell'auto
-
+                HttpSession session = request.getSession();
+                Utente utente = (Utente) session.getAttribute("user");
+                if(utente.isAmministratore()) {
+                	request.setAttribute("successMessage", "auto eliminata con successo.");
+                	response.sendRedirect("AdminController?method=get");
+                	
+                }else {
                 response.sendRedirect("AutoController?tipoOperazione=autoUtente");  
+                }
             } catch (NumberFormatException e) {
                 request.setAttribute("errorMessage", "ID auto non valido!");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("errore.jsp");

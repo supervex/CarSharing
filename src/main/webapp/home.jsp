@@ -33,7 +33,7 @@
 			<%
 			if (utenteLoggatoHome.isAmministratore()) {
 			%>
-			<li><a href="gestione.jsp">Gestione</a></li>
+			<li><a href="AdminController?method=get">Gestione</a></li>
 			<%
 			}
 			%>

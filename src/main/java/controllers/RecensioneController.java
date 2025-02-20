@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import models.Recensione;
 import models.Utente;
 import models.Noleggio;
@@ -52,51 +53,74 @@ public class RecensioneController extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Recupero i parametri inviati dal form
-        String descrizione = request.getParameter("descrizione");
-        String punteggioStr = request.getParameter("punteggio");
+        String tipoOperazione = request.getParameter("tipoOperazione");
         
-        // Recupero gli altri parametri necessari ( idAuto, idUtente)
-       
-        int idAuto = Integer.parseInt(request.getParameter("idAuto"));
-        int idUtente = Integer.parseInt(request.getParameter("idUtente"));
+        if ("eliminaRecensione".equals(tipoOperazione)) {
+            try {
+                int idRecensione = Integer.parseInt(request.getParameter("idRecensione"));
+                boolean success = receQuery.eliminaRecensione(idRecensione);
+                
+                if (success) {
+                	HttpSession session = request.getSession();
+                    Utente utente = (Utente) session.getAttribute("user");
+                    if(utente.isAmministratore()) {
+                    	request.setAttribute("successMessage", "auto eliminata con successo.");
+                    	response.sendRedirect("AdminController?method=get");
+                    	
+                    }else {
+                    // Reindirizza alla pagina di gestione, dove verranno aggiornate le liste
+                    response.sendRedirect("tutteLeMieRecensioni.jsp");
+                    }
+                } else {
+                    request.setAttribute("errore", "Eliminazione recensione non riuscita.");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("gestione.jsp");
+                    dispatcher.forward(request, response);
+                }
+            } catch (Exception e) {
+                request.setAttribute("errore", "Errore nell'eliminazione della recensione: " + e.getMessage());
+                RequestDispatcher dispatcher = request.getRequestDispatcher("gestione.jsp");
+                dispatcher.forward(request, response);
+            }
+        } else if ("inserisciRecensione".equals(tipoOperazione)) {
+            // Inserisci recensione (già implementato)
+            String descrizione = request.getParameter("descrizione");
+            String punteggioStr = request.getParameter("punteggio");
+            int idAuto = Integer.parseInt(request.getParameter("idAuto"));
+            int idUtente = Integer.parseInt(request.getParameter("idUtente"));
 
-        // Controllo se il punteggio è valido (compreso tra 1 e 5)
-        int punteggio = 0;
-        try {
-            punteggio = Integer.parseInt(punteggioStr);
-            if (punteggio < 1 || punteggio > 5) {
-                // Se il punteggio non è valido, possiamo reindirizzare alla pagina di errore o fare un altro tipo di gestione
-                request.setAttribute("errore", "Il punteggio deve essere compreso tra 1 e 5.");
+            int punteggio = 0;
+            try {
+                punteggio = Integer.parseInt(punteggioStr);
+                if (punteggio < 1 || punteggio > 5) {
+                    request.setAttribute("errore", "Il punteggio deve essere compreso tra 1 e 5.");
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("recensione.jsp");
+                    dispatcher.forward(request, response);
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                request.setAttribute("errore", "Punteggio non valido.");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("recensione.jsp");
                 dispatcher.forward(request, response);
                 return;
             }
-        } catch (NumberFormatException e) {
-            // Se il punteggio non è un numero valido, possiamo inviare un errore
-            request.setAttribute("errore", "Punteggio non valido.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("recensione.jsp");
-            dispatcher.forward(request, response);
-            return;
-        }
 
-        // Crea una nuova recensione con i dati ricevuti
-        Recensione recensione = new Recensione();
-        recensione.setDescrizione(descrizione);
-        recensione.setValuatzione(punteggio);        
-        recensione.setIdAuto(idAuto);
-        recensione.setIdUtente(idUtente);
+            Recensione recensione = new Recensione();
+            recensione.setDescrizione(descrizione);
+            recensione.setValuatzione(punteggio);        
+            recensione.setIdAuto(idAuto);
+            recensione.setIdUtente(idUtente);
 
-        // Inserisci la recensione nel database (implementa il metodo 'inserisciRecensione' nel tuo model)
-        try {
-        	receQuery.inserisciRecensione(recensione);
-            // Se l'inserimento è andato a buon fine, redirigi alla pagina di successo o storico prenotazioni
-            response.sendRedirect("HomeController?method=get");
-        } catch (Exception e) {
-            // Gestione errore durante l'inserimento
-            request.setAttribute("errore", "Errore durante l'inserimento della recensione.");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("recensione.jsp");
-            dispatcher.forward(request, response);
+            try {
+                receQuery.inserisciRecensione(recensione);
+                response.sendRedirect("HomeController?method=get");
+            } catch (Exception e) {
+                request.setAttribute("errore", "Errore durante l'inserimento della recensione.");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("recensione.jsp");
+                dispatcher.forward(request, response);
+            }
+        } else {
+            // Altri tipi di operazione o comportamento di default
+            response.sendRedirect("gestione.jsp");
         }
     }
 

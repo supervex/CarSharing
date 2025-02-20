@@ -125,6 +125,7 @@ public class UtenteController extends HttpServlet {
         if (session != null) {
             session.removeAttribute("user");
         }
+        
         response.sendRedirect("HomeController?method=get");
     }
 
@@ -169,7 +170,15 @@ public class UtenteController extends HttpServlet {
     private void gestisciEliminaUtente(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int idUtente = Integer.parseInt(request.getParameter("idUtente"));
         utenteQuery.eliminaUtente(idUtente);
-        response.sendRedirect("gestione.jsp");
+        HttpSession session = request.getSession();
+        Utente utente = (Utente) session.getAttribute("user");
+        if(utente.isAmministratore()) {
+        	request.setAttribute("successMessage", "utente eliminato con successo.");
+        	response.sendRedirect("AdminController?method=get");
+        	
+        }else {        	
+        	gestisciLogout(request, response);        	
+        }       
     }
 
     private void inviaErrore(HttpServletRequest request, HttpServletResponse response, String messaggio, String pagina)
