@@ -61,7 +61,7 @@ public class UtenteController extends HttpServlet {
         String password = request.getParameter("password");
 
         if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
-            inviaErrore(request, response, "Compila tutti i campi.", "/login.jsp");
+            inviaErrore(request, response, "Compila tutti i campi.", "/Register.jsp");
             return;
         }
 
@@ -69,7 +69,7 @@ public class UtenteController extends HttpServlet {
         
 
         if (utente == null || !utente.getPasswordUtente().equals(CriptaPassword.cripta(14,password))) {
-            inviaErrore(request, response, "Username o password errati.", "/login.jsp");
+            inviaErrore(request, response, "Username o password errati.", "/Register.jsp");
         } else {
             HttpSession session = request.getSession();
             session.setAttribute("user", utente);
