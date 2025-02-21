@@ -5,6 +5,7 @@
 <%@ page import="models.Auto"%>
 <%@ page import= "context.RecensioneQuery" %>
 <%@ page import="models.Recensione" %>
+<%@ page import="utils.Utility" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -148,7 +149,7 @@
             %>
             <div class="col-md-4">
               <div class="card mb-3">
-                <img src="<%= auto.getImmagine() %>" class="card-img-top" alt="Immagine auto">
+                <img src="imageController?name=<%=auto.getImmagine() %>" class="card-img-top" alt="Immagine auto">
                 <div class="card-body">
                   <h5 class="card-title"><%= auto.getModello() %></h5>
                   

@@ -6,7 +6,7 @@
 
 body {
 	margin-top: 60px;
-	background: rgb(133 0 255 / 45%);
+	background: #0c2241;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -40,11 +40,7 @@ header {
 	
 }
 
-nav ul {
-	list-style: none;
-	display: flex;
-	gap: 20px;
-}
+
 .user-info{
 	color: #ff5600;
 	font-size: 22px; 
@@ -52,50 +48,7 @@ nav ul {
 	
 }
 
-nav ul li {
-	display: inline;
-}
 
-nav ul li a {
-	text-decoration: none;
-	font-size: 16px;
-	color: black;
-	font-weight: bold;
-	padding: 10px 15px;
-}
-
-/* Navbar personalizzata */
-
-	.navbar {
-	display: flex;
-	flex-direction: row;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 71px;
-    justify-content: space-between;
-    background-color: #2d0057;
-    padding: 5px;
-    color: white;
-    align-items: center;
-    z-index: 1000;
-}
-	
-
-.nav-links {
-	list-style: none;
-	display: flex;
-	gap: 12px;
-	align-items: center;
-	margin-right: 15px;
-}
-
-.nav-links a {
-	color: white;
-	text-decoration: none;
-	font-weight: bold;
-}
 
 
 .login-btn {
@@ -349,4 +302,53 @@ footer i {
 footer a {
     color: #3c97bf;
     text-decoration: none;
+}
+.my-navbar { /* Seleziona l'elemento con classe my-navbar */
+    display: flex; /* Usa il flexbox per il layout */
+    height: 60px; /* Imposta l'altezza a 60px */
+    justify-content: space-between; /* Distribuisce lo spazio tra gli elementi in modo uniforme */
+    background-color: #0c2241; /* Imposta il colore di sfondo a un blu scuro */
+    padding: 5px; /* Applica un padding di 5px su tutti i lati */
+    color: white; /* Imposta il colore del testo a bianco */
+    align-items: center; /* Allinea verticalmente gli elementi al centro */
+    position: sticky; /* Rende la navbar sticky */
+    top: 0; /* La fissa in cima alla pagina */
+    z-index: 1000; /* Assicura che rimanga sopra gli altri elementi */
+}
+nav ul { /* Seleziona le liste non ordinate all'interno del nav */
+    list-style: none; /* Rimuove i bullet point dalla lista */
+    display: flex; /* Usa il flexbox per disporre gli elementi in riga */
+    gap: 20px; /* Aggiunge uno spazio di 20px tra gli elementi della lista */
+}
+nav ul li { /* Seleziona ogni elemento della lista nel nav */
+    display: inline; /* Visualizza gli elementi in linea */
+}
+
+nav ul li a { /* Seleziona i link presenti all'interno degli elementi della lista */
+    text-decoration: none; /* Rimuove la sottolineatura dai link */
+    font-size: 16px; /* Imposta la dimensione del font a 16px */
+    color: black; /* Imposta il colore del testo a nero */
+    font-weight: bold; /* Rende il testo in grassetto */
+    padding: 10px 15px; /* Applica 10px di padding verticale e 15px orizzontale */
+}
+.nav-links { /* Seleziona l'elemento con classe nav-links */
+    list-style: none; /* Rimuove i bullet point dalla lista */
+    display: flex; /* Usa il flexbox per disporre gli elementi in riga */
+    gap: 12px; /* Aggiunge uno spazio di 12px tra gli elementi */
+    align-items: center; /* Allinea verticalmente gli elementi al centro */
+    margin-right: 15px; /* Aggiunge un margine destro di 15px */
+}
+
+.nav-links a { /* Seleziona i link all'interno di nav-links */
+    color: white; /* Imposta il colore del testo a bianco */
+    text-decoration: none; /* Rimuove la sottolineatura dai link */
+    font-weight: bold; /* Rende il testo in grassetto */
+}
+header { /* Seleziona l'elemento header */
+    display: flex; /* Usa il flexbox per il layout */
+    justify-content: space-between; /* Distribuisce lo spazio tra gli elementi in modo uniforme */
+    align-items: center; /* Allinea verticalmente gli elementi al centro */
+    padding: 0px 50px; /* Applica 0px di padding verticale e 50px orizzontale */
+    background-color: white; /* Imposta lo sfondo dell'header a bianco */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Applica un'ombra leggera sotto l'header */
 }

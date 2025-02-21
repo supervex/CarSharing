@@ -5,6 +5,7 @@
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="models.Utente"%>
 
 <%
     // Recupero la lista delle prenotazioni e delle auto
@@ -35,9 +36,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le tue Prenotazioni</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Collegamento a un file CSS -->
+    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="areaUtente.css">
 </head>
-<body>
+<body>	<%
+	Utente utenteLoggato = (Utente) session.getAttribute("user");
+	if (utenteLoggato == null) {
+		response.sendRedirect("HomeController?method=get");
+		return;
+	}
+	%>
+
+	<!-- Navbar -->
+	<nav class="my-navbar">
+		<div class="logo-container">
+			<img src="images/Logo.png" class="logo_immagine" alt="Logo">
+		</div>
+		<ul class="nav-links">
+			<li><a href="HomeController?method=get">Home</a></li>
+			<li><a href="#assistenza">Assistenza</a></li>
+			<li><a href="inserisciVeicolo.jsp">Aggiungi Auto</a></li>
+			<li><a href="#impostazioni">Impostazioni</a></li>
+			<li><a href="#pagamenti">Pagamenti</a></li>
+			<li><a href="#prenotazioni">Prenotazioni</a></li>
+
+			<li class="user-info">Benvenuto, <%=utenteLoggato.getNome()%>!
+			</li>
+			<li>
+				<form action="UtenteController" method="post">
+					<input type="hidden" name="tipoOperazione" value="logout">
+					<button class="logout-btn">Logout</button>
+				</form>
+			</li>
+		</ul>
+	</nav>
+	
+<div class="sidebar">
+  <a href="areaUtente.jsp">Profilo Utente</a>
+  <a class="active" href="NoleggioController?tipoOperazione=prenotazioniUtente">Le tue Prenotazioni</a>
+  <a href="AutoController?tipoOperazione=autoUtente">le tue Auto</a>
+  <a href="RecensioneController?tipoOperazione=mostraRecensioni">le tue Recensioni</a>
+</div>	
+	<div class="content">
     <h1>Le tue Prenotazioni</h1>
 
     <!-- Prenotazioni Attuali -->
@@ -137,5 +177,6 @@
     <% } %>
 
     <a href="HomeController?method=get">Torna alla Home</a>
+    </div>
 </body>
 </html>

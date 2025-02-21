@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import models.Auto;
 import models.Utente;
+import utils.Utility;
 import context.AutoQuery;
 
 import java.io.File;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 public class AutoController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final AutoQuery autoQuery = new AutoQuery();
-    private static final String UPLOAD_DIR = "images"; // La cartella images è relativa alla cartella webapp
+    
 
 
 
@@ -112,22 +113,22 @@ public class AutoController extends HttpServlet {
 
         // Caricamento dell'immagine
         Part immaginePart = request.getPart("immagine");
-        String immaginePath = null;
-
+        //String immaginePath = null;
+        String fileName = null;
         if (immaginePart != null && immaginePart.getSize() > 0) {
-            String fileName = Path.of(immaginePart.getSubmittedFileName()).getFileName().toString();
+             fileName = Path.of(immaginePart.getSubmittedFileName()).getFileName().toString();
             
             // Usa getServletContext().getRealPath per ottenere il percorso assoluto della cartella images
-            String uploadPath = getServletContext().getRealPath("/images");
-            File uploadDirFile = new File(uploadPath);
+            //String uploadPath = getServletContext().getRealPath("/images");
+            File uploadDirFile = new File(Utility.UPLOAD_DIR);
             
             if (!uploadDirFile.exists()) {
                 uploadDirFile.mkdirs();
             }
             
-            File file = new File(uploadPath, fileName);
+            File file = new File(Utility.UPLOAD_DIR, fileName);
             immaginePart.write(file.getAbsolutePath());
-            immaginePath = "images/" + fileName; // Salviamo il percorso relativo dell'immagine
+            //immaginePath = "images/" + fileName; // Salviamo il percorso relativo dell'immagine
         }
 
         try {
@@ -147,9 +148,9 @@ public class AutoController extends HttpServlet {
             Auto auto;
             if (idUtenteStr != null && !idUtenteStr.isEmpty()) {
                 int idUtente = Integer.parseInt(idUtenteStr);
-                auto = new Auto(0, idUtente, targa, modello, carburante, livello, numeroPosti, cambio, posizione, citta, prezzo, immaginePath);
+                auto = new Auto(0, idUtente, targa, modello, carburante, livello, numeroPosti, cambio, posizione, citta, prezzo, fileName);
             } else {
-                auto = new Auto(0, targa, modello, carburante, livello, numeroPosti, cambio, posizione, citta, prezzo, immaginePath);
+                auto = new Auto(0, targa, modello, carburante, livello, numeroPosti, cambio, posizione, citta, prezzo, fileName);
             }
 
             autoQuery.aggiungiAuto(auto);
