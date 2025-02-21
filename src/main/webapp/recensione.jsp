@@ -147,6 +147,7 @@ button:hover {
             flex-direction: row-reverse;
             justify-content: center;
             gap: 10px;
+            outline: none;
         }
         .rating-container input {
             display: none;
