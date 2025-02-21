@@ -21,7 +21,7 @@
 <body>
 	<nav class="my-navbar">
 		<div class="logo-container">
-			<img src="images/logo.png" class="logo_immagine" alt="Logo">
+			<img src="images/Logo.png" class="logo_immagine" alt="Logo">
 		</div>
 		<%
 		Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
@@ -128,10 +128,9 @@
 		
 
 <!-- Available Cars -->
-	<section class="cars">
-  <div class="container-fluid mt-4 px-0">
-    <h2 class="text-center">Auto Disponibili</h2>
-    
+	<section class="cars carousel-section">
+  <div class="carousel-container mt-4">
+    <h2 class="text-center">AUTO DISPONIBILI</h2>
     <div id="autoCarousel" class="carousel slide w-100" data-bs-ride="carousel">
       <div class="carousel-inner">
         <%
@@ -152,13 +151,12 @@
                 <img src="<%= auto.getImmagine() %>" class="card-img-top" alt="Immagine auto">
                 <div class="card-body">
                   <h5 class="card-title"><%= auto.getModello() %></h5>
-                  <p class="card-text"><strong>Targa:</strong> <%= auto.getTarga() %></p>
-                  <p class="card-text"><strong>Carburante:</strong> <%= auto.getCarburante() %></p>
-                  <p class="card-text"><strong>Livello carburante:</strong> <%= auto.getLivello() %>%</p>
-                  <p class="card-text"><strong>Numero posti:</strong> <%= auto.getNumeroPosti() %></p>
-                  <p class="card-text"><strong>Cambio:</strong> <%= auto.getCambio() %></p>
-                  <p class="card-text"><strong>Posizione:</strong> <%= auto.getPosizione() %></p>
-                  <p class="card-text"><strong>Città:</strong> <%= auto.getCitta() %></p>
+                  
+                  
+                  
+                  
+                  <p class="card-text"><strong>Città:</strong> <%= auto.getCitta() + ", " +  auto.getPosizione() %> </p>
+                  
                   <p class="card-text"><strong>Prezzo:</strong> €<%= auto.getPrezzo() %> al ora</p>
                   <%  
                   RecensioneQuery recensioneQuery = new RecensioneQuery();
@@ -218,7 +216,30 @@
     </div>
   </div>
 </section>
+<footer>
+		Drive Easy | Via Italia, 24 - Roma ITALIA | C.F. ABC534845745 | P.Iva 854345764 <br>
+		<a class="trans-color-text" href="#">DriveEasy@info.com</a> | <span itemprop="telephone"><a href="#">+39 347 58 30 387</a></span>
+		  <br><a target="_blank" href="#"> privacy</a> | <a target="_blank" href="#"> cookie policy</a>
 
+		<div class="social-cont">        
+		<ul class="social-list">
+
+		<li><a target="_blank" href="#"><img src="images/facebook-icon.png"  title="facebook" alt="Facebook icon"></a></li>
+		<li><a target="_blank" href="#"><img src="images/instagram-icon.png" title="Instagram" alt="Instagram icon"></a></li>
+		<li><a target="_blank" href="#"><img src="images/tiktok-icon.png" title="pinterest" alt="Instagram icon"></a></li>
+
+		</ul>
+    	<div class="floatstop"></div>
+		</div><!--/fine social cont-->
+
+        Designed by<br>
+       <div class="credits">
+       <a target="_blank" href="#"><img width="100" src="images/Logo.png" title="#" alt="#"></a>  
+    	</div>
+    	<br>
+        <p>Copyright © 2025 DriveEasy, Srl.</p>
+	</footer>
+	
 <script>
     function avvisaUtente() {
         alert("Devi effettuare il login per poter prenotare un'auto.");
