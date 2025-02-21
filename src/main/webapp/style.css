@@ -2,7 +2,7 @@ body { /* Definisce lo stile di base per il body della pagina */
     font-family: 'Montserrat', sans-serif; /* Imposta il font principale a Montserrat con fallback a sans-serif */
     margin: 0; /* Rimuove i margini predefiniti */
     padding: 0; /* Rimuove il padding predefinito */
-    background-color: rgb(133 0 255 / 45%);     /* Imposta il colore di sfondo con trasparenza (45%) */
+    background-color: rgb(210 225 239)     /* Imposta il colore di sfondo con trasparenza (45%) */
     
 }
 

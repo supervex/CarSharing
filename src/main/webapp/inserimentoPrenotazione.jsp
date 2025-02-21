@@ -102,6 +102,8 @@ h2, h3 {
 	text-align: center;
 }
 </style>
+</head>
+<body>
 <!-- Navbar di esempio -->
 <nav class="my-navbar">
 	<div class="logo-container">
@@ -284,8 +286,5 @@ h2, h3 {
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	</body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> main
+

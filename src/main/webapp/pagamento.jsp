@@ -241,15 +241,14 @@
               	c ++;
                 }
                 double media = somma /c;
-<<<<<<< HEAD
-                %>
-                <p class="card-text"><strong>Valutazione media:</strong> <%= media %> ⭐</p>
-=======
+
+              
+
                 String mediaFormatted = String.format("%.1f", media);
                 %>
                 <p class="card-text"><strong>Valutazione media:</strong> <%= mediaFormatted %> ⭐</p>
 				
->>>>>>> main
+
                 
             </div>
             <div class="cancel-note">

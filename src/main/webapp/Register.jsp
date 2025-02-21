@@ -49,7 +49,7 @@
 	</nav>
 	<br>
 	<br>
-<<<<<<< HEAD
+
 
    <div class="container mt-4">
 	<%
@@ -63,14 +63,14 @@
 	}
 	%>
 
-=======
+
 <div class="container mt-4">
     <% if (request.getAttribute("errorMessage") != null) { %>
         <div class="alert alert-danger" role="alert" style="border-radius: 10px; background-color: #f2dede; color: #a94442;">
             <%= request.getAttribute("errorMessage") %>
         </div>
     <% } %>
->>>>>>> main
+
 	<div class="container" id="container">
 		<div class="form-container sign-up-container">
 			<form action="UtenteController" method="post">
