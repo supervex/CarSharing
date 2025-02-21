@@ -2,7 +2,8 @@ body { /* Definisce lo stile di base per il body della pagina */
     font-family: 'Montserrat', sans-serif; /* Imposta il font principale a Montserrat con fallback a sans-serif */
     margin: 0; /* Rimuove i margini predefiniti */
     padding: 0; /* Rimuove il padding predefinito */
-    background-color: rgb(133 0 255 / 45%); /* Imposta il colore di sfondo con trasparenza (45%) */
+    background-color: rgb(133 0 255 / 45%);     /* Imposta il colore di sfondo con trasparenza (45%) */
+    
 }
 
 /* Navbar */
@@ -24,6 +25,7 @@ header { /* Seleziona l'elemento header */
     margin-top: 5px; /* Aggiunge un margine superiore di 5px */
     width: 220px; /* Imposta la larghezza a 220px */
     height: 80px; /* Imposta l'altezza a 80px */
+    background-image: url(images/Logo.png); 
 }
 
 nav ul { /* Seleziona le liste non ordinate all'interno del nav */
@@ -59,14 +61,15 @@ nav ul li a { /* Seleziona i link presenti all'interno degli elementi della list
 
 .hero { /* Seleziona la sezione hero */
     position: relative; /* Necessario per posizionare l'overlay rispetto a questo elemento */
-    background-image: url("images/noleggio.webp"); /* Imposta l'immagine di sfondo */
+    background-image: url(images/noleggio.webp); /* Imposta l'immagine di sfondo */
     background-size: cover; /* Fa in modo che l'immagine copra interamente l'area */
     background-position: center; /* Centra l'immagine di sfondo */
     background-repeat: no-repeat; /* Evita la ripetizione dell'immagine */
     color: white; /* Imposta il colore del testo a bianco */
     padding: 50px; /* Applica un padding di 50px su tutti i lati */
     text-align: center; /* Centra il testo all'interno della sezione */
-    max-height: 570px; /* Imposta un'altezza massima di 570px */
+    max-height: 570px;/* Imposta un'altezza massima di 570px */
+   
 }
 
 /* Overlay scuro */
@@ -156,7 +159,7 @@ input, select { /* Seleziona gli elementi input e select */
     display: flex; /* Usa il flexbox per il layout */
     height: 60px; /* Imposta l'altezza a 60px */
     justify-content: space-between; /* Distribuisce lo spazio tra gli elementi in modo uniforme */
-    background-color: #2d0057; /* Imposta il colore di sfondo a un blu scuro */
+    background-color: #0c2241; /* Imposta il colore di sfondo a un blu scuro */
     padding: 5px; /* Applica un padding di 5px su tutti i lati */
     color: white; /* Imposta il colore del testo a bianco */
     align-items: center; /* Allinea verticalmente gli elementi al centro */
@@ -376,11 +379,12 @@ h2 { /* Seleziona tutti gli elementi h2 */
 }
 
 /* Nuove regole per le immagini delle card */
-.card-img-top { /* Seleziona le immagini con classe card-img-top */
-    width: 90%; /* Imposta la larghezza al 100% della card */
-    height: 250px;  /* Imposta un'altezza fissa di 200px */
-    object-fit: cover; /* Adatta l'immagine, ritagliando le parti in eccesso per coprire l'area disponibile */
+.card-img-top {
+    width: 100%;
+    height: auto; /* oppure una height fissa maggiore se vuoi un effetto crop */
+    object-fit: cover;
 }
+
 
 /* Nuove regole per il pulsante Prenota */
 .btn-prenota { /* Seleziona gli elementi con classe btn-prenota */
@@ -408,13 +412,22 @@ h2 { /* Seleziona tutti gli elementi h2 */
 .carousel-indicators { 
     bottom: -20px; /* Sposta gli indicatori 20px sotto il bordo inferiore del carosello */
 }
-.carousel-item img { 
-    margin: 20px; /* Aggiunge un margine di 10px su tutti i lati */
-    border-radius: 10px; /* Arrotonda gli angoli delle immagini */
+
+.carousel-item .card {
+    border-radius: 15px;
+    overflow: hidden; /* Assicura che il contenuto non esca dai bordi arrotondati */
 }
+.carousel-item img {
+    width: 95%;       
+    height: 300px;     
+    object-fit: cover; 
+    margin:  15px auto; /* top, right, bottom, left */
+    border-radius: 15px;
+}
+
 /* Spazio laterale per il carosello */
 #autoCarousel { 
-    margin: 0 25px; /* Aggiunge 25px di spazio a sinistra e a destra del carosello */
+    margin: 0; /* Aggiunge 25px di spazio a sinistra e a destra del carosello */
 }
 .prenota-form {
     width: 100% !important;
@@ -448,3 +461,88 @@ h2 { /* Seleziona tutti gli elementi h2 */
     background-color: #e64e00 !important;
     border-color: #e64e00 !important;
 }
+.carousel-container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    
+}
+
+.carousel-section {
+    background: rgb(210 225 239);
+    padding: 20px;
+    margin: 50px auto;
+   /* border-radius: 10px;*/
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    /*max-width: 1500px;  /* Aumenta il limite massimo o rimuovilo */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+footer{
+	border-top: 2px solid #ff5600; /* primary-color */
+	text-align:center;
+	padding:30px 10px;
+	line-height: 1.6em;
+	font-size:0.8em;
+	background-color: #0c2241;/* primary color*/
+	color: #fff;
+}
+
+footer a{
+	color:#F0776C; /* secondary-color*/
+}
+
+footer a:hover{
+	color:#FF968C; /* light seconday color*/	
+}
+
+footer .credits {
+	max-width:300px;
+	margin:auto;
+}
+
+footer .credits a img {
+  -o-transition: opacity .2 ease-in;
+  -ms-transition: opacity .2s ease-in;
+  -moz-transition: opacity .2s ease-in;
+  -webkit-transition: opacity .2s ease-in;
+  transition: opacity .2s ease
+}
+
+footer .credits a img:hover {
+	opacity:0.6;
+}
+
+footer .social-cont .social-list {
+	list-style-type: none;
+	margin: 0 auto;
+	padding: 10px 0;
+}
+
+footer .social-cont .social-list > li {
+	margin: 8px 8px 8px 0;
+	display: inline-block;
+	vertical-align: top;
+	height: 32px;
+	width: 32px;
+	border-radius: 6em;
+	background-color:#0c2241; /* secondary-color*/
+}
+
+footer .social-cont .social-list li img {
+	width: 32px
+}
+
+footer .social-cont .social-list > li:hover {
+background:#0c2241; /* light seconday color*/		
+}
+
+.text-center{
+	color: #0c2241;
+	margin-bottom: 50px;
+	font-weight: bold;
+}	
