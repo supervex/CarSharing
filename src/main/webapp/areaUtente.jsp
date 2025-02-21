@@ -7,7 +7,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Area Utente - Drive Easy</title>
+<link rel="stylesheet" href="areaUtente.css">
 <link rel="stylesheet" href="style.css">
+
 <!-- Collegamento al file CSS -->
 </head>
 <body>
@@ -21,97 +23,94 @@
 	%>
 
 	<!-- Navbar -->
-	<nav class="navbar">
-		<div class="logo">
-			<i class="fas fa-car"></i> Drive Easy
+	<nav class="my-navbar">
+		<div class="logo-container">
+			<img src="images/Logo.png" class="logo_immagine" alt="Logo">
 		</div>
+		<%
+		Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
+		%>
 		<ul class="nav-links">
 			<li><a href="HomeController?method=get">Home</a></li>
-			<li><a href="#assistenza">Assistenza</a></li>
-			<li><a href="inserisciVeicolo.jsp">Aggiungi Auto</a></li>
-			<li><a href="#impostazioni">Impostazioni</a></li>
-			<li><a href="#pagamenti">Pagamenti</a></li>
-			<li><a href="#prenotazioni">Prenotazioni</a></li>
-
-			<li class="user-info">Benvenuto, <%=utenteLoggato.getNome()%>!
-			</li>
+			<%
+			if (utenteLoggatoHome != null) {
+			%>
+			<li><a href="areaUtente.jsp">Area utente</a></li>
+			<%
+			if (utenteLoggatoHome.isAmministratore()) {
+			%>
+			<li><a href="AdminController?method=get">Gestione</a></li>
+			<%
+			}
+			%>
 			<li>
-				<form action="UtenteController" method="post">
+				<form action="UtenteController" method="post"
+					style="display: inline;">
 					<input type="hidden" name="tipoOperazione" value="logout">
-					<button class="logout-btn">Logout</button>
+					<button class="register-btn">Logout</button>
 				</form>
 			</li>
+			<%
+			} else {
+			%>
+			<li><a href="Register.jsp"><button class="login-btn">Accedi</button></a></li>
+			<%
+			}
+			%>
 		</ul>
 	</nav>
 
-	<header>
-		<h1>Area Utente</h1>
-	</header>
+	
+	
+<!-- The sidebar -->
+<div class="sidebar">
+  <a class="active" href="areaUtente.jsp">Profilo Utente</a>
+  <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Le tue Prenotazioni</a>
+  <a href="AutoController?tipoOperazione=autoUtente">le tue Auto</a>
+  <a href="RecensioneController?tipoOperazione=mostraRecensioni">le tue Recensioni</a>
+</div>
 
-	<main>
-		<!-- Sezione Profilo -->
-		<section id="profilo" class="card">
-			<h2>Profilo Utente</h2>
-			<p>
-			
-				<strong>Nome:</strong>
-				<%=utenteLoggato.getNome()%>
-				<%=utenteLoggato.getCognome()%></p>
-			<p>
-				<strong>Email:</strong>
-				<%=utenteLoggato.getEmail()%></p>
-			<p>
-				<strong>Telefono:</strong>
-				<%=utenteLoggato.getTelefono()%></p>
-			<a href="modificaUtente.jsp" class="btn">Modifica Profilo</a>
-		</section>
-		
-		<section id="Auto" class="card"> <!-- aggiungere pulsante che porta a tutte le auto -->
-			<h2>Le Tue Auto</h2>
-			<ul>
-				<li>Tesla Model 3 - Dal 10/02/2025 al 15/02/2025</li>
-				<li>BMW 3 Series - Dal 20/03/2025 al 25/03/2025</li>
-			</ul>
-			<a href="AutoController?tipoOperazione=autoUtente" class="btn">Le tue auto</a>
-		</section>
-		
-		<!-- Sezione Prenotazioni -->
-		<section id="prenotazioni" class="card">
-			<h2>Le Tue Prenotazioni</h2>
-			<ul>
-				<li>Tesla Model 3 - Dal 10/02/2025 al 15/02/2025</li>
-				<li>BMW 3 Series - Dal 20/03/2025 al 25/03/2025</li>
-			</ul>
-			<a href="NoleggioController?tipoOperazione=prenotazioniUtente" class="btn">Le tue prenotazioni</a>
-		</section>
-
-		<!-- Sezione Pagamenti -->
-		<section id="pagamenti" class="card">
-			<h2>le tue recensioni</h2>
-			<p>
-				<strong>recensioni:</strong>
-			</p>
-			
-			<a href="RecensioneController?tipoOperazione=mostraRecensioni" class="btn">le recensioni</a>
-			
-		</section>
-
-		<!-- Sezione Assistenza -->
-		<section id="assistenza" class="card">
-			<h2>Assistenza</h2>
-			<p>Hai bisogno di aiuto? Contattaci!</p>
-			<button class="btn">Chatta con un operatore</button>
-		</section>
-
-		<!-- Sezione Impostazioni -->
-		<section id="impostazioni" class="card">
-			<h2>Impostazioni</h2>
-			<label><input type="checkbox"> Ricevi notifiche via
-				email</label><br> <label><input type="checkbox"> Ricevi
-				notifiche via SMS</label>
-			<button class="btn">Salva Impostazioni</button>
-		</section>
-	</main>
+<!-- Page content -->
+<div class="content">
+   <div class="container mt-4">
+        <h1 class="text-center">Dettagli Utente</h1>
+        <%
+            Utente utente = (Utente) session.getAttribute("user");
+            if(utente != null) {
+        %>
+        <div class="card mx-auto" style="max-width: 600px;">
+            <div class="card-body">
+                <h5 class="card-title"><%= utente.getNome() %> <%= utente.getCognome() %></h5>
+                <p class="card-text"><strong>ID:</strong> <%= utente.getId() %></p>
+                <p class="card-text"><strong>Username:</strong> <%= utente.getUsername() %></p>
+                <p class="card-text"><strong>Data di Nascita:</strong> <%= utente.getDataNascita() %></p>
+                
+                <p class="card-text"><strong>Città:</strong> <%= utente.getCitta() %></p>
+                <p class="card-text"><strong>Telefono:</strong> <%= utente.getTelefono() %></p>
+                <p class="card-text"><strong>Email:</strong> <%= utente.getEmail() %></p>
+                <p class="card-text"><strong>Ruolo:</strong> <%= utente.isAmministratore() ? "Amministratore" : "Utente" %></p>
+            </div>
+        </div>
+        <%
+            } else {
+        %>
+        <div class="alert alert-warning text-center" role="alert">
+            Nessun utente loggato.
+        </div>
+        <%
+            }
+        %>
+        <div class="text-center mt-4">
+            <a href="modificaUtente.jsp" class="btn btn-primary">modifica</a>
+             <form action="UtenteController" method="post" onsubmit="return confirm('Sei sicuro di voler eliminare il tuo account? L\'operazione è irreversibile!')">
+                <input type="hidden" name="tipoOperazione" value="eliminaUtente">
+                <input type="hidden" name="idUtente" value="<%= utenteLoggato.getId() %>">
+                <button type="submit" class="btn btn-danger">Elimina Account</button>
+            </form>
+        </div>
+    </div>
+</div>
+	
 
 	<!-- Footer -->
 	<footer>

@@ -21,10 +21,10 @@
 </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">
-            <i class="fas fa-car"></i> Drive Easy
-        </div>
+    <nav class="my-navbar">
+        <div class="logo-container">
+			<img src="images/Logo.png" class="logo_immagine" alt="Logo">
+		</div>
         <ul class="nav-links">
             <li><a href="HomeController?method=get">Home</a></li>
             <% Utente utenteLoggatoHome = (Utente) session.getAttribute("user");

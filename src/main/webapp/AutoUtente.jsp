@@ -7,46 +7,54 @@
 <head>
     <meta charset="UTF-8">
     <title>ciao</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="areaUtente.css">
 </head>
 <body>
-<nav class="navbar">
-		<div class="logo">
-			<i class="fas fa-car"></i> Drive Easy
+<%
+	Utente utenteLoggato = (Utente) session.getAttribute("user");
+	if (utenteLoggato == null) {
+		response.sendRedirect("HomeController?method=get");
+		return;
+	}
+	%>
+
+	<!-- Navbar -->
+	<nav class="my-navbar">
+		<div class="logo-container">
+			<img src="images/Logo.png" class="logo_immagine" alt="Logo">
 		</div>
-		<%
-		Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
-		%>
 		<ul class="nav-links">
 			<li><a href="HomeController?method=get">Home</a></li>
-			<%
-			if (utenteLoggatoHome != null) {
-			%>
-			<li><a href="areaUtente.jsp">Area Utente</a></li>
-			<%
-			if (utenteLoggatoHome.isAmministratore()) {
-			%>
-			<li><a href="gestione.jsp">Gestione</a></li>
-			<%
-			}
-			%>
+			<li><a href="#assistenza">Assistenza</a></li>
+			<li><a href="inserisciVeicolo.jsp">Aggiungi Auto</a></li>
+			<li><a href="#impostazioni">Impostazioni</a></li>
+			<li><a href="#pagamenti">Pagamenti</a></li>
+			<li><a href="#prenotazioni">Prenotazioni</a></li>
+
+			<li class="user-info">Benvenuto, <%=utenteLoggato.getNome()%>!
+			</li>
 			<li>
-				<form action="UtenteController" method="post"
-					style="display: inline;">
+				<form action="UtenteController" method="post">
 					<input type="hidden" name="tipoOperazione" value="logout">
-					<button class="register-btn">Logout</button>
+					<button class="logout-btn">Logout</button>
 				</form>
 			</li>
-			<%
-			} else {
-			%>
-			<li><a href="login.jsp">Accedi</a></li>
-			<li><a href="Register.jsp"><button class="register-btn">Registrati</button></a></li>
-			<%
-			}
-			%>
 		</ul>
 	</nav>
+	
+	
+<!-- The sidebar -->
+<div class="sidebar">
+  <a href="areaUtente.jsp">Profilo Utente</a>
+  <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Le tue Prenotazioni</a>
+  <a class="active" href="AutoController?tipoOperazione=autoUtente">le tue Auto</a>
+  <a href="RecensioneController?tipoOperazione=mostraRecensioni">le tue Recensioni</a>
+</div>
+
+<!-- Page content -->
+<div class="content">
     <div class="container mt-4">
         <h2 class="text-center">Auto per utente</h2>
         <div class="row">
@@ -91,6 +99,7 @@
             %>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    </div>
 </body>
 </html>

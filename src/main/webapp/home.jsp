@@ -5,6 +5,7 @@
 <%@ page import="models.Auto"%>
 <%@ page import= "context.RecensioneQuery" %>
 <%@ page import="models.Recensione" %>
+<%@ page import="utils.Utility" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -16,6 +17,11 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
+<style>
+button{
+padding: 7px 20px;
+}
+</style>
 
 </head>
 <body>
@@ -148,7 +154,7 @@
             %>
             <div class="col-md-4">
               <div class="card mb-3">
-                <img src="<%= auto.getImmagine() %>" class="card-img-top" alt="Immagine auto">
+                <img src="imageController?name=<%=auto.getImmagine() %>" class="card-img-top" alt="Immagine auto">
                 <div class="card-body">
                   <h5 class="card-title"><%= auto.getModello() %></h5>
                   
