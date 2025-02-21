@@ -7,8 +7,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Area Utente - Drive Easy</title>
-<link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="areaUtente.css">
+<link rel="stylesheet" href="style.css">
+
 <!-- Collegamento al file CSS -->
 </head>
 <body>
@@ -23,26 +24,39 @@
 
 	<!-- Navbar -->
 	<nav class="my-navbar">
-	
 		<div class="logo-container">
 			<img src="images/Logo.png" class="logo_immagine" alt="Logo">
 		</div>
+		<%
+		Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
+		%>
 		<ul class="nav-links">
 			<li><a href="HomeController?method=get">Home</a></li>
-			<li><a href="#assistenza">Assistenza</a></li>
-			<li><a href="inserisciVeicolo.jsp">Aggiungi Auto</a></li>
-			<li><a href="#impostazioni">Impostazioni</a></li>
-			<li><a href="#pagamenti">Pagamenti</a></li>
-			<li><a href="#prenotazioni">Prenotazioni</a></li>
-
-			<li class="user-info">Benvenuto, <%=utenteLoggato.getNome()%>!
-			</li>
+			<%
+			if (utenteLoggatoHome != null) {
+			%>
+			<li><a href="areaUtente.jsp">Area utente</a></li>
+			<%
+			if (utenteLoggatoHome.isAmministratore()) {
+			%>
+			<li><a href="AdminController?method=get">Gestione</a></li>
+			<%
+			}
+			%>
 			<li>
-				<form action="UtenteController" method="post">
+				<form action="UtenteController" method="post"
+					style="display: inline;">
 					<input type="hidden" name="tipoOperazione" value="logout">
-					<button class="logout-btn">Logout</button>
+					<button class="register-btn">Logout</button>
 				</form>
 			</li>
+			<%
+			} else {
+			%>
+			<li><a href="Register.jsp"><button class="login-btn">Accedi</button></a></li>
+			<%
+			}
+			%>
 		</ul>
 	</nav>
 

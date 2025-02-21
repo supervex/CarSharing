@@ -166,6 +166,8 @@ input, select { /* Seleziona gli elementi input e select */
     position: sticky; /* Rende la navbar sticky */
     top: 0; /* La fissa in cima alla pagina */
     z-index: 1000; /* Assicura che rimanga sopra gli altri elementi */
+    box-sizing: content-box;
+    
 }
 
 
@@ -175,6 +177,7 @@ input, select { /* Seleziona gli elementi input e select */
     gap: 12px; /* Aggiunge uno spazio di 12px tra gli elementi */
     align-items: center; /* Allinea verticalmente gli elementi al centro */
     margin-right: 15px; /* Aggiunge un margine destro di 15px */
+    margin-top: 12px;
 }
 
 .nav-links a { /* Seleziona i link all'interno di nav-links */
