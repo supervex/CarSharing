@@ -7,27 +7,39 @@ import models.Utente;
 
 public class UtenteQuery {
 
-    public boolean aggiungiUtente(Utente utente) {
-        String query = "INSERT INTO utente(username, nome, cognome, dataNascita, passwordUtente, citta, telefono, email, amministratore) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DataBaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	public boolean aggiungiUtente(Utente utente) {
+	    String query = "INSERT INTO utente(username, nome, cognome, dataNascita, passwordUtente, citta, telefono, email, amministratore) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	    try (Connection connection = DataBaseConnection.getConnection();
+	         PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-            preparedStatement.setString(1, utente.getUsername());
-            preparedStatement.setString(2, utente.getNome());
-            preparedStatement.setString(3, utente.getCognome());
-            preparedStatement.setDate(4, utente.getDataNascita());
-            preparedStatement.setString(5, utente.getPasswordUtente());  // Inserisci la password in chiaro
-            preparedStatement.setString(6, utente.getCitta());
-            preparedStatement.setString(7, utente.getTelefono());
-            preparedStatement.setString(8, utente.getEmail());
-            preparedStatement.setBoolean(9, utente.isAmministratore()); 
+	        preparedStatement.setString(1, utente.getUsername());
+	        preparedStatement.setString(2, utente.getNome());
+	        preparedStatement.setString(3, utente.getCognome());
+	        preparedStatement.setDate(4, utente.getDataNascita());
+	        preparedStatement.setString(5, utente.getPasswordUtente());
+	        preparedStatement.setString(6, utente.getCitta());
+	        preparedStatement.setString(7, utente.getTelefono());
+	        preparedStatement.setString(8, utente.getEmail());
+	        preparedStatement.setBoolean(9, utente.isAmministratore());
 
-            return preparedStatement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Errore SQL (aggiunta utente): " + e.getMessage());
-            return false;
-        }
-    }
+	        int rowsAffected = preparedStatement.executeUpdate();
+
+	        if (rowsAffected > 0) {
+	            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+	                if (generatedKeys.next()) {
+	                    int generatedId = generatedKeys.getInt(1);
+	                    utente.setId(generatedId); // Aggiorna l'oggetto Utente con l'ID generato
+	                }
+	            }
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Errore SQL (aggiunta utente): " + e.getMessage());
+	        return false;
+	    }
+	}
 
     public boolean aggiornaUtente(Utente utente) {
         String query = "UPDATE utente SET username = ?, nome = ?, cognome = ?, dataNascita = ?, citta = ?, telefono = ?, email = ?, amministratore = ?, passwordUtente = ? WHERE ID_utente = ?";
