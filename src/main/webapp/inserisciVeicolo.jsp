@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Inserisci Veicolo - Drive Easy</title>
+<link rel="stylesheet" href="areaUtente.css">
 <link rel="stylesheet" href="style.css">
 <style>
     .error-message {
@@ -54,7 +55,16 @@
     <%
         }
     %>
+<div class="sidebar">
+  <a href="areaUtente.jsp">Profilo Utente</a>
+  <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Le tue Prenotazioni</a>
+  <a href="AutoController?tipoOperazione=autoUtente">le tue Auto</a>
+  <a href="RecensioneController?tipoOperazione=mostraRecensioni">le tue Recensioni</a>
+  <a class="active" href="inserisciVeicolo.jsp">Aggiungi Auto</a>
+</div>
 
+<!-- Page content -->
+<div class="content">
     <div class="container">
         <h1>Inserisci il tuo veicolo</h1>
         <form id="carForm" action="AutoController" method="post" enctype="multipart/form-data">
@@ -85,6 +95,7 @@
             
             <button type="submit">Invia</button>
         </form>
+    </div>
     </div>
 </body>
 </html>

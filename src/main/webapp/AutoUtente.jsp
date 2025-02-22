@@ -21,28 +21,47 @@
 	%>
 
 	<!-- Navbar -->
+	<!-- Navbar -->
 	<nav class="my-navbar">
 		<div class="logo-container">
 			<img src="images/Logo.png" class="logo_immagine" alt="Logo">
 		</div>
+		<%
+		Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
+		%>
 		<ul class="nav-links">
+			
 			<li><a href="HomeController?method=get">Home</a></li>
-			<li><a href="#assistenza">Assistenza</a></li>
+			<%
+			if (utenteLoggatoHome != null) {
+			%>
+			<li><a href="areaUtente.jsp">Area utente</a></li>
+			<%
+			if (utenteLoggatoHome.isAmministratore()) {
+			%>
+			<li><a href="AdminController?method=get">Gestione</a></li>
+			<%
+			}
+			%>
 			<li><a href="inserisciVeicolo.jsp">Aggiungi Auto</a></li>
-			<li><a href="#impostazioni">Impostazioni</a></li>
-			<li><a href="#pagamenti">Pagamenti</a></li>
-			<li><a href="#prenotazioni">Prenotazioni</a></li>
-
-			<li class="user-info">Benvenuto, <%=utenteLoggato.getNome()%>!
-			</li>
+			<li><a href="NoleggioController?tipoOperazione=prenotazioniUtente">Prenotazioni</a></li>
 			<li>
-				<form action="UtenteController" method="post">
+				<form action="UtenteController" method="post"
+					style="display: inline;">
 					<input type="hidden" name="tipoOperazione" value="logout">
-					<button class="logout-btn">Logout</button>
+					<button class="register-btn">Logout</button>
 				</form>
 			</li>
+			<%
+			} else {
+			%>
+			<li><a href="Register.jsp"><button class="login-btn">Accedi</button></a></li>
+			<%
+			}
+			%>
 		</ul>
 	</nav>
+
 	
 	
 <!-- The sidebar -->
@@ -51,8 +70,8 @@
   <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Le tue Prenotazioni</a>
   <a class="active" href="AutoController?tipoOperazione=autoUtente">le tue Auto</a>
   <a href="RecensioneController?tipoOperazione=mostraRecensioni">le tue Recensioni</a>
+  <a href="inserisciVeicolo.jsp">Aggiungi Auto</a>
 </div>
-
 <!-- Page content -->
 <div class="content">
     <div class="container mt-4">
@@ -65,7 +84,7 @@
             %>
             <div class="col-md-4">
                 <div class="card mb-3">
-                    <img src="img/auto_default.jpg" class="card-img-top" alt="Immagine auto">
+                    <img src="imageController?name=<%=auto.getImmagine() %>" class="card-img-top" alt="Immagine auto">
                     <div class="card-body">
                         <h5 class="card-title"><%= auto.getModello() %></h5>
                         <p class="card-text"><strong>Targa:</strong> <%= auto.getTarga() %></p>

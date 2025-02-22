@@ -31,6 +31,7 @@
 		Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
 		%>
 		<ul class="nav-links">
+			
 			<li><a href="HomeController?method=get">Home</a></li>
 			<%
 			if (utenteLoggatoHome != null) {
@@ -43,6 +44,8 @@
 			<%
 			}
 			%>
+			<li><a href="inserisciVeicolo.jsp">Aggiungi Auto</a></li>
+			<li><a href="NoleggioController?tipoOperazione=prenotazioniUtente">Prenotazioni</a></li>
 			<li>
 				<form action="UtenteController" method="post"
 					style="display: inline;">
@@ -68,6 +71,7 @@
   <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Le tue Prenotazioni</a>
   <a href="AutoController?tipoOperazione=autoUtente">le tue Auto</a>
   <a href="RecensioneController?tipoOperazione=mostraRecensioni">le tue Recensioni</a>
+  <a href="inserisciVeicolo.jsp">Aggiungi Auto</a>
 </div>
 
 <!-- Page content -->
