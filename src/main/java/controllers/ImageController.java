@@ -20,7 +20,7 @@ public class ImageController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-		System.out.println("qui entra");
+		
         String imageName = request.getParameter("name");
         
         File imageFile = new File(Utility.UPLOAD_DIR+ "\\"  + imageName);
