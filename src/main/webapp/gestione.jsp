@@ -21,201 +21,293 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestione - Drive Easy</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestione - Drive Easy</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Optional: FontAwesome per gli icone -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 </head>
 <body>
-    <!-- Navbar di Gestione -->
-    <nav class="navbar">
-        <div class="logo">
-            <i class="fas fa-car"></i> Drive Easy - Gestione
-        </div>
-        <ul class="nav-links">
-            <li><a href="HomeController?method=get">Home</a></li>
-            <li><a href="gestione.jsp">Gestione</a></li>
-            <li>
-                <form action="UtenteController" method="post" style="display:inline;">
-                    <input type="hidden" name="tipoOperazione" value="logout">
-                    <button class="register-btn">Logout</button>
-                </form>
-            </li>
+  <!-- Navbar di Gestione -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#"><i class="fas fa-car"></i> Drive Easy - Gestione</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="HomeController?method=get">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="gestione.jsp">Gestione</a>
+          </li>
+          <li class="nav-item">
+            <form action="UtenteController" method="post" class="d-inline">
+              <input type="hidden" name="tipoOperazione" value="logout">
+              <button class="btn btn-outline-light" type="submit">Logout</button>
+            </form>
+          </li>
         </ul>
-    </nav>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Messaggi di errore/successo -->
+  <div class="container mt-3">
     <% 
-            // Verifica se esiste un messaggio di errore
-            String successo = (String) request.getAttribute("successo");
-            if (successo != null) { 
-        %>
-            <div class="alert alert-danger" role="alert">
-                <%= successo %>
-            </div>
-        <% } %>
-        
-    <!-- Gestione Utenti -->
-    <div class="container">
-        <h2 class="text-center">Gestione Utenti</h2>
-        <table border="1">
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Nome</th>
-                <th>Cognome</th>
-                <th>Email</th>
-                <th>Ruolo</th>
-                <th>Azioni</th>
-            </tr>
-            <% if (listaUtenti != null && !listaUtenti.isEmpty()) {
-                for (Utente utente : listaUtenti) { %>
-            <tr>
-                <td><%= utente.getId() %></td>
-                <td><%= utente.getUsername() %></td>
-                <td><%= utente.getNome() %></td>
-                <td><%= utente.getCognome() %></td>
-                <td><%= utente.getEmail() %></td>
-                <td><%= utente.isAmministratore() ? "Admin" : "Utente" %></td>
-                <td>
-                    <form action="UtenteController" method="post" style="display:inline;">
-                        <input type="hidden" name="tipoOperazione" value="eliminaUtente">
-                        <input type="hidden" name="idUtente" value="<%= utente.getId() %>">
-                        <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo utente?')">Elimina</button>
-                    </form>
-                    <form action="UtenteController" method="get" style="display:inline;">
-                        <input type="hidden" name="tipoOperazione" value="dettagli">
-                        <input type="hidden" name="idUtente" value="<%= utente.getId() %>">
-                        <button type="submit">dettagli</button>
-                    </form>                    
-                </td>
-            </tr>
-            <% } } else { %>
-            <tr>
-                <td colspan="7" class="text-center">Nessun utente registrato.</td>
-            </tr>
-            <% } %>
-        </table>
+      String successo = (String) request.getAttribute("successo");
+      if (successo != null) { 
+    %>
+      <div class="alert alert-danger" role="alert">
+        <%= successo %>
+      </div>
+    <% } %>
+  </div>
+  
+  <!-- Gestione Utenti -->
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Gestione Utenti</h2>
+    <!-- Barra di ricerca per Utenti -->
+    <div class="mb-3">
+      <input type="text" id="searchUtenti" class="form-control" placeholder="Cerca utente..." onkeyup="filterTable('searchUtenti','tableUtenti')">
     </div>
-    
-    <!-- Gestione Auto -->
-    <div class="container">
-        <h2 class="text-center">Gestione Auto</h2>
-        <table border="1">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle" id="tableUtenti">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Email</th>
+            <th>Ruolo</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (listaUtenti != null && !listaUtenti.isEmpty()) {
+              for (Utente utente : listaUtenti) { %>
             <tr>
-                <th>ID</th>
-                <th>Modello</th>
-                <th>Targa</th>
-                <th>Carburante</th>
-                <th>Prezzo</th>
-                <th>Azioni</th>
+              <td><%= utente.getId() %></td>
+              <td><%= utente.getUsername() %></td>
+              <td><%= utente.getNome() %></td>
+              <td><%= utente.getCognome() %></td>
+              <td><%= utente.getEmail() %></td>
+              <td><%= utente.isAmministratore() ? "Admin" : "Utente" %></td>
+              <td>
+                <form action="UtenteController" method="post" class="d-inline">
+                  <input type="hidden" name="tipoOperazione" value="eliminaUtente">
+                  <input type="hidden" name="idUtente" value="<%= utente.getId() %>">
+                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo utente?')">
+                    Elimina
+                  </button>
+                </form>
+                <form action="UtenteController" method="get" class="d-inline">
+                  <input type="hidden" name="tipoOperazione" value="dettagli">
+                  <input type="hidden" name="idUtente" value="<%= utente.getId() %>">
+                  <button type="submit" class="btn btn-info btn-sm">Dettagli</button>
+                </form>
+              </td>
             </tr>
-            <% if (listaAuto != null && !listaAuto.isEmpty()) {
-                for (Auto auto : listaAuto) { %>
+          <% } } else { %>
             <tr>
-                <td><%= auto.getId() %></td>
-                <td><%= auto.getModello() %></td>
-                <td><%= auto.getTarga() %></td>
-                <td><%= auto.getCarburante() %></td>
-                <td>€<%= auto.getPrezzo() %> al giorno</td>
-                <td>
-                    <form action="AutoController" method="post" style="display:inline;">
-                        <input type="hidden" name="tipoOperazione" value="elimina">
-                        <input type="hidden" name="id" value="<%= auto.getId() %>">
-                        <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questa auto?')">Elimina</button>
-                    </form>
-                    <a href="AutoController?tipoOperazione=dettagli&id=<%= auto.getId() %>">
-                        <button type="button">Dettagli</button>
-                    </a>
-                </td>
+              <td colspan="7" class="text-center">Nessun utente registrato.</td>
             </tr>
-            <% } } else { %>
-            <tr>
-                <td colspan="6" class="text-center">Nessuna auto disponibile.</td>
-            </tr>
-            <% } %>
-        </table>
+          <% } %>
+        </tbody>
+      </table>
     </div>
-    
-    <!-- Gestione Noleggi -->
-    <div class="container">
-        <h2 class="text-center">Gestione Noleggi</h2>
-        <table border="1">
-            <tr>
-                <th>ID Noleggio</th>
-                <th>ID Utente</th>
-                <th>ID Auto</th>
-                <th>Data Inizio</th>
-                <th>Data Fine</th>
-                <th>Pagamento</th>
-                <th>Azioni</th>
-            </tr>
-            <% if (listaNoleggi != null && !listaNoleggi.isEmpty()) {
-                for (Noleggio noleggio : listaNoleggi) { %>
-            <tr>
-                <td><%= noleggio.getId() %></td>
-                <td><%= noleggio.getIdUtente() %></td>
-                <td><%= noleggio.getIdAuto() %></td>
-                <td><%= noleggio.getData_inizio() %></td>
-                <td><%= noleggio.getData_fine() %></td>
-                <td>€<%= noleggio.getPagamento() %></td>
-                <td>
-                    <form action="NoleggioController" method="post" style="display:inline;">
-                        <input type="hidden" name="tipoOperazione" value="elimina">
-                        <input type="hidden" name="idNoleggio" value="<%= noleggio.getId() %>">
-                        <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo noleggio?')">Elimina</button>
-                    </form>
-                     <form action="NoleggioController" method="GET" style="display:inline;">
-                                <input type="hidden" name="idNoleggio" value="<%= noleggio.getId() %>">
-                                <input type="hidden" name="tipoOperazione" value="dettagli">
-                                <button type="submit">Dettagli</button>
-                            </form>
-                </td>
-            </tr>
-            <% } } else { %>
-            <tr>
-                <td colspan="7" class="text-center">Nessun noleggio presente.</td>
-            </tr>
-            <% } %>
-        </table>
+  </div>
+  
+  <!-- Gestione Auto -->
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Gestione Auto</h2>
+    <!-- Barra di ricerca per Auto -->
+    <div class="mb-3">
+      <input type="text" id="searchAuto" class="form-control" placeholder="Cerca auto..." onkeyup="filterTable('searchAuto','tableAuto')">
     </div>
-    
-    <!-- Gestione Recensioni -->
-    <div class="container">
-        <h2 class="text-center">Gestione Recensioni</h2>
-        <table border="1">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle" id="tableAuto">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Modello</th>
+            <th>Targa</th>
+            <th>Carburante</th>
+            <th>Prezzo</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (listaAuto != null && !listaAuto.isEmpty()) {
+              for (Auto auto : listaAuto) { %>
             <tr>
-                <th>ID Recensione</th>
-                <th>ID Utente</th>
-                <th>ID Auto</th>
-                <th>Descrizione</th>
-                <th>Valutazione</th>
-                <th>Azioni</th>
+              <td><%= auto.getId() %></td>
+              <td><%= auto.getModello() %></td>
+              <td><%= auto.getTarga() %></td>
+              <td><%= auto.getCarburante() %></td>
+              <td>€<%= auto.getPrezzo() %> al giorno</td>
+              <td>
+                <form action="AutoController" method="post" class="d-inline">
+                  <input type="hidden" name="tipoOperazione" value="elimina">
+                  <input type="hidden" name="id" value="<%= auto.getId() %>">
+                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questa auto?')">
+                    Elimina
+                  </button>
+                </form>
+                <a href="AutoController?tipoOperazione=dettagli&id=<%= auto.getId() %>" class="btn btn-info btn-sm">
+                  Dettagli
+                </a>
+              </td>
             </tr>
-            <% if (listaRecensioni != null && !listaRecensioni.isEmpty()) {
-                for (Recensione recensione : listaRecensioni) { %>
+          <% } } else { %>
             <tr>
-                <td><%= recensione.getId() %></td>
-                <td><%= recensione.getIdUtente() %></td>
-                <td><%= recensione.getIdAuto() %></td>
-                <td><%= recensione.getDescrizione() %></td>
-                <td><%= recensione.getValuatzione() %></td>
-                <td>
-                    <form action="RecensioneController" method="post" style="display:inline;">
-                        <input type="hidden" name="tipoOperazione" value="eliminaRecensione">
-                        <input type="hidden" name="idRecensione" value="<%= recensione.getId() %>">
-                        <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questa recensione?')">Elimina</button>
-                    </form>
-                    <a href="RecensioneController?tipoOperazione=dettagli&idRecensione=<%= recensione.getId() %>">
-                        <button type="button">Dettagli</button>
-                    </a>
-                </td>
+              <td colspan="6" class="text-center">Nessuna auto disponibile.</td>
             </tr>
-            <% } } else { %>
-            <tr>
-                <td colspan="6" class="text-center">Nessuna recensione presente.</td>
-            </tr>
-            <% } %>
-        </table>
+          <% } %>
+        </tbody>
+      </table>
     </div>
-    
+  </div>
+  
+  <!-- Gestione Noleggi -->
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Gestione Noleggi</h2>
+    <!-- Barra di ricerca per Noleggi -->
+    <div class="mb-3">
+      <input type="text" id="searchNoleggi" class="form-control" placeholder="Cerca noleggio..." onkeyup="filterTable('searchNoleggi','tableNoleggi')">
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle" id="tableNoleggi">
+        <thead class="table-dark">
+          <tr>
+            <th>ID Noleggio</th>
+            <th>ID Utente</th>
+            <th>ID Auto</th>
+            <th>Data Inizio</th>
+            <th>Data Fine</th>
+            <th>Pagamento</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (listaNoleggi != null && !listaNoleggi.isEmpty()) {
+              for (Noleggio noleggio : listaNoleggi) { %>
+            <tr>
+              <td><%= noleggio.getId() %></td>
+              <td><%= noleggio.getIdUtente() %></td>
+              <td><%= noleggio.getIdAuto() %></td>
+              <td><%= noleggio.getData_inizio() %></td>
+              <td><%= noleggio.getData_fine() %></td>
+              <td>€<%= noleggio.getPagamento() %></td>
+              <td>
+                <form action="NoleggioController" method="post" class="d-inline">
+                  <input type="hidden" name="tipoOperazione" value="elimina">
+                  <input type="hidden" name="idNoleggio" value="<%= noleggio.getId() %>">
+                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questo noleggio?')">
+                    Elimina
+                  </button>
+                </form>
+                <form action="NoleggioController" method="get" class="d-inline">
+                  <input type="hidden" name="idNoleggio" value="<%= noleggio.getId() %>">
+                  <input type="hidden" name="tipoOperazione" value="dettagli">
+                  <button type="submit" class="btn btn-info btn-sm">Dettagli</button>
+                </form>
+              </td>
+            </tr>
+          <% } } else { %>
+            <tr>
+              <td colspan="7" class="text-center">Nessun noleggio presente.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Gestione Recensioni -->
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Gestione Recensioni</h2>
+    <!-- Barra di ricerca per Recensioni -->
+    <div class="mb-3">
+      <input type="text" id="searchRecensioni" class="form-control" placeholder="Cerca recensione..." onkeyup="filterTable('searchRecensioni','tableRecensioni')">
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle" id="tableRecensioni">
+        <thead class="table-dark">
+          <tr>
+            <th>ID Recensione</th>
+            <th>ID Utente</th>
+            <th>ID Auto</th>
+            <th>Descrizione</th>
+            <th>Valutazione</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (listaRecensioni != null && !listaRecensioni.isEmpty()) {
+              for (Recensione recensione : listaRecensioni) { %>
+            <tr>
+              <td><%= recensione.getId() %></td>
+              <td><%= recensione.getIdUtente() %></td>
+              <td><%= recensione.getIdAuto() %></td>
+              <td><%= recensione.getDescrizione() %></td>
+              <td><%= recensione.getValuatzione() %></td>
+              <td>
+                <form action="RecensioneController" method="post" class="d-inline">
+                  <input type="hidden" name="tipoOperazione" value="eliminaRecensione">
+                  <input type="hidden" name="idRecensione" value="<%= recensione.getId() %>">
+                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Sei sicuro di voler eliminare questa recensione?')">
+                    Elimina
+                  </button>
+                </form>
+                <a href="RecensioneController?tipoOperazione=dettagli&idRecensione=<%= recensione.getId() %>" class="btn btn-info btn-sm">
+                  Dettagli
+                </a>
+              </td>
+            </tr>
+          <% } } else { %>
+            <tr>
+              <td colspan="6" class="text-center">Nessuna recensione presente.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Funzione JavaScript per il filtro delle tabelle -->
+  <script>
+    function filterTable(searchInputId, tableId) {
+      var input = document.getElementById(searchInputId);
+      var filter = input.value.toUpperCase();
+      var table = document.getElementById(tableId);
+      var tr = table.getElementsByTagName("tr");
+      // Salta la prima riga (header) e filtra le righe
+      for (var i = 1; i < tr.length; i++) {
+        var tds = tr[i].getElementsByTagName("td");
+        var found = false;
+        for (var j = 0; j < tds.length; j++) {
+          var cell = tds[j];
+          if (cell) {
+            var txtValue = cell.textContent || cell.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              found = true;
+              break;
+            }
+          }
+        }
+        tr[i].style.display = found ? "" : "none";
+      }
+    }
+  </script>
+  
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
