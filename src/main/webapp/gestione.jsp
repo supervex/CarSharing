@@ -81,9 +81,11 @@
                         <input type="hidden" name="idUtente" value="<%= utente.getId() %>">
                         <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo utente?')">Elimina</button>
                     </form>
-                    <a href="dettagliUtente.jsp">
-                        <button type="button">Dettagli</button>
-                    </a>
+                    <form action="UtenteController" method="get" style="display:inline;">
+                        <input type="hidden" name="tipoOperazione" value="dettagli">
+                        <input type="hidden" name="idUtente" value="<%= utente.getId() %>">
+                        <button type="submit">dettagli</button>
+                    </form>                    
                 </td>
             </tr>
             <% } } else { %>

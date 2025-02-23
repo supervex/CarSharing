@@ -20,6 +20,17 @@ import utils.CriptaPassword;
 public class UtenteController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final UtenteQuery utenteQuery = new UtenteQuery();
+    
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    	String tipoOperazione = Optional.ofNullable(request.getParameter("tipoOperazione")).orElse("");
+    	switch (tipoOperazione) {
+    	 case "dettagli":
+             dettagliUtente(request, response);
+             break;  
+    	}
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -41,9 +52,7 @@ public class UtenteController extends HttpServlet {
             case "eliminaUtente":
                 gestisciEliminaUtente(request, response);
                 break;
-            case "dettagli":
-                dettagliUtente(request, response);
-                break;  
+             
             default:
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Operazione non valida");
         }
@@ -51,7 +60,13 @@ public class UtenteController extends HttpServlet {
     private void dettagliUtente(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     	
-        RequestDispatcher dispatcher = request.getRequestDispatcher("dettagliAuto.jsp");
+    	int idUtente =Integer.parseInt(request.getParameter("idUtente"));
+    	System.out.println(idUtente);
+    	Utente utente = utenteQuery.getUtenteById(idUtente);
+    	System.out.println(idUtente);
+    	request.setAttribute("utente", utente);
+    	
+        RequestDispatcher dispatcher = request.getRequestDispatcher("dettagliUtente.jsp");
         dispatcher.forward(request, response);  
     	
     }
