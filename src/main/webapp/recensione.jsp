@@ -246,9 +246,10 @@ button:hover {
                         </div>
                     
                     </div>
-                   
+                   <button type="submit" class="d-block mx-auto">Invia Recensione</button>
+
                 </form>
-                  <button type="submit" class="btn btn-primary w-100">Invia Recensione</button>
+                  
             </div>
            
         </div>

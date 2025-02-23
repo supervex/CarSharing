@@ -10,6 +10,11 @@
     
     <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="areaUtente.css">
+<style>
+button{
+padding: 7px 20px;
+}
+</style>
 </head>
 <body>
 <%

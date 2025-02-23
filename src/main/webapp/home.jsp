@@ -222,6 +222,62 @@ padding: 7px 20px;
     </div>
   </div>
 </section>
+<!-- Sezione About Us - Template Style -->
+<!-- Sezione Informativa - Noleggio Auto -->
+<section id="info-noleggio" class="py-5">
+  <div class="container">
+    <div class="row">
+      <!-- Colonna Sinistra: Descrizione e confronto prezzi -->
+      <div class="col-lg-7">
+        <div class="mb-4">
+          <h2 class="mb-3">Noleggiare un'auto è conveniente con BSP Auto</h2>
+          <p class="lead">L'unico sito francese con sistema di confronto dei prezzi, con un team con sede a Parigi e disponibile 7 giorni su 7.</p>
+        </div>
+        <div class="mb-4">
+          <p>Ti serve un'auto per un viaggio d'affari? Per andare in vacanza o per qualche giorno? Perché non noleggiarla? Questa soluzione, pratica e accessibile a tutti, ti consente di avere un'auto adatta al tuo viaggio e ad un prezzo conveniente!</p>
+          <p>Scegli la durata della prenotazione e il modello e, grazie al nostro sistema di confronto dei prezzi online, potrai confrontare le offerte dei più grandi professionisti del noleggio per trovare il prezzo migliore, sia in Francia che nel resto del mondo.</p>
+        </div>
+        <div class="mb-4">
+          <h2 class="mb-3">Confronta le offerte per trovare l'offerta migliore</h2>
+          <p>Seleziona la tua partenza, l'agenzia per la restituzione (ad esempio in aeroporto o in stazione), le date e gli orari e il gioco è fatto! Dopo aver confrontato le tariffe, potrai scegliere l'offerta che più ti conviene.</p>
+          <p>In caso di variazioni nei tuoi piani, avrai la possibilità di annullare o modificare il noleggio: la flessibilità è uno dei nostri punti di forza.</p>
+        </div>
+      </div>
+      <!-- Colonna Destra: Prenotazione e link ai migliori paesi -->
+      <div class="col-lg-5">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h2 class="card-title">Prenota con pochi clic!</h2>
+            <p class="card-text">Dopo aver confrontato le tariffe, prenota facilmente la tua auto compilando il modulo online. Offriamo anche servizi esclusivi come modifiche gratuite, cancellazioni flessibili e chilometraggio illimitato, a seconda delle offerte.</p>
+            <p class="card-text">Trova l'auto perfetta per i tuoi viaggi, che si tratti di un breve soggiorno o di una lunga vacanza.</p>
+          </div>
+        </div>
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h2 class="card-title">I migliori paesi per il noleggio auto</h2>
+            <ul class="list-unstyled">
+              <li><a href="/it/noleggio-auto/croazia.asp" title="Noleggio auto in Croazia">Croazia</a></li>
+              <li><a href="/it/noleggio-auto/spagna.asp">Spagna</a></li>
+              <li><a href="/it/noleggio-auto/francia.asp">Francia</a></li>
+              <li><a href="/it/noleggio-auto/grecia.asp">Grecia</a></li>
+              <li><a href="/it/noleggio-auto/portogallo.asp">Portogallo</a></li>
+              <li><a href="/it/noleggio-auto/irlanda.asp">Irlanda</a></li>
+              <li><a href="/it/noleggio-auto/italia.asp">Italia</a></li>
+              <li><a href="/it/noleggio-auto/sardegna.asp">Sardegna</a></li>
+              <li><a href="/it/noleggio-auto/sicilia.asp">Sicilia</a></li>
+              <li><a href="/it/noleggio-auto/stati-uniti.asp">Stati Uniti</a></li>
+              <li><a href="/it/noleggio-auto/regno-unito.asp">Regno Unito</a></li>
+              <li><a href="/it/noleggio-auto/ungheria.asp">Ungheria</a></li>
+              <li><a href="/it/noleggio-auto/danimarca.asp">Danimarca</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <footer>
 		Drive Easy | Via Italia, 24 - Roma ITALIA | C.F. ABC534845745 | P.Iva 854345764 <br>
 		<a class="trans-color-text" href="#">DriveEasy@info.com</a> | <span itemprop="telephone"><a href="#">+39 347 58 30 387</a></span>

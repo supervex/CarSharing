@@ -433,4 +433,14 @@ background:#0c2241; /* light seconday color*/
 	color: #0c2241;
 	margin-bottom: 50px;
 	font-weight: bold;
-}	
+}
+	
+.user-details-form {
+    display: block !important;
+    width: auto !important;
+    max-width: 700px; /* oppure 600px, 800px... decidi tu */
+    margin: 0 auto !important;
+    gap: 0 !important;
+    align-items: normal !important;
+    /* Qualsiasi altra regola per rimuovere/ridefinire lo stile generico */
+}
