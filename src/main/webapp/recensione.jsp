@@ -230,22 +230,21 @@ button:hover {
                         <textarea name="descrizione" id="descrizione" rows="4" class="form-control" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="d-block text-center fw-bold">Punteggio:</label>
-                        <div class="rating-container text-center">
-                            <input type="radio" id="stelle1" name="punteggio" value="1">
-                            <label for="stelle1">★</label>
-                            <input type="radio" id="stelle2" name="punteggio" value="2">
-                            <label for="stelle2">★</label>
-                            <input type="radio" id="stelle3" name="punteggio" value="3">
-                            <label for="stelle3">★</label>
-                            <input type="radio" id="stelle4" name="punteggio" value="4">
-                            <label for="stelle4">★</label>
-                            <input type="radio" id="stelle5" name="punteggio" value="5">
-                            <label for="stelle5">★</label>
-                      
-                        </div>
-                    
-                    </div>
+    <label class="d-block text-center fw-bold">Punteggio:</label>
+    <div class="rating-container text-center">
+        <input type="radio" id="stelle1" name="punteggio" value="5">
+        <label for="stelle1">★</label>
+        <input type="radio" id="stelle2" name="punteggio" value="4">
+        <label for="stelle2">★</label>
+        <input type="radio" id="stelle3" name="punteggio" value="3">
+        <label for="stelle3">★</label>
+        <input type="radio" id="stelle4" name="punteggio" value="2">
+        <label for="stelle4">★</label>
+        <input type="radio" id="stelle5" name="punteggio" value="1">
+        <label for="stelle5">★</label>
+    </div>
+</div>
+
                    <button type="submit" class="d-block mx-auto">Invia Recensione</button>
 
                 </form>
@@ -269,6 +268,8 @@ button:hover {
         <a href="javascript:history.back()" class="btn btn-secondary">Torna alla pagina precedente</a>
     </div>
 </div>
+
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

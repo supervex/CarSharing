@@ -217,6 +217,14 @@ padding: 7px 20px;
                                                     <input type="hidden" name="tipoOperazione" value="lasciaRecensione">
                                                     <button type="submit" class="btn btn-warning btn-sm">Lascia una recensione</button>
                                                 </form>
+                                                <form action="NoleggioController" method="POST" class="d-inline">
+                                                    <input type="hidden" name="idNoleggio" value="<%= noleggio.getId() %>">
+                                                    <input type="hidden" name="tipoOperazione" value="elimina">
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                            onclick="return confirm('Sei sicuro di voler cancellare questa prenotazione?')">
+                                                        Cancella
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     <% } %>

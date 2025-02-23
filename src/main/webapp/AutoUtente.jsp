@@ -8,11 +8,20 @@
     <meta charset="UTF-8">
     <title>ciao</title>
     
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Stili personalizzati -->
     <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="areaUtente.css">
-<style>
-button{
-padding: 7px 20px;
+    <link rel="stylesheet" href="areaUtente.css">
+    <style>
+.btn-orange {
+    background-color: #FFA500; /* Arancione */
+    border-color: #FFA500;
+}
+
+.btn-orange:hover {
+    background-color: #ff8c00; /* Un arancione più scuro per l'hover */
+    border-color: #ff8c00;
 }
 </style>
 </head>
@@ -78,52 +87,70 @@ padding: 7px 20px;
   <a href="inserisciVeicolo.jsp">Aggiungi Auto</a>
 </div>
 <!-- Page content -->
+<!-- Contenitore principale -->
 <div class="content">
     <div class="container mt-4">
-        <h2 class="text-center">Auto per utente</h2>
-        <div class="row">
-            <% //cambiare lista con lista auto dell'utente
-                List<Auto> listaAuto = (List<Auto>) request.getAttribute("listaAutoUtente");
-                if (listaAuto != null && !listaAuto.isEmpty()) {
-                    for (Auto auto : listaAuto) {
-            %>
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <img src="imageController?name=<%=auto.getImmagine() %>" class="card-img-top" alt="Immagine auto">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= auto.getModello() %></h5>
-                        <p class="card-text"><strong>Targa:</strong> <%= auto.getTarga() %></p>
-                        <p class="card-text"><strong>Carburante:</strong> <%= auto.getCarburante() %></p>
-                        <p class="card-text"><strong>Livello carburante:</strong> <%= auto.getLivello() %>%</p>
-                        <p class="card-text"><strong>Numero posti:</strong> <%= auto.getNumeroPosti() %></p>
-                        <p class="card-text"><strong>Cambio:</strong> <%= auto.getCambio() %></p>
-                        <p class="card-text"><strong>Posizione:</strong> <%= auto.getPosizione() %></p>
-                        <p class="card-text"><strong>Citta:</strong> <%= auto.getCitta() %></p>
-                        <p class="card-text"><strong>Prezzo:</strong> €<%= auto.getPrezzo() %> al giorno</p>
-                        
-                        <!-- Bottone Modifica -->
-                        <a href="AutoController?tipoOperazione=aggiorna&id=<%= auto.getId() %>" class="btn btn-primary">Modifica</a>
+        <h2 class="text-center mb-4">Le Tue Auto</h2>
 
-                      <form action="AutoController" method="post" onsubmit="return confirm('Sei sicuro di voler eliminare questa auto?');">
-    <input type="hidden" name="tipoOperazione" value="elimina">
-    <input type="hidden" name="id" value="<%= auto.getId() %>">
-    <button type="submit" class="btn btn-danger">Elimina</button>
-</form>
+        <% List<Auto> listaAuto = (List<Auto>) request.getAttribute("listaAutoUtente"); %>
+        
+        <% if (listaAuto != null && !listaAuto.isEmpty()) { %>
+            <table class="table table-striped table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Immagine</th>
+                        <th>Modello</th>
+                        <th>Targa</th>
+                        <th>Carburante</th>
+                        <th>Livello Carburante</th>
+                        <th>Numero Posti</th>
+                        <th>Cambio</th>
+                        <th>Posizione</th>
+                        <th>Città</th>
+                        <th>Prezzo</th>
+                        <th class="text-end pe-3" style="width: 150px;">Azioni</th> <!-- Larghezza fissa per uniformità -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (Auto auto : listaAuto) { %>
+                        <tr>
+                            <td><%= auto.getId() %></td>
+                            <td>
+                                <img src="imageController?name=<%= auto.getImmagine() %>" alt="Auto" style="width: 100px; height: auto;">
+                            </td>
+                            <td><%= auto.getModello() %></td>
+                            <td><%= auto.getTarga() %></td>
+                            <td><%= auto.getCarburante() %></td>
+                            <td><%= auto.getLivello() %>%</td>
+                            <td><%= auto.getNumeroPosti() %></td>
+                            <td><%= auto.getCambio() %></td>
+                            <td><%= auto.getPosizione() %></td>
+                            <td><%= auto.getCitta() %></td>
+                            <td>€<%= auto.getPrezzo() %> al giorno</td>
+                            <td class="text-end pe-3">
+    <form action="AutoController" method="get" class="d-inline">
+        <input type="hidden" name="tipoOperazione" value="aggiorna">
+        <input type="hidden" name="id" value="<%= auto.getId() %>">
+        <button type="submit" class="btn btn-orange btn-sm">Modifica</button>
 
-                    </div>
-                </div>
-            </div>
-            <%
-                    }
-                } else {
-            %>
+    </form>
+    <form action="AutoController" method="post" class="d-inline" onsubmit="return confirm('Sei sicuro di voler eliminare questa auto?');">
+        <input type="hidden" name="tipoOperazione" value="elimina">
+        <input type="hidden" name="id" value="<%= auto.getId() %>">
+        <button type="submit" class="btn btn-danger btn-sm">Elimina</button>
+    </form>
+</td>
+
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        <% } else { %>
             <p class="text-center">Nessuna auto disponibile.</p>
-            <%
-                }
-            %>
-        </div>
+        <% } %>
     </div>
-    
-    </div>
+</div>
+
 </body>
 </html>

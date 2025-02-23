@@ -89,11 +89,14 @@ public class RecensioneController extends HttpServlet {
                 dispatcher.forward(request, response);
             }
         } else if ("inserisciRecensione".equals(tipoOperazione)) {
-            // Inserisci recensione (già implementato)
+            // Recupero dei parametri dalla richiesta
             String descrizione = request.getParameter("descrizione");
             String punteggioStr = request.getParameter("punteggio");
             int idAuto = Integer.parseInt(request.getParameter("idAuto"));
             int idUtente = Integer.parseInt(request.getParameter("idUtente"));
+
+            // Debug per vedere cosa arriva nel controller
+            System.out.println("Punteggio ricevuto: " + punteggioStr); // Debug
 
             int punteggio = 0;
             try {
@@ -129,6 +132,7 @@ public class RecensioneController extends HttpServlet {
             // Altri tipi di operazione o comportamento di default
             response.sendRedirect("gestione.jsp");
         }
+
     }
     protected void mostraRecensioni(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	HttpSession session = request.getSession();
