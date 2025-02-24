@@ -143,7 +143,7 @@ padding: 7px 20px;
     <!-- Contenuto principale -->
     <div class="content">
         <div class="container mt-4">
-            <h1 class="text-center mb-4">Le tue Prenotazioni</h1>
+            <h1 class="text-center mb-4">LE TUE PRENOTAZIONI</h1>
 
             <!-- Card Prenotazioni Attuali -->
             <div class="card mx-auto shadow-sm mb-4" style="max-width: 1000px;">

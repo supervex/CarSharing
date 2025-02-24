@@ -103,7 +103,7 @@ padding: 7px 20px;
   <!-- Contenuto della pagina -->
   <div class="content">
   <div class="container mt-4">
-    <h1 class="text-center mb-4">Dettagli Utente</h1>
+    <h1 class="text-center mb-4">DETTAGLI UTENTE</h1>
     <%
       Utente utente = (Utente) session.getAttribute("user");
       if (utente != null) {

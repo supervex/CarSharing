@@ -39,6 +39,15 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
+    form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: auto;
+    border-radius: 10px;
+    margin: auto;
+    align-items: center;
+}
          body {
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #000682, #cd7612);
@@ -53,7 +62,6 @@
              justify-content: center;
              padding: 40px 0;
          }
-        
          .container {
             background: white;
             width: 70%;
@@ -65,6 +73,13 @@
          .left-container, .right-container {
             width: 50%;
             padding: 20px;
+         }
+         /* Riduci lo spazio tra il titolo e la form nella parte sinistra */
+         .left-container h2 {
+            margin-bottom: 10px;
+         }
+         .left-container form {
+            margin-top: 0;
          }
          h2, h3 {
             text-align: center;
@@ -151,6 +166,7 @@
         <div class="container">
             <div class="left-container">
                 <h2>Come vuoi pagare?</h2>
+                <!-- La form è subito dopo il titolo, senza margine aggiuntivo -->
                 <form id="carForm" action="NoleggioController" method="post">
                     <div class="form-group">
                         <label for="cardholder">Titolare della carta</label>

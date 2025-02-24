@@ -109,7 +109,7 @@ padding: 7px 20px;
 <!-- Contenuto principale -->
 <div class="content">
     <div class="container mt-4">
-        <h1 class="text-center mb-4">Le Mie Recensioni</h1>
+        <h1 class="text-center mb-4">LE TUE RECENSIONI</h1>
         
         <!-- Card per le Recensioni -->
         <div class="card mx-auto shadow-sm mb-4" style="max-width: 60%;">
