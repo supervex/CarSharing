@@ -94,7 +94,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <a class="active" href="areaUtente.jsp">Profilo Utente</a>
-        <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Le tue Prenotazioni</a>
+        <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Prenotazioni</a>
         <a href="AutoController?tipoOperazione=autoUtente">Le tue Auto</a>
         <a href="RecensioneController?tipoOperazione=mostraRecensioni">Le tue Recensioni</a>
         <a href="inserisciVeicolo.jsp">Aggiungi Auto</a>
@@ -103,7 +103,7 @@
     <!-- Contenuto principale -->
   <div class="content">
   <div class="container mt-4">
-    <h1 class="text-center mb-4">Modifica Profilo</h1>
+    <h1 class="text-center mb-4">MODIFICA PROFILO</h1>
     <form action="UtenteController" method="post">
       <!-- Se necessario, includi l'id dell'utente -->
       <input type="hidden" name="idUtente" value="<%= utenteLoggato.getId() %>">

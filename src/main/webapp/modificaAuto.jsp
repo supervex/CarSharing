@@ -41,7 +41,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <a href="areaUtente.jsp">Profilo Utente</a>
-        <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Le tue Prenotazioni</a>
+        <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Prenotazioni</a>
         <a class="active" href="AutoController?tipoOperazione=autoUtente">Le tue Auto</a>
         <a href="RecensioneController?tipoOperazione=mostraRecensioni">Le tue Recensioni</a>
         <a href="inserisciVeicolo.jsp">Aggiungi Auto</a>
@@ -50,7 +50,7 @@
     <!-- Contenuto principale -->
     <div class="content">
         <div class="container mt-4">
-            <h2 class="text-center">Modifica Auto</h2>
+            <h2 class="text-center">MODIFICA AUTO</h2>
             <% 
                 String errorMessage = (String) request.getAttribute("errorMessage");
                 if (errorMessage != null) { 
@@ -67,7 +67,7 @@
                 
                 <div class="card mx-auto shadow-sm" style="width: 60%;">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">MODIFICA AUTO</h5>
+                        <h5 class="mb-0">Modifica Auto</h5>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
@@ -103,11 +103,11 @@
                             <input type="text" class="form-control" name="citta" value="<%= auto.getCitta() %>" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Prezzo al giorno (€):</label>
+                            <label class="form-label">Prezzo al ora (€):</label>
                             <input type="number" step="0.01" class="form-control" name="prezzo" value="<%= auto.getPrezzo() %>" required>
                         </div>
                         <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-success">Salva Modifiche</button>
+                            <button type="submit" class="btn btn-primary">Salva Modifiche</button>
                             <a href="AutoController?tipoOperazione=autoUtente" class="btn btn-secondary">Annulla</a>
                         </div>
                     </div>

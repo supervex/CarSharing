@@ -1,10 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="models.Noleggio, models.Auto" %>
+<%@ page import="models.Noleggio, models.Auto, models.Utente" %>
+
 <html>
 <head>
     <title>Dettagli Prenotazione</title>
 </head>
+ <link rel="stylesheet" href="areaUtente.css">
+  <link rel="stylesheet" href="style.css">
 <style>
+
 body {
     font-family: Arial, sans-serif;
     background-color: #dbe6f1; /* Colore di sfondo chiaro */
@@ -70,15 +74,6 @@ img {
     margin-top: 20px;
 }
 
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 5px;
-    transition: background-color 0.3s ease;
-}
 
 .edit-button {
     background-color: #007bff;
@@ -115,8 +110,49 @@ button {
 }
 </style>
 <body>
+<nav class="my-navbar">
+    <div class="logo-container">
+      <img src="images/Logo.png" class="logo_immagine" alt="Logo">
+    </div>
+    <%
+      Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
+    %>
+    <ul class="nav-links">
+      <li><a href="HomeController?method=get">Home</a></li>
+      <%
+        if (utenteLoggatoHome != null) {
+      %>
+      <li><a href="areaUtente.jsp">Area utente</a></li>
+      <%
+          if (utenteLoggatoHome.isAmministratore()) {
+      %>
+      <li><a href="AdminController?method=get">Gestione</a></li>
+      <%
+          }
+      %>
+      <li><a href="inserisciVeicolo.jsp">Aggiungi Auto</a></li>
+      <li><a href="NoleggioController?tipoOperazione=prenotazioniUtente">Prenotazioni</a></li>
+      <li>
+        <form action="UtenteController" method="post" style="display: inline;">
+          <input type="hidden" name="tipoOperazione" value="logout">
+          <button class="register-btn">Logout</button>
+        </form>
+      </li>
+      <%
+        } else {
+      %>
+      <li><a href="Register.jsp"><button class="login-btn">Accedi</button></a></li>
+      <%
+        }
+      %>
+    </ul>
+  </nav>
+  
+  <h1 style="
+    font-size: 40px;
+">DETTAGLI PRENOTAZIONE</h1>
     <div class="container">
-        <h1>Dettagli Prenotazione</h1>
+        
         <%
             Noleggio noleggio = (Noleggio) request.getAttribute("noleggio");
             Auto auto = (Auto) request.getAttribute("auto");
@@ -140,10 +176,7 @@ button {
                     <img src="imageController?name=<%=auto.getImmagine() %>" alt="Immagine Auto">
                 </div>
             </div>
-            <div class="button-container">
-                <button class="edit-button">Modifica</button>
-                <button class="delete-button">Elimina</button>
-            </div>
+           
         <%
             } else {
         %>

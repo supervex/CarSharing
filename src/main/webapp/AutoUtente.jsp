@@ -55,7 +55,7 @@ padding: 7px 20px;
 	%>
 
 	<!-- Navbar -->
-	<!-- Navbar -->
+	
 	<nav class="my-navbar">
 		<div class="logo-container">
 			<img src="images/Logo.png" class="logo_immagine" alt="Logo">
@@ -149,7 +149,7 @@ padding: 7px 20px;
                     <td><%= auto.getCambio() %></td>
                     <td><%= auto.getPosizione() %></td>
                     <td><%= auto.getCitta() %></td>
-                    <td>€<%= auto.getPrezzo() %> al giorno</td>
+                    <td>€<%= auto.getPrezzo() %> al ora</td>
                     <td class="text-end pe-3">
                       <form action="AutoController" method="get" class="d-inline">
                         <input type="hidden" name="tipoOperazione" value="aggiorna">

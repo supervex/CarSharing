@@ -34,26 +34,51 @@
             cursor: pointer;
             font-size: 16px;
         }
+        button{
+padding: 7px 20px;
+}
     </style>
 </head>
 <body>
-    <nav class="my-navbar">
-        <div class="logo-container">
-            <img src="images/Logo.png" class="logo_immagine" alt="Logo">
-        </div>
-        <ul class="nav-links">
-            <li><a href="HomeController?method=get">Home</a></li>
-            <li><a href="areaUtente.jsp">Area utente</a></li>
-            <li><a href="inserisciVeicolo.jsp">Aggiungi Auto</a></li>
-            <li><a href="NoleggioController?tipoOperazione=prenotazioniUtente">Prenotazioni</a></li>
-            <li>
-                <form action="UtenteController" method="post" style="display: inline;">
-                    <input type="hidden" name="tipoOperazione" value="logout">
-                    <button class="register-btn">Logout</button>
-                </form>
-            </li>
-        </ul>
-    </nav>
+   <nav class="my-navbar">
+		<div class="logo-container">
+			<img src="images/Logo.png" class="logo_immagine" alt="Logo">
+		</div>
+		<%
+		Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
+		%>
+		<ul class="nav-links">
+			
+			<li><a href="HomeController?method=get">Home</a></li>
+			<%
+			if (utenteLoggatoHome != null) {
+			%>
+			<li><a href="areaUtente.jsp">Area utente</a></li>
+			<%
+			if (utenteLoggatoHome.isAmministratore()) {
+			%>
+			<li><a href="AdminController?method=get">Gestione</a></li>
+			<%
+			}
+			%>
+			<li><a href="inserisciVeicolo.jsp">Aggiungi Auto</a></li>
+			<li><a href="NoleggioController?tipoOperazione=prenotazioniUtente">Prenotazioni</a></li>
+			<li>
+				<form action="UtenteController" method="post"
+					style="display: inline;">
+					<input type="hidden" name="tipoOperazione" value="logout">
+					<button class="register-btn">Logout</button>
+				</form>
+			</li>
+			<%
+			} else {
+			%>
+			<li><a href="Register.jsp"><button class="login-btn">Accedi</button></a></li>
+			<%
+			}
+			%>
+		</ul>
+	</nav>
 
     <div class="sidebar">
         <a href="areaUtente.jsp">Profilo Utente</a>
