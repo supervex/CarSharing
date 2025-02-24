@@ -6,15 +6,16 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Errore</title>
    <style>
-       body {
-           font-family: Arial, sans-serif;
-           background: linear-gradient(135deg, #4B0082, #D8BFD8);
-           margin: 0;
-           display: flex;
-           align-items: center;
-           justify-content: center;
-           height: 100vh;
-       }
+      body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #000682, #cd7612);
+    margin: 0;
+    display: flex
+;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
        .container {
            background: #fff;
            width: 80%;
@@ -30,7 +31,7 @@
            to { opacity: 1; transform: translateY(0); }
        }
        h2 {
-           color: #4B0082;
+           color: #0c2241;
            font-size: 2em;
            margin-bottom: 20px;
        }

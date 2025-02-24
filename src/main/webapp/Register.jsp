@@ -143,7 +143,7 @@
     <br><br>
     <div class="container mt-4">
         <% if (request.getAttribute("errorMessage") != null) { %>
-            <div class="alert alert-danger" role="alert" style="border-radius: 10px; background-color: #f2dede; color: #a94442;">
+            <div class="alert alert-danger" role="alert" style=" font-weight: bold; text-align: center; padding: 10px; border-radius: 10px; background-color: #ffc08c; color: #df0400;">
                 <%= request.getAttribute("errorMessage") %>
             </div>
         <% } %>
@@ -163,7 +163,7 @@
                     <label class="label">Data di nascita</label>
                     <input type="date" id="dataNascita" name="dataNascita" required
                         value="<%= request.getAttribute("dataNascita") != null ? request.getAttribute("dataNascita") : "" %>">
-                    <label class="label">Città</label>
+                    <label class="label">CittÃ </label>
                     <input type="text" id="citta" name="citta" required
                         value="<%= request.getAttribute("citta") != null ? request.getAttribute("citta") : "" %>">
                     <label class="label">Numero di cellulare</label>

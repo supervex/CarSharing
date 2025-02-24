@@ -13,7 +13,7 @@
     <div class="container mt-4">
         <h1 class="text-center">Dettagli Utente</h1>
         <%
-            Utente utente = (Utente) session.getAttribute("user");
+            Utente utente = (Utente) request.getAttribute("utente");
             if(utente != null) {
         %>
         <div class="card mx-auto" style="max-width: 600px;">
