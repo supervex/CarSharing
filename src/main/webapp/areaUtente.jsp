@@ -16,6 +16,30 @@
 button{
 padding: 7px 20px;
 }
+.btn-primary {
+    background-color: #0d6efd;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    justify-content: center;
+}
+
+.btn-primary:hover { /* Stile per btn-primary al passaggio del mouse */
+    background-color: #064196; /* Mantiene il colore di sfondo arancione al passaggio del mouse */
+}    
+
+.btn-danger {
+    background-color: #fd0d0d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+}
 </style>
 </head>
 <body>
@@ -70,7 +94,7 @@ padding: 7px 20px;
   <!-- Sidebar -->
   <div class="sidebar">
     <a class="active" href="areaUtente.jsp">Profilo Utente</a>
-    <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Le tue Prenotazioni</a>
+    <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Prenotazioni</a>
     <a href="AutoController?tipoOperazione=autoUtente">Le tue Auto</a>
     <a href="RecensioneController?tipoOperazione=mostraRecensioni">Le tue Recensioni</a>
     <a href="inserisciVeicolo.jsp">Aggiungi Auto</a>
@@ -78,110 +102,103 @@ padding: 7px 20px;
 
   <!-- Contenuto della pagina -->
   <div class="content">
-    <div class="container mt-4">
-      <h1 class="text-center mb-4">Dettagli Utente</h1>
-      <%
-        Utente utente = (Utente) session.getAttribute("user");
-        if(utente != null) {
-      %>
-      <form class="user-details-form">
-        <input type="hidden" name="tipoOperazione" value="aggiornaDettagli">
-        <div class="card mx-auto shadow-sm" style="max-width: 700px;">
-          <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Profilo Utente</h5>
+  <div class="container mt-4">
+    <h1 class="text-center mb-4">Dettagli Utente</h1>
+    <%
+      Utente utente = (Utente) session.getAttribute("user");
+      if (utente != null) {
+    %>
+    <form action="UtenteController" method="post" class="user-details-form">
+      <input type="hidden" name="idUtente" value="<%= utente.getId() %>">
+      <div class="card mx-auto shadow-sm" style="max-width: 700px;">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Profilo Utente</h5>
+        </div>
+        <div class="card-body">
+          <!-- Riga: Nome -->
+          <div class="mb-3 row">
+            <label for="nome" class="col-sm-3 col-form-label">Nome:</label>
+            <div class="col-sm-9">
+              <input type="text" id="nome" name="nome" value="<%= utente.getNome() %>" class="form-control-plaintext" readonly>
+            </div>
           </div>
-          <div class="card-body">
-            <!-- Riga: Nome -->
-            <div class="mb-3 row">
-              <label for="nome" class="col-sm-3 col-form-label">Nome</label>
-              <div class="col-sm-9">
-                <input type="text" id="nome" name="nome" value="<%= utente.getNome() %>" class="form-control-plaintext" readonly>
-              </div>
+          <!-- Riga: Cognome -->
+          <div class="mb-3 row">
+            <label for="cognome" class="col-sm-3 col-form-label">Cognome:</label>
+            <div class="col-sm-9">
+              <input type="text" id="cognome" name="cognome" value="<%= utente.getCognome() %>" class="form-control-plaintext" readonly>
             </div>
-            <!-- Riga: Cognome -->
-            <div class="mb-3 row">
-              <label for="cognome" class="col-sm-3 col-form-label">Cognome</label>
-              <div class="col-sm-9">
-                <input type="text" id="cognome" name="cognome" value="<%= utente.getCognome() %>" class="form-control-plaintext" readonly>
-              </div>
-            </div>         
-            <!-- Riga: Username -->
-            <div class="mb-3 row">
-              <label for="username" class="col-sm-3 col-form-label">Username</label>
-              <div class="col-sm-9">
-                <input type="text" id="username" name="username" value="<%= utente.getUsername() %>" class="form-control-plaintext" readonly>
-              </div>
+          </div>
+          <!-- Riga: Username -->
+          <div class="mb-3 row">
+            <label for="username" class="col-sm-3 col-form-label">Username:</label>
+            <div class="col-sm-9">
+              <input type="text" id="username" name="username" value="<%= utente.getUsername() %>" class="form-control-plaintext" readonly>
             </div>
-            <!-- Riga: Data di Nascita -->
-            <div class="mb-3 row">
-              <label for="dataNascita" class="col-sm-3 col-form-label">Data di Nascita</label>
-              <div class="col-sm-9">
-                <input type="date" id="dataNascita" name="dataNascita" value="<%= utente.getDataNascita() %>" class="form-control-plaintext" readonly>
-              </div>
+          </div>
+          <!-- Riga: Data di Nascita -->
+          <div class="mb-3 row">
+            <label for="dataNascita" class="col-sm-3 col-form-label">Data di Nascita:</label>
+            <div class="col-sm-9">
+              <input type="date" id="dataNascita" name="dataNascita" value="<%= utente.getDataNascita() %>" class="form-control-plaintext" readonly>
             </div>
-            <!-- Riga: Città -->
-            <div class="mb-3 row">
-              <label for="citta" class="col-sm-3 col-form-label">Città</label>
-              <div class="col-sm-9">
-                <input type="text" id="citta" name="citta" value="<%= utente.getCitta() %>" class="form-control-plaintext" readonly>
-              </div>
+          </div>
+          <!-- Riga: Città -->
+          <div class="mb-3 row">
+            <label for="citta" class="col-sm-3 col-form-label">Città:</label>
+            <div class="col-sm-9">
+              <input type="text" id="citta" name="citta" value="<%= utente.getCitta() %>" class="form-control-plaintext" readonly>
             </div>
-            <!-- Riga: Telefono -->
-            <div class="mb-3 row">
-              <label for="telefono" class="col-sm-3 col-form-label">Telefono</label>
-              <div class="col-sm-9">
-                <input type="text" id="telefono" name="telefono" value="<%= utente.getTelefono() %>" class="form-control-plaintext" readonly>
-              </div>
+          </div>
+          <!-- Riga: Telefono -->
+          <div class="mb-3 row">
+            <label for="telefono" class="col-sm-3 col-form-label">Telefono:</label>
+            <div class="col-sm-9">
+              <input type="text" id="telefono" name="telefono" value="<%= utente.getTelefono() %>" class="form-control-plaintext" readonly>
             </div>
-            <!-- Riga: Email -->
-            <div class="mb-3 row">
-              <label for="email" class="col-sm-3 col-form-label">Email</label>
-              <div class="col-sm-9">
-                <input type="email" id="email" name="email" value="<%= utente.getEmail() %>" class="form-control-plaintext" readonly>
-              </div>
+          </div>
+          <!-- Riga: Email -->
+          <div class="mb-3 row">
+            <label for="email" class="col-sm-3 col-form-label">Email:</label>
+            <div class="col-sm-9">
+              <input type="email" id="email" name="email" value="<%= utente.getEmail() %>" class="form-control-plaintext" readonly>
             </div>
-            <!-- Riga: Ruolo -->
-            <div class="mb-3 row">
-              <label class="col-sm-3 col-form-label">Ruolo</label>
-              <div class="col-sm-9 pt-2">
-                <strong><%= utente.isAmministratore() ? "Amministratore" : "Utente" %></strong>
-              </div>
+          </div>
+          <!-- Riga: Ruolo -->
+          <div class="mb-3 row">
+            <label class="col-sm-3 col-form-label">Ruolo:</label>
+            <div class="col-sm-9 pt-2">
+              <strong><%= utente.isAmministratore() ? "Amministratore" : "Utente" %></strong>
             </div>
           </div>
         </div>
-      </form>
-      <%
-        } else {
-      %>
-      <div class="alert alert-warning text-center" role="alert">
-        Nessun utente loggato.
+        <!-- Footer della Card con i pulsanti -->
+        
+          <!-- Pulsante per Modifica: utilizza "formaction" per reindirizzare alla pagina di modifica -->
+          <button type="submit" formaction="modificaUtente.jsp" class="btn btn-primary">
+            Modifica
+          </button>
+          <!-- Pulsante per Eliminare: invia al controller con tipoOperazione "eliminaUtente" -->
+          <button type="submit" name="tipoOperazione" value="eliminaUtente" class="btn btn-danger"
+            onclick="return confirm('Sei sicuro di voler eliminare il tuo account? L\'operazione è irreversibile!');">
+            Elimina Account
+          </button>
+        
       </div>
-      <%
-        }
-      %>
-
-      <!-- Pulsanti per modificare o eliminare l'account -->
-     <div class="text-center mt-4">
-  <!-- Contenitore flessibile in colonna -->
-  <div class="d-flex flex-column align-items-center gap-3">
-    
-    <!-- Primo form: Modifica -->
-    <form action="modificaUtente.jsp">
-      <button type="submit" class="btn btn-warning">Modifica</button>
     </form>
-    
-    <!-- Secondo form: Elimina -->
-    <form action="UtenteController" method="post"
-          onsubmit="return confirm('Sei sicuro di voler eliminare il tuo account? L\'operazione è irreversibile!')">
-      <input type="hidden" name="tipoOperazione" value="eliminaUtente">
-      <input type="hidden" name="idUtente" value="<%= utente.getId() %>">
-      <button type="submit" class="btn btn-danger">Elimina Account</button>
-    </form>
-    
+    <%
+      } else {
+    %>
+    <div class="alert alert-warning text-center" role="alert">
+      Nessun utente loggato.
+    </div>
+    <%
+      }
+    %>
   </div>
 </div>
-</div>
-</div>
+
+
 
 
   <!-- Bootstrap JS (opzionale, per eventuali interazioni) -->

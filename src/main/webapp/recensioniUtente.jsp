@@ -34,7 +34,19 @@ padding: 7px 20px;
       .table td, .table th {
           white-space: normal;
           word-wrap: break-word;
+          
       }
+      .btn-danger {
+    background-color: #fd0d0d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 5px;
+    display: flex;
+}
     </style>
 </head>
 <body>
@@ -88,7 +100,7 @@ padding: 7px 20px;
 <!-- Sidebar -->
 <div class="sidebar">
     <a href="areaUtente.jsp">Profilo Utente</a>
-    <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Le tue Prenotazioni</a>
+    <a href="NoleggioController?tipoOperazione=prenotazioniUtente">Prenotazioni</a>
     <a href="AutoController?tipoOperazione=autoUtente">Le tue Auto</a>
     <a class="active" href="RecensioneController?tipoOperazione=mostraRecensioni">Le tue Recensioni</a>
     <a href="inserisciVeicolo.jsp">Aggiungi Auto</a>
@@ -100,7 +112,7 @@ padding: 7px 20px;
         <h1 class="text-center mb-4">Le Mie Recensioni</h1>
         
         <!-- Card per le Recensioni -->
-        <div class="card mx-auto shadow-sm mb-4" style="max-width: 100%;">
+        <div class="card mx-auto shadow-sm mb-4" style="max-width: 60%;">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0">Recensioni</h5>
             </div>
@@ -109,11 +121,11 @@ padding: 7px 20px;
                   <table class="table table-striped table-hover align-middle">
     <thead>
         <tr>
-            <th>ID Recensione</th>
+            
             <th>Modello Auto</th>
             <th>Descrizione</th>
             <th>Valutazione</th>
-            <th>Azioni</th> <!-- Stesso allineamento della tabella delle prenotazioni -->
+            <th class="text-end pe-3" style="width: 150px;">Azioni</th>
         </tr>
     </thead>
     <tbody>
@@ -121,7 +133,7 @@ padding: 7px 20px;
             Auto auto = autoQuery.trovaAutoPerId(recensione.getIdAuto());
         %>
             <tr>
-                <td><%= recensione.getId() %></td>
+                
                 <td><%= auto.getModello() %></td>
                 <td class="text-start"><%= recensione.getDescrizione() %></td>
                 <td><%= recensione.getValuatzione() %> / 5</td>
@@ -129,7 +141,7 @@ padding: 7px 20px;
                     <form action="RecensioneController" method="post" class="d-inline">
                         <input type="hidden" name="tipoOperazione" value="eliminaRecensione">
                         <input type="hidden" name="idRecensione" value="<%= recensione.getId() %>">
-                        <button type="submit" class="btn btn-danger btn-sm"
+                        <button type="submit" class="btn btn-danger"
                                 onclick="return confirm('Sei sicuro di voler eliminare questa recensione?');">
                             Elimina
                         </button>
@@ -151,9 +163,7 @@ padding: 7px 20px;
 </div>
 
 <!-- Footer -->
-<footer class="mt-4 text-center">
-    <p>&copy; 2025 Drive Easy - Tutti i diritti riservati</p>
-</footer>
+
 
 <!-- Bootstrap JS (opzionale) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

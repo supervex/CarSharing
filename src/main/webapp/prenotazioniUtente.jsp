@@ -48,6 +48,39 @@
 button{
 padding: 7px 20px;
 }
+.btn-primary {
+    background-color: #0d6efd;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.btn-primary:hover { /* Stile per btn-primary al passaggio del mouse */
+    background-color: #064196; /* Mantiene il colore di sfondo arancione al passaggio del mouse */
+}    
+
+.btn-danger {
+    background-color: #fd0d0d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.btn-warning {
+    background-color: #fdb40d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #db9901;
+}
 </style>
 </head>
 <body>
@@ -101,7 +134,7 @@ padding: 7px 20px;
     <!-- Sidebar -->
     <div class="sidebar">
       <a href="areaUtente.jsp">Profilo Utente</a>
-      <a class="active" href="NoleggioController?tipoOperazione=prenotazioniUtente">Le tue Prenotazioni</a>
+      <a class="active" href="NoleggioController?tipoOperazione=prenotazioniUtente">Prenotazioni</a>
       <a href="AutoController?tipoOperazione=autoUtente">Le tue Auto</a>
       <a href="RecensioneController?tipoOperazione=mostraRecensioni">Le tue Recensioni</a>
       <a href="inserisciVeicolo.jsp">Aggiungi Auto</a>
@@ -149,7 +182,7 @@ padding: 7px 20px;
                                                 <form action="NoleggioController" method="GET" class="d-inline">
                                                     <input type="hidden" name="idNoleggio" value="<%= noleggio.getId() %>">
                                                     <input type="hidden" name="tipoOperazione" value="dettagli">
-                                                    <button type="submit" class="btn btn-info btn-sm">Dettagli</button>
+                                                    <button type="submit" class="btn btn-primary btn-sm">Dettagli</button>
                                                 </form>
 
                                                 <!-- Pulsante per cancellare -->
@@ -208,14 +241,14 @@ padding: 7px 20px;
                                                 <form action="NoleggioController" method="GET" class="d-inline">
                                                     <input type="hidden" name="idNoleggio" value="<%= noleggio.getId() %>">
                                                     <input type="hidden" name="tipoOperazione" value="dettagli">
-                                                    <button type="submit" class="btn btn-info btn-sm">Dettagli</button>
+                                                    <button type="submit" class="btn btn-primary btn-sm">Dettagli</button>
                                                 </form>
 
                                                 <!-- Pulsante per lasciare una recensione -->
                                                 <form action="RecensioneController" method="GET" class="d-inline">
                                                     <input type="hidden" name="idNoleggio" value="<%= noleggio.getId() %>">
                                                     <input type="hidden" name="tipoOperazione" value="lasciaRecensione">
-                                                    <button type="submit" class="btn btn-warning btn-sm">Lascia una recensione</button>
+                                                    <button type="submit" class="btn btn-warning btn-sm">Recensisci</button>
                                                 </form>
                                                 <form action="NoleggioController" method="POST" class="d-inline">
                                                     <input type="hidden" name="idNoleggio" value="<%= noleggio.getId() %>">
@@ -236,16 +269,12 @@ padding: 7px 20px;
             </div>
 
             <!-- Link di ritorno -->
-            <div class="text-center">
-                <a href="HomeController?method=get" class="btn btn-secondary">Torna alla Home</a>
-            </div>
+           
         </div>
     </div>
 
     <!-- Footer (opzionale) -->
-    <footer class="mt-4 text-center">
-        <p>&copy; 2025 Drive Easy - Tutti i diritti riservati</p>
-    </footer>
+   
 
     <!-- Bootstrap JS (opzionale, per eventuali componenti interattivi) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

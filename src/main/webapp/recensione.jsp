@@ -44,21 +44,27 @@
     padding: 5px; /* Applica un padding di 5px su tutti i lati */
     color: white; /* Imposta il colore del testo a bianco */
     align-items: center; /* Allinea verticalmente gli elementi al centro */
+    position: sticky; /* Rende la navbar sticky */
+    top: 0; /* La fissa in cima alla pagina */
+    z-index: 1000; /* Assicura che rimanga sopra gli altri elementi */
+    box-sizing: content-box;
+    
 }
+
 
 .nav-links { /* Seleziona l'elemento con classe nav-links */
     list-style: none; /* Rimuove i bullet point dalla lista */
     display: flex; /* Usa il flexbox per disporre gli elementi in riga */
-    gap: 12px; /* Aggiunge uno spazio di 12px tra gli elementi */
+    gap: 41px; /* Aggiunge uno spazio di 12px tra gli elementi */
     align-items: center; /* Allinea verticalmente gli elementi al centro */
     margin-right: 15px; /* Aggiunge un margine destro di 15px */
+    margin-top: 12px;
 }
 
 .nav-links a { /* Seleziona i link all'interno di nav-links */
     color: white; /* Imposta il colore del testo a bianco */
     text-decoration: none; /* Rimuove la sottolineatura dai link */
     font-weight: bold; /* Rende il testo in grassetto */
-    margin-top: 10px;
 }
 
 /* Stile liste */
@@ -72,7 +78,7 @@ button{
     margin: 5px auto; 
     width: auto; 
     max-width: 250px; 
-    padding: 10px 20px; 
+    padding: 7px 20px;
     font-size: 16px; 
     border: none; 
     background-color: #ff5600; 
@@ -177,44 +183,45 @@ button:hover {
 </head>
 <body>
 <nav class="my-navbar">
-		<div class="logo-container">
-			<img src="images/Logo.png" class="logo_immagine" alt="Logo">
-		</div>
-		<%
-		Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
-		%>
-		<ul class="nav-links">
-			<li><a href="HomeController?method=get">Home</a></li>
-			<%
-			if (utenteLoggatoHome != null) {
-			%>
-			<li><a href="areaUtente.jsp">Area utente</a></li>
-			<%
-			if (utenteLoggatoHome.isAmministratore()) {
-			%>
-			<li><a href="AdminController?method=get">Gestione</a></li>
-			<%
-			}
-			%>
-			<li>
-				<form action="UtenteController" method="post"
-					style="display: inline;">
-					<input type="hidden" name="tipoOperazione" value="logout">
-					<button class="register-btn">Logout</button>
-				</form>
-			</li>
-			<%
-			} else {
-			%>
-			<li><a href="Register.jsp"><button class="login-btn">Accedi</button></a></li>
-			<%
-			}
-			%>
-		</ul>
-	</nav>
+    <div class="logo-container">
+      <img src="images/Logo.png" class="logo_immagine" alt="Logo">
+    </div>
+    <%
+      Utente utenteLoggatoHome = (Utente) session.getAttribute("user");
+    %>
+    <ul class="nav-links">
+      <li><a href="HomeController?method=get">Home</a></li>
+      <%
+        if (utenteLoggatoHome != null) {
+      %>
+      <li><a href="areaUtente.jsp">Area utente</a></li>
+      <%
+          if (utenteLoggatoHome.isAmministratore()) {
+      %>
+      <li><a href="AdminController?method=get">Gestione</a></li>
+      <%
+          }
+      %>
+      <li><a href="inserisciVeicolo.jsp">Aggiungi Auto</a></li>
+      <li><a href="NoleggioController?tipoOperazione=prenotazioniUtente">Prenotazioni</a></li>
+      <li>
+        <form action="UtenteController" method="post" style="display: inline;">
+          <input type="hidden" name="tipoOperazione" value="logout">
+          <button class="register-btn">Logout</button>
+        </form>
+      </li>
+      <%
+        } else {
+      %>
+      <li><a href="Register.jsp"><button class="login-btn">Accedi</button></a></li>
+      <%
+        }
+      %>
+    </ul>
+  </nav>
 
    <div class="container mt-5">
-    <h1 class="text-center">Lascia una Recensione</h1>
+    <h1 class="text-center" style= color: #0c2241>Lascia una Recensione</h1>
     <div class="row d-flex align-items-center justify-content-center g-4">
         <!-- Contenitore Recensione -->
         <div class="col-md-6">
