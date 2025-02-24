@@ -68,7 +68,7 @@
                     <label class="label">Data di nascita</label>
                     <input type="date" id="dataNascita" name="dataNascita" required
                         value="<%= request.getAttribute("dataNascita") != null ? request.getAttribute("dataNascita") : "" %>">
-                    <label class="label">CittÃ </label>
+                    <label class="label">Città </label>
                     <input type="text" id="citta" name="citta" required
                         value="<%= request.getAttribute("citta") != null ? request.getAttribute("citta") : "" %>">
                     <label class="label">Numero di cellulare</label>

@@ -21,6 +21,37 @@
 button{
 padding: 7px 20px;
 }
+
+section {
+    background: rgb(240, 240, 240);
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 1150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    }
+@media (min-width: 992px) {
+    .col-lg-5 {
+        flex: 0 0 auto;
+        width: 350px;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-lg-7 {
+        flex: 0 0 auto;
+        width: 65%;
+    }
+}
+h2 {
+    color: #0c2241;
+    margin-top: 20px;
+}
+
 </style>
 
 </head>
@@ -222,61 +253,49 @@ padding: 7px 20px;
     </div>
   </div>
 </section>
+
+<div style="padding-top: 80px;padding-bottom: 80px;background: linear-gradient(to bottom, #d2e1ef, #efe5a2, #fcc262);position:relative;color:#fff;&quot;>&quot;;">
 <!-- Sezione About Us - Template Style -->
 <!-- Sezione Informativa - Noleggio Auto -->
-<section id="info-noleggio" class="py-5">
-  <div class="container">
-    <div class="row">
+<section id="de_info_noleggio" style="padding-top:80px;padding-bottom:80px;background: linear-gradient(to bottom, #6bb2f4, #fdea66, #ffb335);position:relative;color:#fff;">
+  <div id="de_container" style="position:relative; z-index:1; max-width:1150px; margin:0 auto;">
+    <div id="de_row" style="display:flex; flex-wrap:wrap;">
       <!-- Colonna Sinistra: Descrizione e confronto prezzi -->
-      <div class="col-lg-7">
-        <div class="mb-4">
-          <h2 class="mb-3">Noleggiare un'auto è conveniente con BSP Auto</h2>
-          <p class="lead">L'unico sito francese con sistema di confronto dei prezzi, con un team con sede a Parigi e disponibile 7 giorni su 7.</p>
-        </div>
-        <div class="mb-4">
-          <p>Ti serve un'auto per un viaggio d'affari? Per andare in vacanza o per qualche giorno? Perché non noleggiarla? Questa soluzione, pratica e accessibile a tutti, ti consente di avere un'auto adatta al tuo viaggio e ad un prezzo conveniente!</p>
-          <p>Scegli la durata della prenotazione e il modello e, grazie al nostro sistema di confronto dei prezzi online, potrai confrontare le offerte dei più grandi professionisti del noleggio per trovare il prezzo migliore, sia in Francia che nel resto del mondo.</p>
-        </div>
-        <div class="mb-4">
-          <h2 class="mb-3">Confronta le offerte per trovare l'offerta migliore</h2>
-          <p>Seleziona la tua partenza, l'agenzia per la restituzione (ad esempio in aeroporto o in stazione), le date e gli orari e il gioco è fatto! Dopo aver confrontato le tariffe, potrai scegliere l'offerta che più ti conviene.</p>
-          <p>In caso di variazioni nei tuoi piani, avrai la possibilità di annullare o modificare il noleggio: la flessibilità è uno dei nostri punti di forza.</p>
-        </div>
+      <div id="de_col_left" style="flex:0 0 58%; max-width:58%; text-align:left;">
+        <h2 style="font-weight:600; margin-bottom:20px;">Perché scegliere Drive Easy?</h2>
+        <p style="font-size:1.125rem; line-height:1.6; margin-bottom:1rem;">Sicurezza e Affidabilità</p>
+        <p style="font-size:1.125rem; line-height:1.6; margin-bottom:1rem;">
+          La sicurezza è la nostra priorità. Ogni utente che utilizza la piattaforma è verificato attraverso un sistema di controllo avanzato per garantire un’esperienza affidabile.
+          Inoltre, ogni auto disponibile su Drive Easy è assicurata, così puoi viaggiare senza pensieri.
+        </p>
+        <p style="font-size:1.125rem; line-height:1.6; margin-bottom:1rem;">Privacy Garantita</p>
+        <p style="font-size:1.125rem; line-height:1.6; margin-bottom:1rem;">
+          Proteggiamo i tuoi dati con tecnologie di crittografia avanzate, assicurandoci che tutte le informazioni personali e di pagamento siano sempre al sicuro.
+          La nostra piattaforma rispetta le normative sulla privacy per offrirti un’esperienza protetta e senza rischi.
+        </p>
       </div>
       <!-- Colonna Destra: Prenotazione e link ai migliori paesi -->
-      <div class="col-lg-5">
-        <div class="card mb-4 shadow-sm">
-          <div class="card-body">
-            <h2 class="card-title">Prenota con pochi clic!</h2>
-            <p class="card-text">Dopo aver confrontato le tariffe, prenota facilmente la tua auto compilando il modulo online. Offriamo anche servizi esclusivi come modifiche gratuite, cancellazioni flessibili e chilometraggio illimitato, a seconda delle offerte.</p>
-            <p class="card-text">Trova l'auto perfetta per i tuoi viaggi, che si tratti di un breve soggiorno o di una lunga vacanza.</p>
-          </div>
-        </div>
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h2 class="card-title">I migliori paesi per il noleggio auto</h2>
-            <ul class="list-unstyled">
-              <li><a href="/it/noleggio-auto/croazia.asp" title="Noleggio auto in Croazia">Croazia</a></li>
-              <li><a href="/it/noleggio-auto/spagna.asp">Spagna</a></li>
-              <li><a href="/it/noleggio-auto/francia.asp">Francia</a></li>
-              <li><a href="/it/noleggio-auto/grecia.asp">Grecia</a></li>
-              <li><a href="/it/noleggio-auto/portogallo.asp">Portogallo</a></li>
-              <li><a href="/it/noleggio-auto/irlanda.asp">Irlanda</a></li>
-              <li><a href="/it/noleggio-auto/italia.asp">Italia</a></li>
-              <li><a href="/it/noleggio-auto/sardegna.asp">Sardegna</a></li>
-              <li><a href="/it/noleggio-auto/sicilia.asp">Sicilia</a></li>
-              <li><a href="/it/noleggio-auto/stati-uniti.asp">Stati Uniti</a></li>
-              <li><a href="/it/noleggio-auto/regno-unito.asp">Regno Unito</a></li>
-              <li><a href="/it/noleggio-auto/ungheria.asp">Ungheria</a></li>
-              <li><a href="/it/noleggio-auto/danimarca.asp">Danimarca</a></li>
-            </ul>
-          </div>
+      <div id="de_col_right" style="flex:0 0 42%; max-width:42%; padding-left:20px;">
+        <div id="de_card" style="background:#fff; color:#333; padding:30px; border-radius:15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+          <h2 style="font-size:1.75rem; font-weight:600; color:#ff5600; margin-bottom:1rem;">Prenota con pochi CLICK</h2>
+          <p style="font-size:1rem; line-height:1.5; margin-bottom:1rem;">
+            Dopo aver confrontato le tariffe e trovato l’offerta migliore, prenota facilmente la tua auto compilando il modulo online in pochi minuti.
+            Il nostro processo è semplice, veloce e sicuro, così puoi organizzare il tuo viaggio senza stress.
+          </p>
+          <p style="font-size:1rem; line-height:1.5;">
+            Trova l'auto perfetta per ogni occasione, che si tratti di un breve soggiorno, di un viaggio di lavoro o di una lunga vacanza.
+            Scegli tra una vasta gamma di veicoli, dalle city car alle auto di lusso, e parti con la massima comodità e tranquillità!
+          </p>
         </div>
       </div>
     </div>
   </div>
+  <!-- Overlay per aumentare il contrasto del testo -->
+  <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.3); z-index:0;"></div>
 </section>
 
+
+</div>
 
 <footer>
 		Drive Easy | Via Italia, 24 - Roma ITALIA | C.F. ABC534845745 | P.Iva 854345764 <br>

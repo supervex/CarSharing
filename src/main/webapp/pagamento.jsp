@@ -50,7 +50,7 @@
 }
          body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #000682, #cd7612);
+            background: linear-gradient(to bottom, #d2e1ef, #efe5a2, #fcc262);
             margin: 0;
             padding: 0;
             min-height: 100vh;
