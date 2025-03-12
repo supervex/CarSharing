@@ -29,22 +29,6 @@ Car Sharing Portal è una web app che permette agli utenti di offrire e noleggia
 - MySQL/MariaDB
 - IDE consigliato: Spring Tool Suite (STS) o Eclipse con plugin Java EE
 
-## Installazione e configurazione
-
-1. **Clonare il repository**:
-   ```bash
-   git clone https://github.com/tuo-username/car-sharing-portal.git
-   cd car-sharing-portal
-   ```
-2. **Configurare il database**:
-   - Creare un database MySQL/MariaDB.
-   - Importare lo schema dal file `database/schema.sql`.
-   - Modificare le credenziali nel file di configurazione `persistence.xml`.
-3. **Compilare e avviare il progetto**:
-   - Importare il progetto in Eclipse o STS.
-   - Configurare il server Tomcat e deployare l'applicazione.
-   - Avviare il server.
-
 ## Struttura del progetto
 
 ```
